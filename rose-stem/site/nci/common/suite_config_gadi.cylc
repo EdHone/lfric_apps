@@ -1,4 +1,4 @@
-{% set gadi_base = 'module load /g/data/access/ngm/modules/envs/lfric/202309/intel-openmpi' %}
+{% set gadi_base = 'module load /g/data/access/ngm/modules/envs/lfric/202404/intel-openmpi' %}
 
 {% set gadi_plot = 'module load /g/data/access/ngm/modules/analysis3/21.10' %}
 
@@ -90,5 +90,14 @@
     [[GADI_TECH_TESTS_INTEL]]
         inherit=GADI_BASE
         {{ generate_script("pre-script", [gadi_base]) }}
+        [[[directives]]]
+            -l mem=4GB
+            -l storage=gdata/access+gdata/hr22+gdata/ki32+scratch/access+gdata/{{environ.get('PROJECT','NO_PROJECT')}}
 
     [[GADI_HOUSEKEEPING]]
+
+    [[SCRIPTS]]
+        {{ generate_script("pre-script", [gadi_base]) }}
+        [[[directives]]]
+            -l mem=4GB
+            -l storage=gdata/access+gdata/hr22+gdata/ki32+scratch/access+gdata/{{environ.get('PROJECT','NO_PROJECT')}}

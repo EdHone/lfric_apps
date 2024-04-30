@@ -117,12 +117,7 @@
     [[{{task}}]]
         inherit = {{task_family|upper}}, LFRICINPUTS_BASE,  {{SITE|upper}}_{{task_ns.platform|upper}}_{{task_ns.compiler|upper}}, {{SITE|upper}}_{{task_ns.platform|upper}}_NORMAL_QUEUE, {{SITE|upper}}_{{task_ns.platform|upper}}_RUN_TASKS, {{task_ns.platform|upper}}_LFRICINPUTS
         env-script = "eval $(rose task-env)"
-    {% if SITE=='nci' %}
-        {# NCI requires the no_xios_server command key #}
- 	    script = rose task-run --command-key=no_xios_server --path= --path='share/fcm_make_{{build_string}}/build/bin'
- 	{% else %}
- 	    script = rose task-run --verbose --path= --path='share/fcm_make_{{build_string}}/build/bin'
-    {% endif %}
+        script = rose task-run --verbose --path= --path='share/fcm_make_{{build_string}}/build/bin'
         post-script = """
                       find . -regex '.*PET0+\..+\.Log' -exec cp {} $ROSE_TASK_LOG_DIR \;
                       find . -regex '.*PET0+\..+\.Log' -exec cat {} \;
