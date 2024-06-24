@@ -23,6 +23,7 @@ module linear_diagnostics_driver_mod
                                         ls_option_file
   use log_mod,                   only : log_event, &
                                         LOG_LEVEL_INFO
+  use linear_config_mod,         only : ls_read_w2h
 
   implicit none
 
@@ -88,12 +89,14 @@ contains
     ! Fluxes - horizontal and vertical (if reading linearisation
     ! state from file)
     if (ls_option == ls_option_file) then
-      call ls_fields%get_field('ls_v_u', ls_v_u)
-      call ls_fields%get_field('ls_h_u', ls_h_u)
-      call write_scalar_diagnostic('readls_v_u', ls_v_u, &
-                                   modeldb%clock, mesh, nodal_output_on_w3)
-      call write_vector_diagnostic('readls_h_u', ls_h_u, &
-                                   modeldb%clock, mesh, nodal_output_on_w3)
+      if (ls_read_w2h) then
+        call ls_fields%get_field('ls_v_u', ls_v_u)
+        call ls_fields%get_field('ls_h_u', ls_h_u)
+        call write_scalar_diagnostic('readls_v_u', ls_v_u, &
+                                     modeldb%clock, mesh, nodal_output_on_w3)
+        call write_vector_diagnostic('readls_h_u', ls_h_u, &
+                                     modeldb%clock, mesh, nodal_output_on_w3)
+      end if
     end if
 
     ! Moisture fields

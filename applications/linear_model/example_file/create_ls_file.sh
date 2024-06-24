@@ -13,10 +13,14 @@ echo Making time the record dimension
 ncks --fix_rec_dmn time -O $INPUT ${INPUT}_tmp
 
 # Drop fields needed by JEDI but not linear
-ncks -O -C -q -v Mesh2d,Mesh2d_node_x,Mesh2d_node_y,Mesh2d_edge_x,Mesh2d_edge_y,Mesh2d_edge_nodes,Mesh2d_face_x,Mesh2d_face_y,Mesh2d_face_nodes,Mesh2d_face_edges,Mesh2d_edge_face_links,Mesh2d_face_links,full_levels,half_levels,time,time_bounds,exner,rho,theta,m_v,m_cl,m_ci,m_r ${INPUT}_tmp ${INPUT}_tmp
+ncks -O -C -q -v Mesh2d,Mesh2d_node_x,Mesh2d_node_y,Mesh2d_edge_x,Mesh2d_edge_y,Mesh2d_edge_nodes,Mesh2d_face_x,Mesh2d_face_y,Mesh2d_face_nodes,Mesh2d_face_edges,Mesh2d_edge_face_links,Mesh2d_face_links,full_levels,half_levels,time,time_bounds,exner,rho,theta,m_v,m_cl,m_ci,m_r,u_in_w3,v_in_w3,w_in_wth ${INPUT}_tmp ${INPUT}_tmp
 
+# Change the start date of the file
+ncap2 -O -s 'time@time_origin="2016-01-01 15:00:00";time@units="seconds since 2016-01-01 15:00:00"' ${INPUT}_tmp ${INPUT}_tmp
+
+# Change the file so that the time starts at -1
+let "TIMESTEP = $TIMESTEP + 1"
 echo Shifting time back by ${TIMESTEP}
-# Change the file so that the time starts at 0
 ncap2 -O -s time-=${TIMESTEP} ${INPUT}_tmp ${INPUT}_tmp
 ncap2 -O -s time_bounds-=${TIMESTEP} ${INPUT}_tmp ${OUTPUT}
 rm *tmp*

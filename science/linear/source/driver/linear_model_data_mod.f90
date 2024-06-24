@@ -38,7 +38,8 @@ module linear_model_data_mod
                                              pert_option_analytic, &
                                              pert_option_random,   &
                                              pert_option_file,     &
-                                             pert_option_zero
+                                             pert_option_zero,     &
+                                             ls_read_w2h
   use linked_list_mod,                only : linked_list_type
   use log_mod,                        only : log_event,         &
                                              log_scratch_space, &
@@ -242,10 +243,21 @@ contains
                       mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
     call setup_field( ls_fields, depository, prognostics, "ls_theta", Wtheta, &
                       mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
-    call setup_field( ls_fields, depository, prognostics, "ls_h_u", W2h,      &
-                      mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
-    call setup_field( ls_fields, depository, prognostics, "ls_v_u", Wtheta,   &
-                      mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
+
+    if ( ls_read_w2h ) then
+      call setup_field( ls_fields, depository, prognostics, "ls_h_u", W2h,      &
+                        mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
+      call setup_field( ls_fields, depository, prognostics, "ls_v_u", Wtheta,   &
+                        mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
+    else
+      call setup_field( ls_fields, depository, prognostics, "ls_u_in_w3", W3,      &
+                        mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
+      call setup_field( ls_fields, depository, prognostics, "ls_v_in_w3", W3,      &
+                        mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
+      call setup_field( ls_fields, depository, prognostics, "ls_w_in_wth", Wtheta, &
+                        mesh, checkpoint_restart_flag, time_axis=ls_time_axis )
+    end if
+
     call setup_field( ls_fields, depository, prognostics, "ls_u", W2,         &
                       mesh, checkpoint_restart_flag )
 

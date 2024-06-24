@@ -17,6 +17,7 @@ module linear_data_algorithm_mod
                                             get_face_selector_ew, &
                                             get_face_selector_ns
   use gungho_modeldb_mod,             only: modeldb_type
+  use linear_config_mod,              only: ls_read_w2h
   use linked_list_mod,                only: linked_list_type
   use lfric_xios_read_mod,            only: read_state
   use mr_indices_mod,                 only: nummr, mr_names
@@ -31,6 +32,7 @@ module linear_data_algorithm_mod
                                             LOG_LEVEL_DEBUG
   use mesh_mod,                       only: mesh_type
   use field_minmax_alg_mod,           only: log_field_minmax
+  use map_fd_to_prognostics_alg_mod,  only: set_wind
 
   implicit none
 
@@ -38,6 +40,7 @@ module linear_data_algorithm_mod
   public init_ls_file_alg,            &
          update_ls_file_alg,          &
          combine_ls_winds,            &
+         derive_ls_winds_from_w3wth,  &
          linear_copy_model_to_ls,     &
          linear_init_pert_random,     &
          linear_init_pert_analytical, &
@@ -96,7 +99,11 @@ module linear_data_algorithm_mod
 
     call moist_dyn_factors_alg( ls_moist_dyn, ls_mr )
 
-    call combine_ls_winds( ls_fields )
+    if ( ls_read_w2h ) then
+       call combine_ls_winds( ls_fields )
+    else
+       call derive_ls_winds_from_w3wth( ls_fields )
+    end if
 
     nullify( ls_field )
 
@@ -151,7 +158,11 @@ module linear_data_algorithm_mod
 
     call moist_dyn_factors_alg( ls_moist_dyn, ls_mr )
 
-    call combine_ls_winds( ls_fields )
+    if ( ls_read_w2h ) then
+       call combine_ls_winds( ls_fields )
+    else
+       call derive_ls_winds_from_w3wth( ls_fields )
+    end if
 
     call ls_fields%get_field("ls_u", ls_field)
     call log_field_minmax( LOG_LEVEL_DEBUG, 'ls_u', ls_field )
@@ -207,6 +218,30 @@ module linear_data_algorithm_mod
     nullify( h_wind, v_wind, wind, face_selector_ew, face_selector_ns )
 
   end subroutine combine_ls_winds
+
+  !> @brief   Derive winds from W3 and Wtheta.
+  !> @details The horizontal winds are read in as W3, and the vertical
+  !!          winds are read in as Wtheta. This combines them into a
+  !!          single W2 field.
+  !> @param[in,out] fields  The collection of ls fields
+  subroutine derive_ls_winds_from_w3wth( fields )
+
+    implicit none
+
+    type( field_collection_type ), intent(inout) :: fields
+    type(field_type), pointer :: wind
+    type(field_type), pointer :: ls_u_in_w3
+    type(field_type), pointer :: ls_v_in_w3
+    type(field_type), pointer :: ls_w_in_wth
+
+    call fields%get_field("ls_u_in_w3", ls_u_in_w3)
+    call fields%get_field("ls_v_in_w3", ls_v_in_w3)
+    call fields%get_field("ls_w_in_wth", ls_w_in_wth)
+    call fields%get_field("ls_u", wind)
+
+    call set_wind( wind, ls_u_in_w3, ls_v_in_w3, ls_w_in_wth )
+
+  end subroutine derive_ls_winds_from_w3wth
 
   !> @brief Copy the prognostic fields to the LS and then zero the prognostics.
   !> @param[in,out] modeldb The working data set for the model run
