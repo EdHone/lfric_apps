@@ -1825,6 +1825,9 @@ contains
     end if
 
     if (.not. associated(gross_prim_prod, empty_real_data) ) then
+      do i = 1, seg_len
+        gross_prim_prod(map_2d(1,i)) = 0.0_r_def
+      end do
       do l = 1, land_field
         gross_prim_prod(map_2d(1,ainfo%land_index(l))) = real(trifctltype%gpp_gb(l), r_def)
       end do

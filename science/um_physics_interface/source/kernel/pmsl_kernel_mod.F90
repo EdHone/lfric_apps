@@ -14,7 +14,7 @@ module pmsl_kernel_mod
   use fs_continuity_mod,    only: WTHETA, W3
   use constants_mod,        only: r_def, i_def
   use kernel_mod,           only: kernel_type
-  use planet_constants_mod, only: g, r, recip_kappa, lapse, p_zero
+  use planet_constants_mod, only: g, r, recip_kappa, lapse, p_zero, power
 
   implicit none
 
@@ -49,14 +49,14 @@ contains
   !>          This kernel calculates the unsmoothed version,
   !>          i.e. with just a basic extrapolation below orography
   !> @param[in]     nlayers     The number of layers
-  !> @param[in]     exner_w3    exner pressure in w3 space
-  !> @param[in]     exner_wth   exner pressure in theta space
-  !> @param[in]     theta_wth   potential temperature
+  !> @param[in]     exner_w3    Exner pressure in w3 space
+  !> @param[in]     exner_wth   Exner pressure in theta space
+  !> @param[in]     theta_wth   Potential temperature
   !> @param[in]     height_w3   Height of w3 levels above mean sea level
   !> @param[in]     height_wth  Height of wth levels above mean sea level
   !> @param[in]     levelupper  Level above boundary layer to use for PMSL calculation
-  !> @param[in/out] pmsl        pressure at mean sea level
-  !> @param[in/out] t_at_mean_sea_level temperature at mean sea level
+  !> @param[in,out] pmsl        Pressure at mean sea level
+  !> @param[in,out] t_at_mean_sea_level Temperature at mean sea level
   !> @param[in]     ndf_w3      Number of degrees of freedom per cell for wrho
   !> @param[in]     undf_w3     Number of total degrees of freedom for wrho
   !> @param[in]     map_w3      Dofmap for the cell at the base of the column for wrho
@@ -111,7 +111,6 @@ contains
     real(kind=r_def),    intent(inout), dimension(undf_2d) :: t_at_mean_sea_level
 
     ! Internal variables
-    real(kind=r_def) :: power
     real(kind=r_def) :: pressure
     real(kind=r_def) :: t_ref_level_1
 
@@ -131,7 +130,6 @@ contains
 
     ! Calculate PMSL from the previously calculated variables above
 
-    power = g / (r * lapse)
     pmsl(map_2d(1)) = pressure * (t_at_mean_sea_level(map_2d(1)) / t_ref_level_1)**power
 
   end subroutine pmsl_code

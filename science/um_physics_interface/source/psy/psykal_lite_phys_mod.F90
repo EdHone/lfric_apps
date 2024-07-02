@@ -183,10 +183,10 @@ contains
 
   end subroutine invoke_orographic_drag_kernel
   !---------------------------------------------------------------------
-  !> Contains the Psy-layer to build the stochastic physics
+  !> Contains the PSy-layer to build the stochastic physics
   !> forcing pattern. At the moment it requires to pass the arrays
   !> my_coeff_rad and my_phi_stph via the kernel argument.
-  !> Psyclone does not recognize arrays in the argument yet
+  !> PSyclone does not recognize arrays in the argument yet
   !> this functionality is being developed in PSyclone ticket 1312
   !> at https://github.com/stfc/PSyclone/issues/1312
   !> Hence this module could be removed once the PSyclone ticket is
@@ -282,8 +282,8 @@ contains
   !
   end subroutine invoke_spectral_2_cs_kernel_type
   !---------------------------------------------------------------------
-  ! Psyclone currently doesn't work for DOMAIN kernels with stencil fields
-  ! See Psyclone #1948
+  ! PSyclone currently doesn't work for DOMAIN kernels with stencil fields
+  ! See PSyclone #1948
     SUBROUTINE invoke_jules_exp_kernel_type(ncells, ncells_halo, theta, exner_in_wth, u_in_w3, v_in_w3, mr_n, mr_n_1, mr_n_2, height_w3, height_wth, &
 &zh, z0msea, z0m, tile_fraction, leaf_area_index, canopy_height, peak_to_trough_orog, silhouette_area_orog, soil_albedo, &
 &soil_roughness, soil_moist_wilt, soil_moist_crit, soil_moist_sat, soil_thermal_cond, soil_suction_sat, clapp_horn_b, &
@@ -693,5 +693,358 @@ z0h_eff_proxy%data, ocn_cpl_point_proxy%data, ndf_wtheta, &
       !
       !
     END SUBROUTINE invoke_jules_exp_kernel_type
+
+  !---------------------------------------------------------------------
+  !> Contains the PSy-layer to build the pressure level diagnostics
+  !> These require passing an array "plevs" into each kernel
+  !> which is currently unsupported by PSyclone
+  !> see https://github.com/stfc/PSyclone/issues/1312
+  !> Hence this module could be removed once the PSyclone ticket is
+  !> completed
+    SUBROUTINE invoke_heaviside_kernel_type(exner_wth, nplev, plevs, plev_heaviside, p_zero, kappa)
+      USE heaviside_kernel_mod, ONLY: heaviside_code
+      USE mesh_mod, ONLY: mesh_type
+      REAL(KIND=r_def), intent(in) :: p_zero, kappa
+      INTEGER(KIND=i_def), intent(in) :: nplev
+      REAL(KIND=r_def), intent(in) :: plevs(nplev)
+      TYPE(field_type), intent(in) :: exner_wth, plev_heaviside
+      INTEGER(KIND=i_def) cell
+      INTEGER(KIND=i_def) loop0_start, loop0_stop
+      INTEGER(KIND=i_def) nlayers
+      REAL(KIND=r_def), pointer, dimension(:) :: plev_heaviside_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: exner_wth_data => null()
+      TYPE(field_proxy_type) exner_wth_proxy, plev_heaviside_proxy
+      INTEGER(KIND=i_def), pointer :: map_adspc1_exner_wth(:,:) => null(), map_adspc2_plev_heaviside(:,:) => null()
+      INTEGER(KIND=i_def) ndf_adspc1_exner_wth, undf_adspc1_exner_wth, ndf_adspc2_plev_heaviside, undf_adspc2_plev_heaviside
+      INTEGER(KIND=i_def) max_halo_depth_mesh
+      TYPE(mesh_type), pointer :: mesh => null()
+      !
+      ! Initialise field and/or operator proxies
+      !
+      exner_wth_proxy = exner_wth%get_proxy()
+      exner_wth_data => exner_wth_proxy%data
+      plev_heaviside_proxy = plev_heaviside%get_proxy()
+      plev_heaviside_data => plev_heaviside_proxy%data
+      !
+      ! Initialise number of layers
+      !
+      nlayers = exner_wth_proxy%vspace%get_nlayers()
+      !
+      ! Create a mesh object
+      !
+      mesh => exner_wth_proxy%vspace%get_mesh()
+      max_halo_depth_mesh = mesh%get_halo_depth()
+      !
+      ! Look-up dofmaps for each function space
+      !
+      map_adspc1_exner_wth => exner_wth_proxy%vspace%get_whole_dofmap()
+      map_adspc2_plev_heaviside => plev_heaviside_proxy%vspace%get_whole_dofmap()
+      !
+      ! Initialise number of DoFs for adspc1_exner_wth
+      !
+      ndf_adspc1_exner_wth = exner_wth_proxy%vspace%get_ndf()
+      undf_adspc1_exner_wth = exner_wth_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for adspc2_plev_heaviside
+      !
+      ndf_adspc2_plev_heaviside = plev_heaviside_proxy%vspace%get_ndf()
+      undf_adspc2_plev_heaviside = plev_heaviside_proxy%vspace%get_undf()
+      !
+      ! Set-up all of the loop bounds
+      !
+      loop0_start = 1
+      loop0_stop = mesh%get_last_edge_cell()
+      !
+      ! Call kernels and communication routines
+      !
+      DO cell=loop0_start,loop0_stop
+        !
+        CALL heaviside_code(nlayers, exner_wth_data, nplev, plevs, plev_heaviside_data, p_zero, kappa, ndf_adspc1_exner_wth, &
+&undf_adspc1_exner_wth, map_adspc1_exner_wth(:,cell), ndf_adspc2_plev_heaviside, undf_adspc2_plev_heaviside, &
+&map_adspc2_plev_heaviside(:,cell))
+      END DO
+      !
+      ! Set halos dirty/clean for fields modified in the above loop
+      !
+      CALL plev_heaviside_proxy%set_dirty()
+      !
+      !
+    END SUBROUTINE invoke_heaviside_kernel_type
+
+  !---------------------------------------------------------------------
+  !> Contains the PSy-layer to build the pressure level diagnostics
+  !> These require passing an array "plevs" into each kernel
+  !> which is currently unsupported by PSyclone
+  !> see https://github.com/stfc/PSyclone/issues/1312
+  !> Hence this module could be removed once the PSyclone ticket is
+  !> completed
+    SUBROUTINE invoke_temp_on_pres_kernel_type(temp, exner_wth, &
+         height_wth, nplev, plevs, plev_temp, p_zero, kappa, ex_power)
+      USE temp_on_pres_kernel_mod, ONLY: temp_on_pres_code
+      USE mesh_mod, ONLY: mesh_type
+      REAL(KIND=r_def), intent(in) :: p_zero, kappa, ex_power
+      INTEGER(KIND=i_def), intent(in) :: nplev
+      REAL(KIND=r_def), intent(in) :: plevs(nplev)
+      TYPE(field_type), intent(in) :: temp, exner_wth, height_wth, plev_temp
+      INTEGER(KIND=i_def) cell
+      INTEGER df
+      INTEGER(KIND=i_def) loop1_start, loop1_stop
+      INTEGER(KIND=i_def) loop0_start, loop0_stop
+      INTEGER(KIND=i_def) nlayers
+      REAL(KIND=r_def), pointer, dimension(:) :: plev_temp_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: height_wth_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: exner_wth_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: temp_data => null()
+      TYPE(field_proxy_type) temp_proxy, exner_wth_proxy, height_wth_proxy, plev_temp_proxy
+      INTEGER(KIND=i_def), pointer :: map_adspc1_temp(:,:) => null(), map_adspc2_plev_temp(:,:) => null(), map_wtheta(:,:) => null()
+      INTEGER(KIND=i_def) ndf_aspc1_temp, undf_aspc1_temp, ndf_adspc1_temp, undf_adspc1_temp, ndf_wtheta, undf_wtheta, &
+&ndf_adspc2_plev_temp, undf_adspc2_plev_temp
+      INTEGER(KIND=i_def) max_halo_depth_mesh
+      TYPE(mesh_type), pointer :: mesh => null()
+      !
+      ! Initialise field and/or operator proxies
+      !
+      temp_proxy = temp%get_proxy()
+      temp_data => temp_proxy%data
+      exner_wth_proxy = exner_wth%get_proxy()
+      exner_wth_data => exner_wth_proxy%data
+      height_wth_proxy = height_wth%get_proxy()
+      height_wth_data => height_wth_proxy%data
+      plev_temp_proxy = plev_temp%get_proxy()
+      plev_temp_data => plev_temp_proxy%data
+      !
+      ! Initialise number of layers
+      !
+      nlayers = temp_proxy%vspace%get_nlayers()
+      !
+      ! Create a mesh object
+      !
+      mesh => temp_proxy%vspace%get_mesh()
+      max_halo_depth_mesh = mesh%get_halo_depth()
+      !
+      ! Look-up dofmaps for each function space
+      !
+      map_adspc1_temp => temp_proxy%vspace%get_whole_dofmap()
+      map_wtheta => height_wth_proxy%vspace%get_whole_dofmap()
+      map_adspc2_plev_temp => plev_temp_proxy%vspace%get_whole_dofmap()
+      !
+      ! Initialise number of DoFs for aspc1_temp
+      !
+      ndf_aspc1_temp = temp_proxy%vspace%get_ndf()
+      undf_aspc1_temp = temp_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for adspc1_temp
+      !
+      ndf_adspc1_temp = temp_proxy%vspace%get_ndf()
+      undf_adspc1_temp = temp_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for wtheta
+      !
+      ndf_wtheta = height_wth_proxy%vspace%get_ndf()
+      undf_wtheta = height_wth_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for adspc2_plev_temp
+      !
+      ndf_adspc2_plev_temp = plev_temp_proxy%vspace%get_ndf()
+      undf_adspc2_plev_temp = plev_temp_proxy%vspace%get_undf()
+      !
+      ! Set-up all of the loop bounds
+      !
+      loop1_start = 1
+      loop1_stop = mesh%get_last_edge_cell()
+      !
+      ! Call kernels and communication routines
+      !
+      DO cell=loop1_start,loop1_stop
+        !
+        CALL temp_on_pres_code(nlayers, temp_data, exner_wth_data, height_wth_data, nplev, plevs, plev_temp_data, p_zero, kappa, &
+&ex_power, ndf_adspc1_temp, undf_adspc1_temp, map_adspc1_temp(:,cell), ndf_wtheta, undf_wtheta, map_wtheta(:,cell), &
+&ndf_adspc2_plev_temp, undf_adspc2_plev_temp, map_adspc2_plev_temp(:,cell))
+      END DO
+      !
+      ! Set halos dirty/clean for fields modified in the above loop
+      !
+      CALL plev_temp_proxy%set_dirty()
+      !
+      !
+    END SUBROUTINE invoke_temp_on_pres_kernel_type
+
+  !---------------------------------------------------------------------
+  !> Contains the PSy-layer to build the pressure level diagnostics
+  !> These require passing an array "plevs" into each kernel
+  !> which is currently unsupported by PSyclone
+  !> see https://github.com/stfc/PSyclone/issues/1312
+  !> Hence this module could be removed once the PSyclone ticket is
+  !> completed
+    SUBROUTINE invoke_pres_interp_kernel_type(u_in_w3, exner_w3, nplev, plevs, plev_u, p_zero, kappa)
+      USE pres_interp_kernel_mod, ONLY: pres_interp_code
+      USE mesh_mod, ONLY: mesh_type
+      REAL(KIND=r_def), intent(in) :: p_zero, kappa
+      INTEGER(KIND=i_def), intent(in) :: nplev
+      REAL(KIND=r_def), intent(in) :: plevs(nplev)
+      TYPE(field_type), intent(in) :: u_in_w3, exner_w3, plev_u
+      INTEGER(KIND=i_def) cell
+      INTEGER(KIND=i_def) loop0_start, loop0_stop
+      INTEGER(KIND=i_def) nlayers
+      REAL(KIND=r_def), pointer, dimension(:) :: plev_u_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: exner_w3_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: u_in_w3_data => null()
+      TYPE(field_proxy_type) u_in_w3_proxy, exner_w3_proxy, plev_u_proxy
+      INTEGER(KIND=i_def), pointer :: map_adspc1_u_in_w3(:,:) => null(), map_adspc2_plev_u(:,:) => null()
+      INTEGER(KIND=i_def) ndf_adspc1_u_in_w3, undf_adspc1_u_in_w3, ndf_adspc2_plev_u, undf_adspc2_plev_u
+      INTEGER(KIND=i_def) max_halo_depth_mesh
+      TYPE(mesh_type), pointer :: mesh => null()
+      !
+      ! Initialise field and/or operator proxies
+      !
+      u_in_w3_proxy = u_in_w3%get_proxy()
+      u_in_w3_data => u_in_w3_proxy%data
+      exner_w3_proxy = exner_w3%get_proxy()
+      exner_w3_data => exner_w3_proxy%data
+      plev_u_proxy = plev_u%get_proxy()
+      plev_u_data => plev_u_proxy%data
+      !
+      ! Initialise number of layers
+      !
+      nlayers = u_in_w3_proxy%vspace%get_nlayers()
+      !
+      ! Create a mesh object
+      !
+      mesh => u_in_w3_proxy%vspace%get_mesh()
+      max_halo_depth_mesh = mesh%get_halo_depth()
+      !
+      ! Look-up dofmaps for each function space
+      !
+      map_adspc1_u_in_w3 => u_in_w3_proxy%vspace%get_whole_dofmap()
+      map_adspc2_plev_u => plev_u_proxy%vspace%get_whole_dofmap()
+      !
+      ! Initialise number of DoFs for adspc1_u_in_w3
+      !
+      ndf_adspc1_u_in_w3 = u_in_w3_proxy%vspace%get_ndf()
+      undf_adspc1_u_in_w3 = u_in_w3_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for adspc2_plev_u
+      !
+      ndf_adspc2_plev_u = plev_u_proxy%vspace%get_ndf()
+      undf_adspc2_plev_u = plev_u_proxy%vspace%get_undf()
+      !
+      ! Set-up all of the loop bounds
+      !
+      loop0_start = 1
+      loop0_stop = mesh%get_last_edge_cell()
+      !
+      ! Call kernels and communication routines
+      !
+      DO cell=loop0_start,loop0_stop
+        !
+        CALL pres_interp_code(nlayers, u_in_w3_data, exner_w3_data, nplev, plevs, plev_u_data, p_zero, kappa, ndf_adspc1_u_in_w3, &
+&undf_adspc1_u_in_w3, map_adspc1_u_in_w3(:,cell), ndf_adspc2_plev_u, undf_adspc2_plev_u, map_adspc2_plev_u(:,cell))
+      END DO
+      !
+      ! Set halos dirty/clean for fields modified in the above loop
+      !
+      CALL plev_u_proxy%set_dirty()
+      !
+      !
+    END SUBROUTINE invoke_pres_interp_kernel_type
+
+  !---------------------------------------------------------------------
+  !> Contains the PSy-layer to build the pressure level diagnostics
+  !> These require passing an array "plevs" into each kernel
+  !> which is currently unsupported by PSyclone
+  !> see https://github.com/stfc/PSyclone/issues/1312
+  !> Hence this module could be removed once the PSyclone ticket is
+  !> completed
+    SUBROUTINE invoke_geo_on_pres_kernel_type(height_w3, exner_w3, theta_wth, height_wth, exner_wth, nplev, plevs, plev_geopot, &
+&p_zero, kappa, cp, gravity, ex_power)
+      USE geo_on_pres_kernel_mod, ONLY: geo_on_pres_code
+      USE mesh_mod, ONLY: mesh_type
+      REAL(KIND=r_def), intent(in) :: p_zero, kappa, cp, gravity, ex_power
+      INTEGER(KIND=i_def), intent(in) :: nplev
+      REAL(KIND=r_def), intent(in) :: plevs(nplev)
+      TYPE(field_type), intent(in) :: height_w3, exner_w3, theta_wth, height_wth, exner_wth, plev_geopot
+      INTEGER(KIND=i_def) cell
+      INTEGER(KIND=i_def) loop0_start, loop0_stop
+      INTEGER(KIND=i_def) nlayers
+      REAL(KIND=r_def), pointer, dimension(:) :: plev_geopot_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: exner_wth_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: height_wth_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: theta_wth_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: exner_w3_data => null()
+      REAL(KIND=r_def), pointer, dimension(:) :: height_w3_data => null()
+      TYPE(field_proxy_type) height_w3_proxy, exner_w3_proxy, theta_wth_proxy, height_wth_proxy, exner_wth_proxy, plev_geopot_proxy
+      INTEGER(KIND=i_def), pointer :: map_adspc1_height_w3(:,:) => null(), map_adspc2_plev_geopot(:,:) => null(), &
+&map_wtheta(:,:) => null()
+      INTEGER(KIND=i_def) ndf_adspc1_height_w3, undf_adspc1_height_w3, ndf_wtheta, undf_wtheta, ndf_adspc2_plev_geopot, &
+&undf_adspc2_plev_geopot
+      INTEGER(KIND=i_def) max_halo_depth_mesh
+      TYPE(mesh_type), pointer :: mesh => null()
+      !
+      ! Initialise field and/or operator proxies
+      !
+      height_w3_proxy = height_w3%get_proxy()
+      height_w3_data => height_w3_proxy%data
+      exner_w3_proxy = exner_w3%get_proxy()
+      exner_w3_data => exner_w3_proxy%data
+      theta_wth_proxy = theta_wth%get_proxy()
+      theta_wth_data => theta_wth_proxy%data
+      height_wth_proxy = height_wth%get_proxy()
+      height_wth_data => height_wth_proxy%data
+      exner_wth_proxy = exner_wth%get_proxy()
+      exner_wth_data => exner_wth_proxy%data
+      plev_geopot_proxy = plev_geopot%get_proxy()
+      plev_geopot_data => plev_geopot_proxy%data
+      !
+      ! Initialise number of layers
+      !
+      nlayers = height_w3_proxy%vspace%get_nlayers()
+      !
+      ! Create a mesh object
+      !
+      mesh => height_w3_proxy%vspace%get_mesh()
+      max_halo_depth_mesh = mesh%get_halo_depth()
+      !
+      ! Look-up dofmaps for each function space
+      !
+      map_adspc1_height_w3 => height_w3_proxy%vspace%get_whole_dofmap()
+      map_wtheta => theta_wth_proxy%vspace%get_whole_dofmap()
+      map_adspc2_plev_geopot => plev_geopot_proxy%vspace%get_whole_dofmap()
+      !
+      ! Initialise number of DoFs for adspc1_height_w3
+      !
+      ndf_adspc1_height_w3 = height_w3_proxy%vspace%get_ndf()
+      undf_adspc1_height_w3 = height_w3_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for wtheta
+      !
+      ndf_wtheta = theta_wth_proxy%vspace%get_ndf()
+      undf_wtheta = theta_wth_proxy%vspace%get_undf()
+      !
+      ! Initialise number of DoFs for adspc2_plev_geopot
+      !
+      ndf_adspc2_plev_geopot = plev_geopot_proxy%vspace%get_ndf()
+      undf_adspc2_plev_geopot = plev_geopot_proxy%vspace%get_undf()
+      !
+      ! Set-up all of the loop bounds
+      !
+      loop0_start = 1
+      loop0_stop = mesh%get_last_edge_cell()
+      !
+      ! Call kernels and communication routines
+      !
+      DO cell=loop0_start,loop0_stop
+        !
+        CALL geo_on_pres_code(nlayers, height_w3_data, exner_w3_data, theta_wth_data, height_wth_data, exner_wth_data, nplev, &
+&plevs, plev_geopot_data, p_zero, kappa, cp, gravity, ex_power, ndf_adspc1_height_w3, undf_adspc1_height_w3, &
+&map_adspc1_height_w3(:,cell), ndf_wtheta, undf_wtheta, map_wtheta(:,cell), ndf_adspc2_plev_geopot, undf_adspc2_plev_geopot, &
+&map_adspc2_plev_geopot(:,cell))
+      END DO
+      !
+      ! Set halos dirty/clean for fields modified in the above loop
+      !
+      CALL plev_geopot_proxy%set_dirty()
+      !
+      !
+    END SUBROUTINE invoke_geo_on_pres_kernel_type
 
 end module psykal_lite_phys_mod

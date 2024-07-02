@@ -57,20 +57,6 @@
     <axis axis_ref="monthly_climatology"/>
     <axis axis_ref="plant_func_types"/>
   </grid>
-
-  <!-- Zoom filters -->
-  <grid id="full_level_0_face_zoom">
-    <domain domain_ref="face"/>
-    <axis axis_ref="vert_axis_full_levels" >
-      <zoom_axis begin="0" n="1"/>
-    </axis>
-  </grid>
-  <grid id="face_zmax">
-    <domain domain_ref="face" />
-    <scalar id="zmax">
-      <reduce_axis operation="max" />
-    </scalar>
-  </grid>
   <grid id="full_level_face_grid_cloud_subcols">
     <domain domain_ref="face"/>
     <axis axis_ref="vert_axis_full_levels"/>
@@ -114,6 +100,37 @@
   <grid id="scalar_grid">
     <axis axis_ref="scalar_axis"/>
   </grid>
+  <!-- Zoom filters -->
+  <grid id="full_level_0_face_zoom">
+    <domain domain_ref="face"/>
+    <axis axis_ref="vert_axis_full_levels" >
+      <zoom_axis begin="0" n="1"/>
+    </axis>
+  </grid>
+  <grid id="full_level_1_face_zoom">
+    <domain domain_ref="face"/>
+    <axis axis_ref="vert_axis_full_levels" >
+      <zoom_axis begin="1" n="1"/>
+    </axis>
+  </grid>
+  <grid id="half_level_1_face_zoom">
+    <domain domain_ref="face"/>
+    <axis axis_ref="vert_axis_half_levels" >
+      <zoom_axis begin="0" n="1"/>
+    </axis>
+  </grid>
 
-
+  <!-- Reduce filters -->
+  <grid id="face_zmax">
+    <domain domain_ref="face" />
+    <scalar id="zmax">
+      <reduce_axis operation="max" />
+    </scalar>
+  </grid>
+  <grid id="vert_sum_face_grid">
+    <domain domain_ref="face"/>
+    <scalar>
+      <reduce_axis operation="sum" />
+    </scalar>
+  </grid>
 </grid_definition>

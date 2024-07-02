@@ -1511,7 +1511,6 @@ contains
             tile_heat_flux(map_tile(1,i)+first_sea_tile-1) = 0.0_r_def
             tile_moisture_flux(map_tile(1,i)+first_sea_tile-1) = 0.0_r_def
           end if
-          snowice_sublimation(map_tile(1,i)+first_sea_tile-1) = 0.0_r_def
           snowice_melt(map_tile(1,i)+first_sea_tile-1) = 0.0_r_def
           canopy_evap(map_tile(1,i)+first_sea_tile-1) = 0.0_r_def
         end do

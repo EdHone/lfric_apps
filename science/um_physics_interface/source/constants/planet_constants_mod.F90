@@ -25,7 +25,7 @@ module planet_constants_mod
             g_bl, grcp_bl, vkman_bl, pref_bl, kappa_bl, cp_bl, rd_bl,         &
             c_virtual_bl, etar_bl, repsilon_bl, ls_bl, r_32b, c_virtual_32b,  &
             etar_32b, lcrcp_32b, ls_32b, lsrcp_32b, planet_radius_bl,         &
-            recip_kappa_bl
+            recip_kappa_bl, power, ex_power
 
   ! The following variables have been hidden as they are not currently
   ! required to build the extracted UM code. They have been left in
@@ -62,6 +62,10 @@ module planet_constants_mod
 
   ! Near surface environmental lapse rate
   real(r_um), protected :: lapse = real(rmdi, r_um)
+
+  ! Powers used in PMSL and pressure level calculations
+  real(r_um), protected :: power = real(rmdi, r_um)
+  real(r_um), protected :: ex_power = real(rmdi, r_um)
 
   ! Angular speed of planet rotation
   real(r_um), protected :: omega = real(rmdi, r_um)
@@ -164,6 +168,8 @@ subroutine set_planet_constants()
   ! currently read in any data for these variables.
   sclht          = 6.8e+03_r_um
   lapse          = 0.0065_r_um
+  power          = g / (r * lapse)
+  ex_power       = (cp * lapse) / g
 
   ! Set derived constants
   two_omega         = 2.0_r_um * omega

@@ -12,7 +12,7 @@
 !-------------------------------------------------------------------------------
 module diagnostics_calc_mod
 
-  use constants_mod,                 only: i_def, r_def, str_max_filename
+  use constants_mod,                 only: i_def, r_def, str_max_filename, l_def
   use diagnostic_alg_mod,            only: divergence_diagnostic_alg,   &
                                            hydbal_diagnostic_alg,       &
                                            vorticity_diagnostic_alg,    &
@@ -20,12 +20,14 @@ module diagnostics_calc_mod
   use io_config_mod,                 only: use_xios_io,          &
                                            nodal_output_on_w3
   use files_config_mod,              only: diag_stem_name
+  use project_output_mod,            only: project_output
   use io_mod,                        only: ts_fname, &
                                            nodal_write_field
   use lfric_xios_write_mod,          only: write_field_generic
   use diagnostics_io_mod,            only: write_scalar_diagnostic,     &
                                            write_vector_diagnostic
-  use initialise_diagnostics_mod,    only: diagnostic_to_be_sampled
+  use initialise_diagnostics_mod,    only: diagnostic_to_be_sampled, &
+       init_diag => init_diagnostic_field
   use field_mod,                     only: field_type
   use field_parent_mod,              only: write_interface
   use fs_continuity_mod,             only: W3
@@ -39,6 +41,8 @@ module diagnostics_calc_mod
                                            LOG_LEVEL_DEBUG,   &
                                            LOG_LEVEL_TRACE
   use mesh_mod,                      only: mesh_type
+  use geometric_constants_mod,       only: get_coordinates,      &
+                                           get_panel_id
 
   implicit none
   private
@@ -134,33 +138,103 @@ end subroutine write_hydbal_diagnostic
 
 
 !-------------------------------------------------------------------------------
-!>  @brief    Handles vorticity diagnostic processing
-!!
-!!  @details  Handles vorticity diagnostic processing
-!!
-!!> @param[in] u_field   The wind field
-!!> @param[in] timestep  Model timestep to index the output file
+!>  @brief    Handles vorticity diagnostic processing.
+!>  @details  Calculates the 3D vorticity diagnostic and optionally outputs it.
+!!            Then calculates the vorticity on pressure levels diagnostic and
+!!            optionally outputs it.
+!> @param[in] u_field   The wind field
+!> @param[in] exner     Exner pressure
+!> @param[in] clock     Model clock object
 !-------------------------------------------------------------------------------
 
-subroutine write_vorticity_diagnostic(u_field, clock)
+subroutine write_vorticity_diagnostic(u_field, exner, clock)
+#ifdef UM_PHYSICS
+  use pres_lev_diags_alg_mod, only: pres_lev_xi3_alg
+#endif
   implicit none
 
-  type(field_type),        intent(in) :: u_field
+  type(field_type),        intent(in) :: u_field, exner
   class(model_clock_type), intent(in) :: clock
 
-  type(field_type) :: vorticity
+  type(field_type) :: vorticity, projected_field(3)
+  type(field_type), pointer :: chi(:)
+  type(field_type), pointer :: panel_id
+  type(mesh_type),  pointer :: mesh
+#ifdef UM_PHYSICS
+  type(field_type) :: plev_xi3
+#endif
+  procedure(write_interface), pointer  :: tmp_write_ptr
 
-  if (diagnostic_to_be_sampled('xi1') .or. &
-      diagnostic_to_be_sampled('xi2') .or. &
-      diagnostic_to_be_sampled('xi3') .or. &
-      diagnostic_to_be_sampled('init_xi1') .or. &
-      diagnostic_to_be_sampled('init_xi2') .or. &
-      diagnostic_to_be_sampled('init_xi3')) then
+  integer(i_def) :: output_dim, i
+  character(len=1)                :: uchar
+  character(len=str_max_filename) :: field_name_new
+
+  logical(l_def) :: xi_modlev_flag, plev_xi3_flag
+
+  xi_modlev_flag = diagnostic_to_be_sampled('xi1') .or. &
+                   diagnostic_to_be_sampled('xi2') .or. &
+                   diagnostic_to_be_sampled('xi3') .or. &
+                   diagnostic_to_be_sampled('init_xi1') .or. &
+                   diagnostic_to_be_sampled('init_xi2') .or. &
+                   diagnostic_to_be_sampled('init_xi3')
+
+#ifdef UM_PHYSICS
+  plev_xi3_flag = init_diag(plev_xi3, 'plev__xi3')
+#else
+  plev_xi3_flag = .false.
+#endif
+
+  if (xi_modlev_flag .or. plev_xi3_flag) then
 
     call vorticity_diagnostic_alg(vorticity, u_field)
 
-    call write_vector_diagnostic('xi', vorticity, clock, &
+    if (use_xios_io) then
+
+      output_dim = 3_i_def
+
+      mesh     => vorticity%get_mesh()
+      chi      => get_coordinates( mesh%get_id() )
+      panel_id => get_panel_id( mesh%get_id() )
+
+      ! Project the field to the output field
+      call project_output( vorticity, projected_field, chi, panel_id, W3 )
+
+#ifdef UM_PHYSICS
+      if (plev_xi3_flag) then
+        call pres_lev_xi3_alg(projected_field, exner, plev_xi3)
+      end if
+#endif
+
+      if (xi_modlev_flag) then
+
+        ! Set up correct I/O handler for Xi projected to W3
+        tmp_write_ptr => write_field_generic
+
+        do i = 1, output_dim
+
+          call projected_field(i)%set_write_behaviour(tmp_write_ptr)
+
+          ! Write the component number into a new field name
+          write(uchar,'(i1)') i
+          field_name_new = trim('xi'//uchar)
+
+          ! Check if we need to write an initial field
+          if (clock%is_initialisation()) then
+            call projected_field(i)%write_field(trim('init_'//field_name_new))
+          else
+            call projected_field(i)%write_field(trim(field_name_new))
+          end if
+
+        end do
+
+      end if
+
+    else
+
+      call write_vector_diagnostic('xi', vorticity, clock, &
                                  vorticity%get_mesh(), nodal_output_on_w3)
+
+    end if
 
   end if
 

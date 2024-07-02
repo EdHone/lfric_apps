@@ -53,6 +53,7 @@ module gungho_diagnostics_driver_mod
   use gungho_modeldb_mod,        only: modeldb_type
 
 #ifdef UM_PHYSICS
+  use pres_lev_diags_alg_mod,    only : pres_lev_diags_alg
   use pmsl_alg_mod,              only : pmsl_alg
   use rh_diag_alg_mod,           only : rh_diag_alg
 #endif
@@ -208,7 +209,7 @@ contains
       call write_vector_diagnostic('u', u, &
                                    modeldb%clock, mesh, nodal_output_on_w3)
     end if
-    call write_vorticity_diagnostic( u, modeldb%clock )
+    call write_vorticity_diagnostic( u, exner, modeldb%clock )
     call write_pv_diagnostic( u, theta, rho, modeldb%clock )
 
     ! Moisture fields
@@ -293,6 +294,8 @@ contains
       call rh_diag_alg(exner_in_wth, theta, mr)
       ! Call PMSL algorithm
       call pmsl_alg(exner, derived_fields, theta, twod_mesh)
+      ! Pressure level diagnostics
+      call pres_lev_diags_alg(derived_fields, theta, exner, mr, moist_dyn)
 #endif
 
       temp_corr_io_value => get_io_value( modeldb%values, 'temperature_correction_io_value')

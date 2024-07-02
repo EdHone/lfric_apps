@@ -274,30 +274,7 @@ subroutine write_vector_diagnostic( field_name, field, &
     ! we decide how it should be handled in UGRID
     if (field_name == 'xi') then
 
-      output_dim = 3
-
-      ! Project the field to the output field
-      call project_output( temp_field, projected_field, chi, panel_id, W3 )
-
-      ! Set up correct I/O handler for Xi projected to W3
-      tmp_write_ptr => write_field_generic
-
-      do i =1,output_dim
-
-        call projected_field(i)%set_write_behaviour(tmp_write_ptr)
-
-        ! Write the component number into a new field name
-        write(uchar,'(i1)') i
-        field_name_new = trim(field_name//uchar)
-
-        ! Check if we need to write an initial field
-        if (clock%is_initialisation()) then
-          call projected_field(i)%write_field(trim('init_'//field_name_new))
-        else
-          call projected_field(i)%write_field(trim(field_name_new))
-        end if
-
-     end do
+      ! Do nothing as this should now be done in diagnostics_calc
 
    else ! wind fields in w2
 
