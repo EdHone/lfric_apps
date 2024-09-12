@@ -29,7 +29,7 @@
 
 PROJECT_NAME = gungho
 
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 export PROJECT_DIR := $(realpath $(dir $(lastword $(MAKEFILE_LIST))))
 

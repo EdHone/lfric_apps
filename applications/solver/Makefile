@@ -13,7 +13,7 @@
 
 export PROJECT_NAME = solver
 export PROJECT_DIR_NAME = solver
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 # Select option for PSyclone transformation. Select "none" for no transformation.
 export PSYCLONE_TRANSFORMATION ?= minimum

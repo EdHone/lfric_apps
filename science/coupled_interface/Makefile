@@ -13,7 +13,7 @@
 
 export PROJECT_NAME = coupling
 export PROJECT_DIR_NAME = science/coupled_interface
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 # Select option for PSyclone transformation. Select "none" for no transformation
 export PSYCLONE_TRANSFORMATION ?= none

@@ -29,7 +29,7 @@
 
 PROJECT_NAME = jedi_lfric_interface
 
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 export EXTERNAL_DYNAMIC_LIBRARIES = netcdff netcdf yaxt yaxt_c
 

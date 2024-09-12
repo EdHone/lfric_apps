@@ -6,7 +6,7 @@
 
 export PROJECT_NAME = gravity_wave
 export PROJECT_DIR_NAME = gravity_wave
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 # Select option for PSyclone transformation. Select "none" for no transformation.
 export PSYCLONE_TRANSFORMATION ?= minimum

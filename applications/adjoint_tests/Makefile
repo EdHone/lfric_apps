@@ -13,7 +13,7 @@
 
 export PROJECT_NAME = adjoint_tests
 export PROJECT_DIR_NAME = adjoint_tests
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 # Select option for PSyclone transformation. Select "none" for no transformation.
 export PSYCLONE_TRANSFORMATION ?= minimum

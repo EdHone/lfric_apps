@@ -13,7 +13,7 @@
 
 export PROJECT_NAME = lfric_coupled
 export PROJECT_DIR_NAME = lfric_coupled
-PROFILE ?= fast-debug
+export PROFILE ?= fast-debug
 
 # Option defined in fcm_make/target-map.txt which in turn references options
 # from fcm:um.xm_tr/fcm-make
