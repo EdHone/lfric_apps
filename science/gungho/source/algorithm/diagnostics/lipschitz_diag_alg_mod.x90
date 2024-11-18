@@ -12,8 +12,8 @@ module lipschitz_diag_alg_mod
   use constants_mod,                   only: r_def, r_tran, l_def
   use field_mod,                       only: field_type
   use r_tran_field_mod,                only: r_tran_field_type
+  use copy_field_alg_mod,              only: copy_field
   use function_space_mod,              only: function_space_type
-  use psykal_lite_mod,                 only: invoke_copy_rtran_to_rdef
   use mesh_mod,                        only: mesh_type
   use integer_field_mod,               only: integer_field_type
   use r_tran_operator_mod,             only: r_tran_operator_type
@@ -119,11 +119,11 @@ contains
     ! ------------------------------------------------------------------------ !
 
     ! Print location of max/min ------------------------------------------------
-    call invoke_copy_rtran_to_rdef(div_3d_r_def, div_3d_r_tran)
+    call copy_field(div_3d_r_tran, div_3d_r_def)
     call print_field_stats_alg(div_3d_r_def, LOG_LEVEL_INFO,                   &
                                -0.5_r_def, 0.5_r_def, 'lipschitz_3d')
 
-    call invoke_copy_rtran_to_rdef(div_2d_r_def, div_2d_r_tran)
+    call copy_field(div_2d_r_tran, div_2d_r_def)
     call print_field_stats_alg(div_2d_r_def, LOG_LEVEL_INFO,                   &
                                -0.5_r_def, 0.5_r_def, 'lipschitz_2d')
 
@@ -134,9 +134,9 @@ contains
     if (element_order == 0) then
 
       ! Copy to r_def ----------------------------------------------------------
-      call invoke_copy_rtran_to_rdef(lipschitz_x_r_def, lipschitz_x_r_tran)
-      call invoke_copy_rtran_to_rdef(lipschitz_y_r_def, lipschitz_y_r_tran)
-      call invoke_copy_rtran_to_rdef(lipschitz_z_r_def, lipschitz_z_r_tran)
+      call copy_field(lipschitz_x_r_tran, lipschitz_x_r_def)
+      call copy_field(lipschitz_y_r_tran, lipschitz_y_r_def)
+      call copy_field(lipschitz_z_r_tran, lipschitz_z_r_def)
 
       ! Print stats ------------------------------------------------------------
       call print_field_stats_alg(lipschitz_x_r_def, LOG_LEVEL_INFO,            &

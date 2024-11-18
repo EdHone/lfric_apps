@@ -23,6 +23,7 @@ module gw_mixed_diag_precon_alg_mod
                                             LOG_LEVEL_DEBUG, &
                                             log_scratch_space
   use r_solver_field_mod,             only: r_solver_field_type
+  use copy_field_alg_mod,             only: copy_field
   use sci_preconditioner_mod,         only: abstract_preconditioner_type
   use sci_r_solver_field_vector_mod,  only: r_solver_field_vector_type
   use timer_mod,                      only: timer
@@ -84,7 +85,6 @@ contains
     use fem_constants_mod,                 only: get_mass_matrix_diagonal
     use fs_continuity_mod,                 only: W0, W2, W3, Wtheta
     use field_indices_mod,                 only: igw_u
-    use sci_psykal_light_mod,              only: invoke_copy_to_rsolver
     use mesh_mod,                          only: mesh_type
     use field_mod,                         only: field_type
 
@@ -102,12 +102,12 @@ contains
     ! u diagonal
     diagonal = get_mass_matrix_diagonal(W2, mesh_id)
     call self%mm_diagonal_u%initialise(diagonal%get_function_space())
-    call invoke_copy_to_rsolver(self%mm_diagonal_u, diagonal)
+    call copy_field(diagonal, self%mm_diagonal_u)
 
     ! p diagonal
     diagonal = get_mass_matrix_diagonal(W3, mesh_id)
     call self%mm_diagonal_p%initialise(diagonal%get_function_space())
-    call invoke_copy_to_rsolver(self%mm_diagonal_p, diagonal)
+    call copy_field(diagonal, self%mm_diagonal_p)
 
     ! b diagonal
     select case(b_space)
@@ -119,7 +119,7 @@ contains
         diagonal = get_mass_matrix_diagonal(Wtheta, mesh_id)
     end select
     call self%mm_diagonal_b%initialise(diagonal%get_function_space())
-    call invoke_copy_to_rsolver(self%mm_diagonal_b, diagonal)
+    call copy_field(diagonal, self%mm_diagonal_b)
 
     call log_event( 'done', LOG_LEVEL_INFO )
 

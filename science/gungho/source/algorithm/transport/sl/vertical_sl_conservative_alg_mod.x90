@@ -46,7 +46,6 @@ module vertical_sl_conservative_alg_mod
                                                 vertical_monotone_order_constant, &
                                                 vertical_monotone_order_linear,   &
                                                 vertical_monotone_order_high
-  use psykal_lite_mod,                    only: invoke_copy_to_rtran
 
   implicit none
 

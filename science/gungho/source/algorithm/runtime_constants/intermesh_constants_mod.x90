@@ -31,6 +31,7 @@ module intermesh_constants_mod
   use quadrature_xyoz_mod,               only: quadrature_xyoz_type
   use r_tran_field_mod,                  only: r_tran_field_type
   use timer_mod,                         only: timer
+  use copy_field_alg_mod,                only: copy_field
 
   ! Configuration
   use finite_element_config_mod,         only: element_order, nqp_exact
@@ -53,7 +54,6 @@ module intermesh_constants_mod
                                      only: weights_prolong_w2_kernel_type
   use sci_weights_intermesh_w3_kernel_mod, &
                                      only: weights_intermesh_w3_kernel_type
-  use psykal_lite_mod,               only: invoke_copy_to_rtran
   use sci_mm_diagonal_kernel_mod,    only: mm_diagonal_kernel_type
 
   implicit none
@@ -263,8 +263,7 @@ contains
               call invoke( weights_intermesh_w3_kernel_type(                  &
                                                   intermesh_weights_w3_rdef,  &
                                                   mm_w3_fine, mm_w3_coarse) )
-              call invoke_copy_to_rtran(intermesh_weights_w3_rtran,           &
-                                        intermesh_weights_w3_rdef)
+              call copy_field(intermesh_weights_w3_rdef, intermesh_weights_w3_rtran)
 
               nullify( source_w2_fs, target_w2_fs, source_w3_fs, target_w3_fs, &
                        mm_w3_fine, mm_w3_coarse, intermesh_weights_w2,         &

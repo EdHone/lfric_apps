@@ -12,6 +12,7 @@ module transport_field_mod
   use constants_mod,                    only: r_def, r_tran, i_def, l_def
   use field_mod,                        only: field_type
   use r_tran_field_mod,                 only: r_tran_field_type
+  use copy_field_alg_mod,               only: copy_field
   use log_mod,                          only: log_event, LOG_LEVEL_ERROR, LOG_LEVEL_INFO
   use ffsl_control_alg_mod,             only: ffsl_control
   use split_transport_mod,              only: split_transport_control
@@ -28,8 +29,7 @@ module transport_field_mod
   use mol_conservative_alg_mod,         only: mol_conservative_alg
   use mol_advective_alg_mod,            only: mol_advective_alg
   use mol_consistent_alg_mod,           only: mol_consistent_alg
-  use psykal_lite_mod,                  only: invoke_copy_rtran_to_rdef, &
-                                              invoke_copy_to_rtran
+
 
   implicit none
 
@@ -67,13 +67,13 @@ contains
     ! transfer r_def input to r_tran fields
     call field_np1%initialise( vector_space = field_np1_rdef%get_function_space()  )
     call field_n%initialise( vector_space = field_n_rdef%get_function_space()  )
-    call invoke_copy_to_rtran( field_n, field_n_rdef )
+    call copy_field( field_n_rdef, field_n )
     model_dt = real( model_dt_rdef, r_tran )
 
     call transport_field_r_tran(field_np1, field_n, model_dt, transport_metadata)
 
     ! Transfer back to r_def output
-    call invoke_copy_rtran_to_rdef( field_np1_rdef, field_np1 )
+    call copy_field( field_np1, field_np1_rdef )
 
   end subroutine transport_field
 

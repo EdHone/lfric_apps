@@ -57,6 +57,7 @@ module calc_dep_pts_alg_mod
 
   ! Other algorithms
   use sci_field_minmax_alg_mod,          only: log_field_minmax
+  use copy_field_alg_mod,                only: copy_field
 
   ! Kernels
   use calc_departure_wind_kernel_mod,    only: calc_departure_wind_kernel_type
@@ -74,7 +75,6 @@ module calc_dep_pts_alg_mod
   use hori_dep_dist_trapezoidal_kernel_mod, &
                                          only: hori_dep_dist_trapezoidal_kernel_type
   use hori_dep_dist_ffsl_kernel_mod,     only: hori_dep_dist_ffsl_kernel_type
-  use psykal_lite_mod,                   only: invoke_copy_to_rtran
   use vert_dep_dist_boundary_kernel_mod, only: vert_dep_dist_boundary_kernel_type
   use vert_dep_dist_ffsl_kernel_mod,     only: vert_dep_dist_ffsl_kernel_type
   use vert_dep_dist_exponential_kernel_mod, &
@@ -404,7 +404,7 @@ contains
       ! Get cell height
       height_w2_rdef => get_height(W2, mesh%get_id())
       call height_w2%initialise(vector_space = height_w2_rdef%get_function_space() )
-      call invoke_copy_to_rtran(height_w2, height_w2_rdef )
+      call copy_field(height_w2_rdef, height_w2 )
 
       ! Initialise departure wind function space
       call dep_wind_n%initialise( vector_space = w2v_fs )
@@ -451,8 +451,6 @@ contains
   !> @param[in,out] detj_at_w2      Det(J) at W2 dofs
   subroutine select_detj_at_w2( advecting_wind, detj_at_w2 )
 
-    use psykal_lite_mod,               only: invoke_copy_rtran_to_rdef, &
-                                             invoke_copy_to_rtran
     implicit none
 
     type( r_tran_field_type ), intent(in)    :: advecting_wind
@@ -473,7 +471,7 @@ contains
     detj_at_w2_ave_rdef  => get_detj_at_w2(mesh_id)
 
     ! Set detj_at_w2 to use average Det(J) of neighbouring cells
-    call invoke_copy_to_rtran(detj_at_w2, detj_at_w2_ave_rdef )
+    call copy_field( detj_at_w2_ave_rdef, detj_at_w2 )
 
     select case (calculate_detj)
 

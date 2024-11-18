@@ -30,7 +30,7 @@ module lam_rhs_alg_mod
                                          r_solver_operator_type
   use field_indices_mod,           only: igh_u, igh_t, igh_d, igh_p
   use sci_operator_algebra_kernel_mod, only: operator_setval_x_kernel_type
-  use sci_psykal_light_mod,        only: invoke_copy_to_rdef
+  use copy_field_alg_mod,          only: copy_field
 
   implicit none
 
@@ -127,7 +127,7 @@ contains
     ! Obtain operators from SI operators
     r_solver_rho_at_u => get_rho_at_u()
     call rho_at_u%initialise( vector_space = rhs(igh_u)%get_function_space() )
-    call invoke_copy_to_rdef(rho_at_u, r_solver_rho_at_u)
+    call copy_field( r_solver_rho_at_u, rho_at_u )
     call f_star%initialise( vector_space = rhs(igh_u)%get_function_space() )
     call u_tmp%initialise( vector_space = rhs(igh_u)%get_function_space() )
     call r_tmp%initialise( vector_space = rhs(igh_d)%get_function_space() )

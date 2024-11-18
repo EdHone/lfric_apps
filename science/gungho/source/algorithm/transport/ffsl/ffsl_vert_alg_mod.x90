@@ -21,6 +21,7 @@ module ffsl_vert_alg_mod
   use mesh_mod,                         only: mesh_type
   use r_tran_field_mod,                 only: r_tran_field_type
   use timer_mod,                        only: timer
+  use copy_field_alg_mod,               only: copy_field
   use transport_enumerated_types_mod,   only: equation_form_advective,    &
                                               equation_form_conservative, &
                                               equation_form_consistent,   &
@@ -47,7 +48,6 @@ module ffsl_vert_alg_mod
   use transport_config_mod,             only: ffsl_unity_3d
 
   ! PSyKAl-lite code
-  use psykal_lite_mod,                  only: invoke_copy_to_rtran
 
   implicit none
 
@@ -334,7 +334,7 @@ contains
       ! Get objects only needed for high order flux
       dz_w3_rdef => get_dz_w3(mesh_id)
       call dz_w3%initialise( vector_space = field_fs )
-      call invoke_copy_to_rtran(dz_w3, dz_w3_rdef)
+      call copy_field(dz_w3_rdef, dz_w3)
     end if
 
     ! Compute fluxes

@@ -21,6 +21,7 @@ module limited_area_constants_mod
   use field_parent_mod,                  only: field_parent_type, write_interface
   use field_collection_mod,              only: field_collection_type
   use field_collection_iterator_mod,     only: field_collection_iterator_type
+  use copy_field_alg_mod,                only: copy_field
   use function_space_mod,                only: function_space_type
   use function_space_collection_mod,     only: function_space_collection
   use function_space_chain_mod,          only: multigrid_function_space_chain
@@ -40,8 +41,6 @@ module limited_area_constants_mod
                                                twod_mesh_label
   use timer_mod,                         only: timer
 
-
-  use sci_psykal_light_mod,              only: invoke_copy_to_rsolver
   ! Configuration
   use base_mesh_config_mod,              only: geometry, geometry_spherical
   use boundaries_config_mod,             only: normal_only, lbc_method, &
@@ -276,9 +275,9 @@ contains
         call mask_w3_r_solver_inventory%add_field(mask_w3_r_solver, w3_fs, mesh)
         call mask_wt_r_solver_inventory%add_field(mask_wt_r_solver, wtheta_fs, mesh)
 
-        call invoke_copy_to_rsolver(mask_w2_r_solver, mask_w2)
-        call invoke_copy_to_rsolver(mask_w3_r_solver, mask_w3)
-        call invoke_copy_to_rsolver(mask_wt_r_solver, mask_wtheta)
+        call copy_field(mask_w2, mask_w2_r_solver)
+        call copy_field(mask_w3, mask_w3_r_solver)
+        call copy_field(mask_wtheta, mask_wt_r_solver)
 
         nullify(mask_w2, mask_w3, mask_wtheta, mask_w2_r_solver, &
                 mask_w3_r_solver, mask_wt_r_solver, mask_boundary_w2)
@@ -361,8 +360,8 @@ contains
 
         call mask_w3_r_solver_inventory%add_field(mask_w3_r_solver, w3_fs, mesh_coarse)
         call mask_w2_r_solver_inventory%add_field(mask_w2_r_solver, w2_fs, mesh_coarse)
-        call invoke_copy_to_rsolver(mask_w3_r_solver, mask_w3)
-        call invoke_copy_to_rsolver(mask_w2_r_solver, mask_w2)
+        call copy_field(mask_w3, mask_w3_r_solver)
+        call copy_field(mask_w2, mask_w2_r_solver)
         nullify(mask_w3, mask_w2, mask_w3_r_solver, mask_w2_r_solver)
       end do
     end if

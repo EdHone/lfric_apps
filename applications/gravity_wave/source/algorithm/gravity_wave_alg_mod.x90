@@ -62,6 +62,7 @@ module gravity_wave_alg_mod
 
   use field_indices_mod,              only: igw_u, igw_p, igw_b
 
+  use copy_field_alg_mod,             only: copy_field
   use io_config_mod,                  only: subroutine_timers
   use timer_mod,                      only: timer
 
@@ -476,8 +477,6 @@ contains
     use sci_enforce_bc_kernel_mod,          only: enforce_bc_kernel_type
     use fs_continuity_mod,                  only: W0, W2, W3, Wtheta
     use boundaries_config_mod,              only: limited_area
-    use sci_psykal_light_mod,               only: invoke_copy_to_rdef, &
-                                                  invoke_copy_to_rsolver
 
     implicit none
 
@@ -565,14 +564,14 @@ contains
 
     ! Solve mixed system
     call log_event( "Gravity Wave: mixed solve:", LOG_LEVEL_INFO )
-    call invoke_copy_to_rsolver( rhs_n%vector(igw_u), rdef_rhs_n%vector(igw_u))
-    call invoke_copy_to_rsolver( rhs_n%vector(igw_p), rdef_rhs_n%vector(igw_p))
-    call invoke_copy_to_rsolver( rhs_n%vector(igw_b), rdef_rhs_n%vector(igw_b))
+    call copy_field( rdef_rhs_n%vector(igw_u), rhs_n%vector(igw_u))
+    call copy_field( rdef_rhs_n%vector(igw_p), rhs_n%vector(igw_p))
+    call copy_field( rdef_rhs_n%vector(igw_b), rhs_n%vector(igw_b))
     call state_inc%set_scalar(0.0_r_def)
     call gw_mixed_solver%apply(state_inc, rhs_n)
-    call invoke_copy_to_rdef( rdef_state_inc%vector(igw_u), state_inc%vector(igw_u))
-    call invoke_copy_to_rdef( rdef_state_inc%vector(igw_p), state_inc%vector(igw_p))
-    call invoke_copy_to_rdef( rdef_state_inc%vector(igw_b), state_inc%vector(igw_b))
+    call copy_field( state_inc%vector(igw_u), rdef_state_inc%vector(igw_u))
+    call copy_field( state_inc%vector(igw_p), rdef_state_inc%vector(igw_p))
+    call copy_field( state_inc%vector(igw_b), rdef_state_inc%vector(igw_b))
     call state%axpy(1.0_r_def,rdef_state_inc)
 
     ! Return fields

@@ -13,13 +13,13 @@ module compute_sl_coefficients_alg_mod
   ! Constants and types
   use constants_mod,                            only: i_def, l_def, r_tran
   use r_tran_field_mod,                         only: r_tran_field_type
+  use copy_field_alg_mod,                       only: copy_field
   use field_mod,                                only: field_type
   use integer_field_mod,                        only: integer_field_type
   use function_space_mod,                       only: function_space_type
   use geometric_constants_mod,                  only: get_height
   use mesh_mod,                                 only: mesh_type
   use fs_continuity_mod,                        only: Wtheta
-  use psykal_lite_mod,                          only: invoke_copy_to_rtran
 
   ! Kernels
   use compute_vertical_cubic_coef_kernel_mod,   only: compute_vertical_cubic_coef_kernel_type
@@ -96,7 +96,7 @@ contains
     ! Get height
     height_rdef => get_height( Wtheta, mesh%get_id() )
     call height%initialise( vector_space = height_rdef%get_function_space() )
-    call invoke_copy_to_rtran( height, height_rdef )
+    call copy_field( height_rdef, height )
 
     ! Compute cubic coefficients for W3 and Wtheta
     call invoke ( compute_vertical_quintic_coef_kernel_type( dep_pts_z,            &
@@ -203,7 +203,7 @@ contains
     ! Get height
     height_rdef => get_height( Wtheta, mesh%get_id() )
     call height%initialise( vector_space = height_rdef%get_function_space() )
-    call invoke_copy_to_rtran( height, height_rdef )
+    call copy_field( height_rdef, height )
 
     ! Compute cubic coefficients for W3 and Wtheta
     call invoke ( compute_vertical_cubic_coef_kernel_type( dep_pts_z,          &

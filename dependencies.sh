@@ -21,8 +21,8 @@
 # dependent changes should be updated to the revision at which those
 # changes were committed to the project's trunk
 
-export lfric_core_rev=
-export lfric_core_sources=vld329:/net/home/h03/cturner/working-copies/t3811-trunk-for-testing
+export lfric_core_rev=51380
+export lfric_core_sources=
 
 export casim_rev=11541
 export casim_sources=

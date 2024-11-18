@@ -88,7 +88,7 @@ module transport_runtime_alg_mod
                                             splitting_none,       &
                                             split_method_null
 
-  use psykal_lite_mod,                only: invoke_copy_to_rtran
+  use copy_field_alg_mod,             only: copy_field
   use psykal_lite_transport_mod,      only: invoke_deep_X_times_Y, &
                                             invoke_ffsl_panel_swap_kernel_type
   use lipschitz_diag_alg_mod,         only: lipschitz_diag_alg
@@ -432,8 +432,8 @@ contains
     ! Transfer r_def input to r_tran fields
     call primal_wind_n%initialise(vector_space = primal_wind_n_rdef%get_function_space() )
     call primal_wind_np1%initialise(vector_space = primal_wind_np1_rdef%get_function_space() )
-    call invoke_copy_to_rtran(primal_wind_n,primal_wind_n_rdef)
-    call invoke_copy_to_rtran(primal_wind_np1,primal_wind_np1_rdef)
+    call copy_field(primal_wind_n_rdef, primal_wind_n)
+    call copy_field(primal_wind_np1_rdef, primal_wind_np1)
 
     ! ======================================================================== !
     ! Checks for what schemes we have
@@ -586,8 +586,8 @@ contains
         ! we go by intermediate r_def fields before copying to r_tran fields
         call sample_w2_to_sh_w2_alg(shifted_wind_n_rdef,   primal_wind_n_rdef)
         call sample_w2_to_sh_w2_alg(shifted_wind_np1_rdef, primal_wind_np1_rdef)
-        call invoke_copy_to_rtran(shifted_wind_n,shifted_wind_n_rdef)
-        call invoke_copy_to_rtran(shifted_wind_np1,shifted_wind_np1_rdef)
+        call copy_field(shifted_wind_n_rdef, shifted_wind_n)
+        call copy_field(shifted_wind_np1_rdef, shifted_wind_np1)
       end if
       if ( subroutine_timers ) call timer('transport.shift_wind')
     end if
@@ -1234,7 +1234,7 @@ contains
     ! Set dry density from start of transport step
     if (present(rho_d_n_rdef)) then
       call rho_d_n%initialise( rho_d_n_rdef%get_function_space() )
-      call invoke_copy_to_rtran(rho_d_n, rho_d_n_rdef)
+      call copy_field(rho_d_n_rdef, rho_d_n)
       call self%set_rho_d(rho_d_n, 1)
     end if
 

@@ -12,12 +12,11 @@ module transport_rho_times_field_alg_mod
   use constants_mod,                    only: r_def, r_tran, i_def
   use field_mod,                        only: field_type
   use r_tran_field_mod,                 only: r_tran_field_type
+  use copy_field_alg_mod,               only: copy_field
   use log_mod,                          only: log_event, LOG_LEVEL_ERROR
   use transport_metadata_mod,           only: transport_metadata_type
   use transport_runtime_alg_mod,        only: transport_runtime_type
   use transport_runtime_collection_mod, only: get_transport_runtime
-  use psykal_lite_mod,                  only: invoke_copy_rtran_to_rdef, &
-                                              invoke_copy_to_rtran
   use transport_field_mod,              only: transport_field_r_tran
   use fs_continuity_mod,                only: W3, Wtheta
   use extrusion_mod,                    only: SHIFTED
@@ -87,7 +86,7 @@ contains
     ! First transfer r_def fields to be r_tran
     call field_np1_rtran%initialise( vector_space = field_np1_rdef%get_function_space()  )
     call field_n_rtran%initialise( vector_space = field_n_rdef%get_function_space()  )
-    call invoke_copy_to_rtran( field_n_rtran, field_n_rdef )
+    call copy_field( field_n_rdef, field_n_rtran )
     model_dt_rtran = real( model_dt_rdef, r_tran )
 
     select case (field_n_rdef%which_function_space())
@@ -164,7 +163,7 @@ contains
     ! -------------------------------------------------------------------- !
     ! Copy transported fields back to r_def
     ! -------------------------------------------------------------------- !
-    call invoke_copy_rtran_to_rdef( field_np1_rdef, field_np1_rtran )
+    call copy_field( field_np1_rtran, field_np1_rdef )
 
   end subroutine transport_rho_times_field_alg
 

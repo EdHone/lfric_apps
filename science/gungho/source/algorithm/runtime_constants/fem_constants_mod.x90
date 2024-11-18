@@ -19,6 +19,7 @@ module fem_constants_mod
   use field_mod,                          only: field_type
   use r_solver_field_mod,                 only: r_solver_field_type
   use r_tran_field_mod,                   only: r_tran_field_type
+  use copy_field_alg_mod,                 only: copy_field
   use fs_continuity_mod,                  only: W0, W1, W2, W2broken, &
                                                 W2H, W2V, W3, Wtheta
   use function_space_collection_mod,      only: function_space_collection
@@ -86,9 +87,7 @@ module fem_constants_mod
   use sci_project_ws_to_w2_operator_kernel_mod, only: project_ws_to_w2_operator_kernel_type
   use sci_project_w3_to_w2b_operator_kernel_mod, only: project_w3_to_w2b_operator_kernel_type
   use w2_normalisation_kernel_mod,            only: w2_normalisation_kernel_type
-  use psykal_lite_mod,                        only: invoke_copy_to_rtran
   use psykal_lite_transport_mod,              only: invoke_extended_detj_at_w3_kernel_type
-  use sci_psykal_light_mod,                   only: invoke_copy_to_rsolver
 
   use sci_compute_mass_matrix_kernel_w_scalar_mod, only: compute_mass_matrix_kernel_w_scalar_type
 
@@ -604,7 +603,7 @@ contains
                                                       extended_chi,      &
                                                       panel_id_list(i))
         else
-          call invoke_copy_to_rtran(detj_at_w3_r_tran, detj_at_w3_r_def)
+          call copy_field(detj_at_w3_r_def, detj_at_w3_r_tran)
         end if
       end if
 
@@ -767,7 +766,7 @@ contains
                      inc_X_powint_n(mmtheta_lumped_inv, i_minus_one) )
 
         call wt_normalisation_r_solver_inventory%add_field(wt_normalisation_r_solver, wtheta_fs, mesh)
-        call invoke_copy_to_rsolver(wt_normalisation_r_solver, mmtheta_lumped_inv)
+        call copy_field(mmtheta_lumped_inv, wt_normalisation_r_solver)
         nullify(mmtheta_lumped_inv, wt_normalisation_r_solver)
         call ones%field_final()
       end if
@@ -855,7 +854,7 @@ contains
                      inc_X_powint_n(w2_normalisation, i_minus_one) )
 
         call w2_normalisation_r_solver_inventory%add_field(w2_normalisation_r_solver, w2_fs, mesh)
-        call invoke_copy_to_rsolver(w2_normalisation_r_solver, w2_normalisation)
+        call copy_field(w2_normalisation, w2_normalisation_r_solver)
         nullify(w2_normalisation, w2_normalisation_r_solver)
       end if
 
