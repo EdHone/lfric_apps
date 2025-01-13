@@ -122,10 +122,12 @@ contains
 
 #ifdef UM_PHYSICS
     ! For clearing IAU fields after use
-    type( field_collection_type ), pointer :: field_collection_ptr => null()
+    type( field_collection_type ), pointer :: field_collection_ptr
     type( field_collection_type ), pointer :: soil_fields
     type( field_collection_type ), pointer :: snow_fields
     type( field_collection_type ), pointer :: surface_fields
+
+    nullify( field_collection_ptr, soil_fields, snow_fields, surface_fields )
 #endif
 
     ! Initialise infrastructure and setup constants
@@ -249,9 +251,11 @@ contains
     logical(l_def)                :: regrid_lowest_order
 
     ! For clearing IAU fields after use
-    type( field_collection_type ), pointer :: field_collection_ptr => null()
+    type( field_collection_type ), pointer :: field_collection_ptr
     type( field_collection_type ), pointer :: surface_fields
     type( field_collection_type ), pointer :: ancil_fields
+
+    nullify( field_collection_ptr, surface_fields, ancil_fields )
 
     regrid_operation => map_scalar_intermesh
     if (use_multires_coupling) then

@@ -131,11 +131,8 @@
 {% do site_groups.update({
     "non_working_group": [
         "lfric_atm_scm_ral3_constrain-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
-        "lfric_atm_scm_gal9_snow-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
-        "lfric_atm_scm_gal9_dice2-BiP2x2-50000x50000_azspice_gnu_fast-debug-64bit",
         "lfric_atm_rce_test-BiP64x64-1500x1500_MG_azspice_gnu_fast-debug-64bit",
         "lfric_atm_nwp_gal9_coarse_aero-C48_MG_azspice_gnu_fast-debug-64bit",
-        "lfric_atm_nwp_gal9_debug-C48_MG_ex1a_gnu_full-debug-64bit",
         "lfric_atm_nwp_gal9_da-C12_ex1a_cce_fast-debug-64bit",
         "lfric_atm_nwp_gal9_nomg-C12_ex1a_cce_fast-debug-64bit-rbl32-rtran32",
     ]
