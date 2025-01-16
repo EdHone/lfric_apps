@@ -72,6 +72,20 @@
         "plot_str": "plot_map.py $NODAL_DATA_DIR/lfric_gal_diagnostics.nc  $PLOT_DIR",
     }) %}
 
+{% elif task_ns.conf_name == "nwp_gal9_copy-C224_MG" %}
+
+    {% do task_dict.update({
+        "opt_confs": ["nwp_gal9_c224_copy"],
+        "resolution": "C224_MG",
+        "DT": 720,
+        "tsteps": 6,
+        "mpi_parts": 1176,
+        "wallclock": 50,
+        "xios_nodes": 4,
+        "mpi_parts_xios" : 16,
+        "log_level": "error",
+    }) %}
+
 {% elif task_ns.conf_name == "nwp_gal9-C896_MG" %}
 
     {% do task_dict.update({

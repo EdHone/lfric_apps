@@ -17,6 +17,40 @@
         "wallclock": 20,
     }) %}
 
+{% elif task_ns.conf_name == "clim_gal9-C48_MG" %}
+    {% do task_dict.update({
+        "wallclock": 50,
+    }) %}
+
+{% elif task_ns.conf_name == "nwp_gal9-C224_MG" %}
+    {% do task_dict.update({
+        "wallclock": 80,
+    }) %}
+
+{% elif task_ns.conf_name == "ral3_mixmol-uk_MG" %}
+    {% do task_dict.update({
+        "wallclock": 75,
+        "task_ranks_per_node": 128,
+        "mpi_parts_xios" : 320,
+
+    }) %}
+
+{% elif task_ns.conf_name == "ral3-ukv_MG" %}
+    {% do task_dict.update({
+        "wallclock": 60,
+        "task_ranks_per_node": 128,
+        "mpi_parts_xios" : 1440,
+
+    }) %}
+
+{% elif task_ns.conf_name == "ral3-uk_MG" %}
+    {% do task_dict.update({
+        "wallclock": 90,
+        "task_ranks_per_node": 112,
+        "mpi_parts_xios" : 320,
+
+    }) %}
+
 {% endif %}
 
 {# Set default values #}
@@ -42,6 +76,10 @@
         "plot_str": "", }) %}
 {% endif %}
 
+{# Turn off XIOS servers}
+{% do task_dict.update({
+    "xios_nodes": 0,
+    "mpi_parts_xios": 0, }) %}
 
 {# For full-debug runs, turn off KGO tests, plotting tasks and CRUNS, and #}
 {# reduce the number of timesteps                                         #}
