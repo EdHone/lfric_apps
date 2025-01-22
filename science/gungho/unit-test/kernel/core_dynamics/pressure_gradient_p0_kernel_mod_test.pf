@@ -99,16 +99,39 @@ contains
                                     ndf_w3, undf_w3, map_w3,  &
                                     ndf_wt, undf_wt, map_wt )
 
-   ! Horizontal term: cp*theta_av*dp/dx + dphi/dx
-   answer = -cp*345.0_r_def*exner(1) - geopotential(1)
-   @assertEqual(answer, rhs(map_w2(1)), tol)
-   answer =  cp*355.0_r_def*exner(1) + geopotential(1)
-   @assertEqual(answer, rhs(map_w2(3)), tol)
+    ! Horizontal term: cp*theta_av*dp/dx + dphi/dx
+    answer = -cp*345.0_r_def*exner(1) - geopotential(1)
+    @assertEqual(answer, rhs(map_w2(1)), tol)
+    answer =  cp*355.0_r_def*exner(1) + geopotential(1)
+    @assertEqual(answer, rhs(map_w2(3)), tol)
 
-   ! Vertical term: cp*theta_av*dp/dz + dphi/dz
-   answer = -cp*400.0_r_def*(exner(2)-exner(1)) - (geopotential(2) - geopotential(1))
-   @assertEqual(answer, rhs(map_w2(6)), tol)
+    ! Vertical term: cp*theta_av*dp/dz + dphi/dz
+    answer = -cp*400.0_r_def*(exner(2)-exner(1)) - (geopotential(2) - geopotential(1))
+    @assertEqual(answer, rhs(map_w2(6)), tol)
 
+    ! Check if we have a lam domain with no neighbours that the horizontal values are
+    ! zero
+    ! Reset the rhs so that the computation is independent of the previous test
+    rhs(:) = 0.0_r_def
+    smap_wt_size(:) = 1
+    call pressure_gradient_p0_code( nlayers,                  &
+                                    rhs, exner, geopotential, &
+                                    theta_v,                  &
+                                    smap_wt_size,             &
+                                    smap_wt_max,              &
+                                    smap_wt,                  &
+                                    cp,                       &
+                                    ndf_w2, undf_w2, map_w2,  &
+                                    ndf_w3, undf_w3, map_w3,  &
+                                    ndf_wt, undf_wt, map_wt )
+
+    ! Check horizontal components are zero
+    do d = 1, 4
+      @assertEqual(0.0_r_def, rhs(map_w2(d)), tol)
+    end do
+    ! Vertical term: cp*theta_av*dp/dz + dphi/dz
+    answer = -cp*400.0_r_def*(exner(2)-exner(1)) - (geopotential(2) - geopotential(1))
+    @assertEqual(answer, rhs(map_w2(6)), tol)
 
   end subroutine test_all
 

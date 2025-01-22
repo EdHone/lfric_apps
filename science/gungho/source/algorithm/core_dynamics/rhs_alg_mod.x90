@@ -93,7 +93,7 @@ contains
   !> @param[in]     model_clock     Time in the model
   subroutine rhs_alg( rhs, alpha_dt, base_state, state, moist_dyn, compute_eos, &
                       compute_rhs_t_d, dlayer_rhs, model_clock )
-    use boundaries_config_mod, only: limited_area
+
     implicit none
 
     real(kind=r_def),             intent(in)    :: alpha_dt
@@ -110,7 +110,6 @@ contains
 
     if (   (rhs(igh_u)%get_element_order() == 0) &
      .and. (.not. si_momentum_equation)          &
-     .and. (.not. limited_area )                 &
      .and. (eos_method == eos_method_sampled) ) then
       call rhs_default_alg( rhs, alpha_dt, base_state, state, moist_dyn, compute_eos, &
                             compute_rhs_t_d, dlayer_rhs, model_clock )

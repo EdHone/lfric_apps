@@ -115,16 +115,20 @@ contains
 
     ! Horizontal gradients
     do df = 1, 4
-      do k = 0, nlayers-1
+      ! Check if there is a neighbouring cell, if not do not compute any
+      ! horizontal terms
+      if ( smap_wt_size(df) > 1 ) then
+        do k = 0, nlayers-1
 
-        theta_v_here = 0.5_r_def*(theta_v(map_wt(1)+k)       + theta_v(map_wt(2)+k))
-        theta_v_next = 0.5_r_def*(theta_v(smap_wt(1,2,df)+k) + theta_v(smap_wt(2,2,df)+k))
+          theta_v_here = 0.5_r_def*(theta_v(map_wt(1)+k)       + theta_v(map_wt(2)+k))
+          theta_v_next = 0.5_r_def*(theta_v(smap_wt(1,2,df)+k) + theta_v(smap_wt(2,2,df)+k))
 
-        theta_av = 0.5_r_def * (theta_v_here + theta_v_next)
+          theta_av = 0.5_r_def * (theta_v_here + theta_v_next)
 
-        rhs(map_w2(df)+k) = rhs(map_w2(df)+k) + cp*theta_av*exner(map_w3(1)+k)*div_v(df) &
-                                              + geopotential(map_w3(1)+k)*div_v(df)
-      end do
+          rhs(map_w2(df)+k) = rhs(map_w2(df)+k) + cp*theta_av*exner(map_w3(1)+k)*div_v(df) &
+                                                + geopotential(map_w3(1)+k)*div_v(df)
+        end do
+      end if
     end do
 
     ! Vertical gradients
