@@ -12,7 +12,7 @@ module gungho_extrusion_mod_test
   use feign_config_mod,        only : feign_base_mesh_config, &
                                       feign_extrusion_config, &
                                       feign_planet_config
-  use pFUnit_mod
+  use funit
 
   implicit none
 

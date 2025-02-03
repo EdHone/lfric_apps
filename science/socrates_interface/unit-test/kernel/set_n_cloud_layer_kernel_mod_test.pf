@@ -7,7 +7,7 @@
 !>
 module set_n_cloud_layer_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,                       only : r_def, i_def
   use get_unit_test_m3x3_dofmap_mod,       only : get_wtheta_m3x3_dofmap, &
                                                   get_w3_m3x3_dofmap
@@ -41,7 +41,7 @@ contains
     real(r_def), allocatable :: conv_frac(:)
     real(r_def), allocatable :: cloud_frac(:)
     real(r_def), parameter :: cloud_frac_min = 0.001_r_def
-    real(r_def), allocatable :: answer(:)
+    integer(i_def), allocatable :: answer(:)
     integer(i_def) :: i
 
     nlayers_3d = 6

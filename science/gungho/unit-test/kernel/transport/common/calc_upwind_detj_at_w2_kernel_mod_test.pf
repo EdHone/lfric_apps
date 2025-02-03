@@ -9,7 +9,7 @@
 module calc_upwind_detj_at_w2_kernel_mod_test
 
     use constants_mod,                 only : i_def, r_tran
-    use pFUnit_Mod
+    use funit
 
     use get_unit_test_m3x3_q3x3x3_sizes_mod, only : get_w2_m3x3_q3x3x3_size
 

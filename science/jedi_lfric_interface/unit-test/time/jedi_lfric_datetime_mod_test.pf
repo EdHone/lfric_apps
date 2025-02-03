@@ -17,7 +17,7 @@ module jedi_lfric_datetime_mod_test
 
   use constants_mod, only : i_timestep, str_def, l_def
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

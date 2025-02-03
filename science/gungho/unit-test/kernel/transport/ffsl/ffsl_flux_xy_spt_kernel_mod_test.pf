@@ -8,7 +8,7 @@
 module ffsl_flux_xy_spt_kernel_mod_test
 
   use constants_mod, only : i_def, r_tran, r_def, l_def
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

@@ -8,7 +8,7 @@
 module surf_inc_update_kernel_mod_test
 
   use constants_mod, only: i_def, r_def, r_um
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

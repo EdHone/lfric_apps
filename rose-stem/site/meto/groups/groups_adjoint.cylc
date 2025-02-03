@@ -14,7 +14,6 @@
         "adjoint_spice_developer"
     ],
     "adjoint_spice_unit_tests": [
-        "adjoint_unit_tests_spice_intel_64bit",
         "adjoint_unit_tests_spice_gnu_64bit",
     ]
     }) %}
@@ -40,7 +39,6 @@
         "adjoint_xc40_developer",
     ],
     "adjoint_xc40_unit_tests": [
-        "adjoint_unit_tests_xc40_intel_64bit",
     ]
     }) %}
 

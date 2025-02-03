@@ -18,7 +18,7 @@ module hydrostatic_coriolis_kernel_mod_test
                                                   get_w3_m3x3_dofmap,      &
                                                   get_w2_m3x3_dofmap,      &
                                                   get_wtheta_m3x3_dofmap
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

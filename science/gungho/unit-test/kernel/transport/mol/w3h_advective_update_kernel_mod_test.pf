@@ -8,7 +8,7 @@ module w3h_advective_update_kernel_mod_test
 
   use, intrinsic :: iso_fortran_env, only : real64, real32
   use constants_mod,                 only : i_def, r_def, r_tran
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

@@ -18,7 +18,7 @@ module jedi_lfric_duration_mod_test
   use constants_mod,           only : i_timestep, str_def, l_def
   use jedi_lfric_duration_mod, only : jedi_duration_type
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

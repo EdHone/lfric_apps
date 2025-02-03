@@ -12,7 +12,7 @@ module tracer_smagorinsky_diff_kernel_mod_test
   use get_unit_test_m3x3_dofmap_mod,       only : get_w2_m3x3_dofmap,          &
                                                   get_wtheta_m3x3_dofmap,      &
                                                   get_m3x3_stencil_dofmap_cross
-   use pFUnit_Mod
+   use funit
 
   implicit none
 

@@ -23,7 +23,7 @@ module compute_total_aam_kernel_mod_test
                                                   get_gaussian_q3x3x3_quadrature_weights_z
   use get_unit_test_3x3x3_chi_mod,         only : get_w0_3x3x3_field
   use reference_element_mod,               only : N, S
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

@@ -14,7 +14,7 @@ module initial_rho_sample_kernel_mod_test
   use get_unit_test_m3x3_q3x3x3_sizes_mod, only : get_w0_m3x3_q3x3x3_size, &
                                                   get_w3_m3x3_q3x3x3_size
   use get_unit_test_q3x3x3_basis_mod,      only : get_w0_q3x3x3_basis
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

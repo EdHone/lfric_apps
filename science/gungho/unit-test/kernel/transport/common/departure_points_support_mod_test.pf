@@ -13,7 +13,7 @@ contains
 
   @test
   subroutine find_local_vertical_value_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env, only : real64
     use constants_mod,                 only : r_tran, i_def
     use departure_points_support_mod,  only : find_local_vertical_value
@@ -51,7 +51,7 @@ contains
 
   @test
   subroutine calc_u_in_vertical_test()
-    use pFUnit_Mod
+    use funit
     use constants_mod,        only: r_tran, i_def
     use departure_points_support_mod, only: calc_u_in_vertical_comp
 
@@ -87,7 +87,7 @@ contains
 
   @test
   subroutine calc_u_in_vertical_phys_test()
-    use pFUnit_Mod
+    use funit
     use constants_mod,        only: r_tran, i_def
     use departure_points_support_mod, only: calc_u_in_vertical_phys
 
@@ -127,7 +127,7 @@ contains
   @test
   subroutine calc_vertical_departure_dist_test()
 
-    use pFUnit_Mod
+    use funit
     use constants_mod,                only: r_tran, i_def
     use departure_points_support_mod, only: calc_vertical_dep_cfl
     use departure_points_config_mod,  only: vertical_method_euler,       &
@@ -196,7 +196,7 @@ contains
 
   @test
   subroutine interpolate_u_to_x_test()
-    use pFUnit_Mod
+    use funit
     use constants_mod,                only: r_tran, i_def
     use departure_points_support_mod, only: interpolate_u_to_x
 

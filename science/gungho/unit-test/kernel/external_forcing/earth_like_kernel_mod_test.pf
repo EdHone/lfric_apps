@@ -10,7 +10,7 @@ module earth_like_kernel_mod_test
 
   use constants_mod,       only : i_def, r_def, r_second, PI
   use coord_transform_mod, only : llr2xyz
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

@@ -9,7 +9,7 @@
 module poly1d_vert_w3_reconstruction_kernel_mod_test
 
   use constants_mod, only : i_def, r_def, l_def, EPS_R_TRAN, r_tran
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

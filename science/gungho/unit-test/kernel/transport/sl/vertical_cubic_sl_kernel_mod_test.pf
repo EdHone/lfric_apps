@@ -21,7 +21,7 @@ contains
   @test
   subroutine vertical_cubic_sl_kernel_test( )
 
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use vertical_cubic_sl_kernel_mod,   only: vertical_cubic_sl_code
     use transport_enumerated_types_mod, only: vertical_monotone_none,        &

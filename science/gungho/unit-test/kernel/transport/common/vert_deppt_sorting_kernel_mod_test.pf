@@ -6,7 +6,7 @@
 
 module vert_deppt_sorting_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,      only : i_def, r_tran
 
   implicit none

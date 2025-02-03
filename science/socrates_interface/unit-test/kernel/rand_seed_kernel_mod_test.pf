@@ -7,7 +7,7 @@
 !>
 module rand_seed_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,                 only : r_def, i_def
   use get_unit_test_m3x3_dofmap_mod,       only : get_w3_m3x3_dofmap
   use get_unit_test_m3x3_q3x3x3_sizes_mod, only : get_w3_m3x3_q3x3x3_size
@@ -42,7 +42,6 @@ contains
     real(r_def), allocatable :: longitude(:)
     integer(i_def), allocatable :: answer(:)
     integer(i_def) :: i
-    real(i_def), parameter :: tol = 1.0e-12_i_def
 
     nlayers = 1
 
@@ -101,7 +100,7 @@ contains
               382133875_i_def /)
 
 
-  @assertEqual(answer, rand_seed, tol)
+  @assertEqual(answer, rand_seed)
 
   deallocate(map)
   deallocate(latitude)

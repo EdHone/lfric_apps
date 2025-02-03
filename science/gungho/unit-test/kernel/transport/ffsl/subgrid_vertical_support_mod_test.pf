@@ -18,7 +18,7 @@ contains
 
   @test
   subroutine second_order_vertical_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: second_order_vertical_edge
 
@@ -84,7 +84,7 @@ contains
 
   @test
   subroutine third_order_vertical_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: third_order_vertical_edge
 
@@ -200,7 +200,7 @@ contains
 
   @test
   subroutine fourth_order_vertical_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: fourth_order_vertical_edge
 
@@ -310,7 +310,7 @@ contains
 
   @test
   subroutine fourth_order_vertical_mono_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: fourth_order_vertical_edge, &
                                               fourth_order_vertical_mono, &
@@ -390,7 +390,7 @@ contains
 
   @test
   subroutine vertical_ppm_recon_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: vertical_ppm_recon
 
@@ -444,7 +444,7 @@ contains
 
   @test
   subroutine vertical_ppm_mono_strict_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: vertical_ppm_recon, &
                                               vertical_ppm_mono_strict
@@ -488,7 +488,7 @@ contains
 
   @test
   subroutine vertical_ppm_mono_relax_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: vertical_ppm_recon, &
                                               vertical_ppm_mono_relax
@@ -533,7 +533,7 @@ contains
 
   @test
   subroutine vertical_ppm_positive_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_vertical_support_mod,   only: vertical_ppm_recon, &
                                               vertical_ppm_positive

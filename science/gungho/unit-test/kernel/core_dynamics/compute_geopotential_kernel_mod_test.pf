@@ -8,7 +8,7 @@
 module compute_geopotential_kernel_mod_test
 
   use constants_mod, only : i_def, r_def, l_def
-  use pFUnit_Mod
+  use funit
 
   ! Configuration modules
   use base_mesh_config_mod,      only: GEOMETRY_SPHERICAL

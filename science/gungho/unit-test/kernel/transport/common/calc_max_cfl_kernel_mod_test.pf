@@ -6,7 +6,7 @@
 
 module calc_max_cfl_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,      only : i_def, r_def, r_second, r_tran
 
   implicit none

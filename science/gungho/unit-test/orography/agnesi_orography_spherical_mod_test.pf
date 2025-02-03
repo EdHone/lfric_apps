@@ -14,7 +14,7 @@ module agnesi_orography_spherical_mod_test
   use analytic_orography_mod,     only : orography_profile
   use ugrid_mesh_data_mod,        only : ugrid_mesh_data_type
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

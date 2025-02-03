@@ -6,7 +6,7 @@
 
 module vert_dep_dist_lagrangian_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,      only : i_def, r_def, r_tran, r_second
 
   implicit none

@@ -18,7 +18,7 @@ contains
 
   @test
   subroutine compute_cubic_coeffs_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use sl_support_mod,                 only: compute_cubic_coeffs
 
@@ -108,7 +108,7 @@ contains
 
   @test
   subroutine compute_cubic_hermite_coeffs_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use sl_support_mod,                 only: compute_cubic_hermite_coeffs
 
@@ -198,7 +198,7 @@ contains
 
   @test
   subroutine compute_quintic_coeffs_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use sl_support_mod,                 only: compute_quintic_coeffs
 
@@ -322,7 +322,7 @@ contains
 
   @test
   subroutine monotone_cubic_sl_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use sl_support_mod,                 only: monotone_cubic_sl, compute_cubic_coeffs
     use transport_enumerated_types_mod, only: vertical_monotone_strict,         &
@@ -487,7 +487,7 @@ contains
 
   @test
   subroutine monotone_quintic_sl_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use sl_support_mod,                 only: monotone_quintic_sl, compute_quintic_coeffs
     use transport_enumerated_types_mod, only: vertical_monotone_strict,         &

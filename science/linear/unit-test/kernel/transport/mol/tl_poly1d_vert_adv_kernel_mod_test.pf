@@ -8,7 +8,7 @@
 module tl_poly1d_vert_adv_kernel_mod_test
 
   use constants_mod, only : i_def, r_def, l_def, EPS
-  use pFUnit_Mod
+  use funit
 
   use, intrinsic :: iso_fortran_env, only: real64
   use tl_poly1d_vert_adv_kernel_mod, only: tl_poly1d_vert_adv_code

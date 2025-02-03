@@ -11,7 +11,7 @@ module jedi_lfric_field_meta_test
   use constants_mod,             only : i_def, r_def, l_def, str_def
   use jedi_lfric_field_meta_mod, only : jedi_lfric_field_meta_type
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

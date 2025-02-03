@@ -20,7 +20,7 @@ module transport_metadata_test
                                              special_edges_monotone_none,  &
                                              ffsl_splitting_swift
   use transport_metadata_mod,         only : transport_metadata_type
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

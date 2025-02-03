@@ -10,7 +10,7 @@ module conservative_neg_fix_kernel_mod_test
 
 
   use constants_mod, only : i_def, r_tran
-  use pFUnit_Mod
+  use funit
 
   use log_mod,       only : log_event,           &
                             log_scratch_space,   &

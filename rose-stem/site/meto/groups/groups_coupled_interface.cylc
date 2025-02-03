@@ -14,7 +14,6 @@
         "coupled_interface_xc40_developer",
     ],
     "coupled_interface_xc40_unit_tests": [
-        "coupled_interface_unit_tests_xc40_intel_64bit",
     ],
     }) %}
 

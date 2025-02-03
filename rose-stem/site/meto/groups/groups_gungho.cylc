@@ -15,7 +15,6 @@
         "gungho_spice_developer",
     ],
     "gungho_spice_unit_tests": [
-        "gungho_unit_tests_spice_intel_64bit",
         "gungho_unit_tests_spice_gnu_64bit",
     ],
     "gungho_spice_integration_tests": [
@@ -50,7 +49,6 @@
         "gungho_xc40_developer",
     ],
     "gungho_xc40_unit_tests": [
-        "gungho_unit_tests_xc40_intel_64bit",
     ],
     "gungho_xc40_integration_tests": [
         "gungho_integration_tests_xc40_intel_64bit",

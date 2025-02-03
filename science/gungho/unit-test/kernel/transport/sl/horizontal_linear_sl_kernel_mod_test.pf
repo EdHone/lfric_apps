@@ -19,7 +19,7 @@ contains
   subroutine horizontal_linear_sl_kernel_test( )
 
     use, intrinsic :: iso_fortran_env,  only: real64
-    use pFUnit_Mod
+    use funit
     use horizontal_linear_sl_kernel_mod, only: horizontal_linear_sl_code
 
     implicit none

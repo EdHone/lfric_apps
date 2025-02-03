@@ -24,7 +24,7 @@ module zero_field_collection_mod_test
                                             mesh_collection
   use zero_field_collection_mod,     only : zero_field_collection
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 
@@ -40,7 +40,6 @@ module zero_field_collection_mod_test
     procedure setUp
     procedure tearDown
     procedure get_local_mesh_ptr
-    procedure test_zero_field_collection
   end type zero_field_collection_test_type
 
   integer(i_def), parameter    :: element_order_h = 0
@@ -112,11 +111,11 @@ contains
   !> Test for zero_field_collection
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   @Test
-  subroutine test_zero_field_collection( this )
+  subroutine test_zero_field_collection( context )
 
     implicit none
 
-    class(zero_field_collection_test_type), intent(inout) :: this
+    class(zero_field_collection_test_type), intent(inout) :: context
     type(field_collection_type)                     :: fields
 
     type(field_type), target                        :: test_field
@@ -134,11 +133,11 @@ contains
     nullify(returned_field, int_returned_field)
 
     ! Initialise a real test field and get proxy
-    call test_field%initialise( this%w3_fs, name='test_field' )
+    call test_field%initialise( context%w3_fs, name='test_field' )
     field_proxy = test_field%get_proxy()
 
     ! Initialise an integer test field and get proxy
-    call int_test_field%initialise( this%w3_fs, name='int_test_field' )
+    call int_test_field%initialise( context%w3_fs, name='int_test_field' )
     int_field_proxy = int_test_field%get_proxy()
 
     ! Set first dof to nominal value

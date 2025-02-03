@@ -8,7 +8,7 @@
 module remap_on_extended_mesh_kernel_mod_test
 
   use constants_mod, only: l_def, i_def, r_tran
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

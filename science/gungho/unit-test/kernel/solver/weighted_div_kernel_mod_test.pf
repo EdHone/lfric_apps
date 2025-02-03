@@ -20,7 +20,7 @@ module weighted_div_kernel_mod_test
   use get_unit_test_m3x3_dofmap_mod,       only : get_w0_m3x3_dofmap
   use get_unit_test_q3x3x3_quadrature_mod, only : get_gaussian_q3x3x3_quadrature_weights_xy, &
                                                   get_gaussian_q3x3x3_quadrature_weights_z
-  use pFUnit_Mod
+  use funit
   implicit none
 
   private

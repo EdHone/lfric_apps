@@ -9,7 +9,7 @@
 module weighted_proj_2thetav_kernel_mod_test
 
   use constants_mod, only: i_def, r_def, r_solver
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

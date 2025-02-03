@@ -23,7 +23,7 @@ module linear_state_trajectory_test
   use jedi_lfric_datetime_mod,       only : jedi_datetime_type
   use jedi_lfric_duration_mod,       only : jedi_duration_type
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

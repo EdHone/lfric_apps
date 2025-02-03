@@ -23,7 +23,7 @@ module jedi_lfric_utils_test
                                                 get_model_field
   use extrusion_mod,                 only : TWOD
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

@@ -14,7 +14,7 @@ module create_wthetamask_lbc_kernel_mod_test
                                                  get_wtheta_m3x3_q3x3x3_size
   use get_unit_test_wthetanodal_basis_mod, only: get_w0_wthetanodal_basis
   use get_unit_test_3x3x3_chi_mod,         only: get_w0_3x3x3_field
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

@@ -8,7 +8,7 @@
 
 module easyaerosol_fld2diag_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,                   only : r_def, i_def
   use easyaerosol_fld2diag_kernel_mod, only : easyaerosol_fld2diag_code
 

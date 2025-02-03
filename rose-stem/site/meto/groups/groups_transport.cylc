@@ -37,7 +37,6 @@
         "transport_canned_spice_gnu_fast-debug-32bit",
     ],
     "transport_spice_unit_tests": [
-        "transport_unit_tests_spice_intel_64bit",
         "transport_unit_tests_spice_gnu_64bit",
     ],
     "transport_spice_build": [
@@ -255,7 +254,6 @@
         "transport_canned_xc40_intel_fast-debug-32bit",
     ],
     "transport_xc40_unit_tests": [
-        "transport_unit_tests_xc40_intel_64bit",
     ],
     "transport_xc40_build": [
         "build_transport_xc40_intel_fast-debug-64bit",

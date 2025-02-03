@@ -8,7 +8,7 @@
 
 module initialise_diagnostics_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,                  only : i_def, l_def
   use halo_routing_collection_mod,    only : halo_routing_collection_type, &
                                              halo_routing_collection

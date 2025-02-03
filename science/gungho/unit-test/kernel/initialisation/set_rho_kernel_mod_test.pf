@@ -19,7 +19,7 @@ module set_rho_kernel_mod_test
   use get_unit_test_q3x3x3_quadrature_mod, only : get_gaussian_q3x3x3_quadrature_weights_xy, &
                                                   get_gaussian_q3x3x3_quadrature_weights_z
   use get_unit_test_3x3x3_chi_mod,         only : get_w0_3x3x3_field
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

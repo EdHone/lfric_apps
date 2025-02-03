@@ -16,7 +16,7 @@ module compute_bottom_mass_from_flux_kernel_mod_test
                                                   get_w0_m3x3_dofmap
   use get_unit_test_q3x3x3_basis_mod,      only : get_w0_q3x3x3_diff_basis
   use sci_calc_da_at_w2_kernel_mod,        only : calc_dA_at_w2_code
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

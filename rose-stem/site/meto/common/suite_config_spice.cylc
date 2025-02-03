@@ -15,7 +15,7 @@
 {% set spice_compiler_intel = 'module unload ifort/17.0_64 ; '~
                               'module load environment/lfric/ifort/19.0_64/9' %}
 
-{% set spice_compiler_gnu = 'module load environment/lfric/gcc/11.2.0/9' %}
+{% set spice_compiler_gnu = 'module load environment/lfric/gcc/11.2.0/10' %}
 
 {% set spice_run = 'ulimit -s unlimited' %}
 

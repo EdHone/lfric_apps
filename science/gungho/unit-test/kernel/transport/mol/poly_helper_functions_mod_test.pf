@@ -8,7 +8,7 @@
 module poly_helper_functions_mod_test
 
   use constants_mod, only: i_def, r_def, l_def
-  use pFUnit_Mod
+  use funit
   implicit none
 
   private

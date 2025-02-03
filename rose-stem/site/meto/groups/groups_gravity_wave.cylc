@@ -25,7 +25,6 @@
         "gravity_wave_spice_developer",
     ],
     "gravity_wave_spice_unit_tests": [
-        "gravity_wave_unit_tests_spice_intel_64bit",
         "gravity_wave_unit_tests_spice_gnu_64bit",
     ],
     "gravity_wave_spice_canned": [
@@ -85,7 +84,6 @@
         "gravity_wave_xc40_developer",
     ],
     "gravity_wave_xc40_unit_tests": [
-        "gravity_wave_unit_tests_xc40_intel_64bit",
     ],
     "gravity_wave_xc40_canned": [
         "gravity_wave_canned_xc40_intel_fast-debug-64bit",

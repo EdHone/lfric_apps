@@ -10,7 +10,7 @@ module apply_helmholtz_operator_kernel_mod_test
 
   use constants_mod, only : i_def, r_solver, l_def
   use apply_helmholtz_operator_kernel_mod, only : apply_helmholtz_operator_code
-  use pFUnit_Mod
+  use funit
   implicit none
 
   private

@@ -18,7 +18,7 @@ contains
 
   @test
   subroutine compute_vertical_quintic_coef_kernel_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use compute_vertical_quintic_coef_kernel_mod,        only: compute_vertical_quintic_coef_code
 

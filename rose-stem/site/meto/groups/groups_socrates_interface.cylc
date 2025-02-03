@@ -14,7 +14,6 @@
         "socrates_interface_spice_developer",
     ],
     "socrates_interface_spice_unit_tests": [
-        "socrates_interface_unit_tests_spice_intel_64bit",
         "socrates_interface_unit_tests_spice_gnu_64bit",
     ],
     }) %}
@@ -40,7 +39,6 @@
         "socrates_interface_xc40_developer",
     ],
     "socrates_interface_xc40_unit_tests": [
-        "socrates_interface_unit_tests_xc40_intel_64bit",
     ],
     }) %}
 

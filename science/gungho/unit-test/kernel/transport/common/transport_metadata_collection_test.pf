@@ -27,7 +27,7 @@ module transport_metadata_collection_test
                                       only : transport_metadata_collection_type, &
                                              transport_metadata_collection
   use transport_metadata_mod,         only : transport_metadata_type
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

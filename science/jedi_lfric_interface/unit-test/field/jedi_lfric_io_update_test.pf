@@ -22,7 +22,7 @@ module jedi_lfric_io_update_test
   use jedi_lfric_io_update_mod,        only : update_io_field_collection
   use extrusion_mod,                 only : TWOD
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

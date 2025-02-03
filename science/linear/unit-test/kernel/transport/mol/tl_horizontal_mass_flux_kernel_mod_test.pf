@@ -8,7 +8,7 @@ module tl_horizontal_mass_flux_kernel_mod_test
 
   use constants_mod,                      only: i_def, r_def, l_def
   use tl_horizontal_mass_flux_kernel_mod, only: tl_horizontal_mass_flux_code
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

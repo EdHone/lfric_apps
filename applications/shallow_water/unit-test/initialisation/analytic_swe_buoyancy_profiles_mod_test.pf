@@ -10,7 +10,7 @@
 module analytic_swe_buoyancy_profiles_mod_test
 
   use constants_mod, only : r_def, i_def
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

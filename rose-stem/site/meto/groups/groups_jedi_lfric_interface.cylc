@@ -15,7 +15,6 @@
         "jedi_lfric_interface_spice_developer",
     ],
     "jedi_lfric_interface_spice_unit_tests": [
-        "jedi_lfric_interface_unit_tests_spice_intel_64bit",
         "jedi_lfric_interface_unit_tests_spice_gnu_64bit",
     ],
     "jedi_lfric_interface_spice_integration_tests": [
@@ -50,7 +49,6 @@
         "jedi_lfric_interface_xc40_developer",
     ],
     "jedi_lfric_interface_xc40_unit_tests": [
-        "jedi_lfric_interface_unit_tests_xc40_intel_64bit",
     ],
     "jedi_lfric_interface_xc40_integration_tests": [
         "jedi_lfric_interface_integration_tests_xc40_intel_64bit",

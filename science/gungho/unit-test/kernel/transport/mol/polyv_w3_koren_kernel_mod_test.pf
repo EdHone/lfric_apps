@@ -8,7 +8,7 @@
 module polyv_w3_koren_kernel_mod_test
 
   use constants_mod, only : i_def, l_def, EPS, r_tran
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

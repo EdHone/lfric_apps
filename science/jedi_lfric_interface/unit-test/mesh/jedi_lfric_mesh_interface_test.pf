@@ -28,7 +28,7 @@ module jedi_lfric_mesh_interface_test
                                             get_sigma_wtheta_levels
   use log_mod,                        only: log_event, LOG_LEVEL_INFO
 
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

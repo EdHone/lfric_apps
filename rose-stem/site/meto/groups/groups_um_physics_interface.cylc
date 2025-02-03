@@ -14,7 +14,6 @@
         "um_physics_interface_spice_developer",
     ],
     "um_physics_interface_spice_unit_tests": [
-        "um_physics_interface_unit_tests_spice_intel_64bit",
         "um_physics_interface_unit_tests_spice_gnu_64bit",
     ],
     }) %}
@@ -40,7 +39,6 @@
         "um_physics_interface_xc40_developer",
     ],
     "um_physics_interface_xc40_unit_tests": [
-        "um_physics_interface_unit_tests_xc40_intel_64bit",
     ],
     }) %}
 

@@ -10,7 +10,7 @@
 module vertical_mass_remapping_kernel_mod_test
 
   use constants_mod, only : i_def, r_def, l_def, r_tran
-  use pFUnit_Mod
+  use funit
   use transport_enumerated_types_mod, only : vertical_monotone_none,       &
                                              vertical_monotone_strict,     &
                                              vertical_monotone_order_high

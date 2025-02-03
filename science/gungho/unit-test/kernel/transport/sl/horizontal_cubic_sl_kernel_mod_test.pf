@@ -19,7 +19,7 @@ contains
   subroutine horizontal_cubic_sl_kernel_test( )
 
     use, intrinsic :: iso_fortran_env,  only: real64
-    use pFUnit_Mod
+    use funit
     use horizontal_cubic_sl_kernel_mod, only: horizontal_cubic_sl_code
     use transport_enumerated_types_mod, only: horizontal_monotone_none
 

@@ -23,7 +23,7 @@ contains
 
   @test
   subroutine fourth_order_horizontal_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: fourth_order_horizontal_edge
 
@@ -73,7 +73,7 @@ contains
 
   @test
   subroutine nirvana_horizontal_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: nirvana_horizontal_edge
 
@@ -119,7 +119,7 @@ contains
 
   @test
   subroutine monotonic_horizontal_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: monotonic_horizontal_edge
 
@@ -213,7 +213,7 @@ contains
 
   @test
   subroutine subgrid_quadratic_recon_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: subgrid_quadratic_recon
 
@@ -273,7 +273,7 @@ contains
 
   @test
   subroutine bound_field_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: bound_field
 
@@ -317,7 +317,7 @@ contains
 
   @test
   subroutine horizontal_nirvana_case_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: horizontal_nirvana_case
 
@@ -360,7 +360,7 @@ contains
 
   @test
   subroutine horizontal_ppm_case_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: horizontal_ppm_case
 
@@ -417,7 +417,7 @@ contains
 
   @test
   subroutine nirvana_special_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: nirvana_special_edge
 
@@ -474,7 +474,7 @@ contains
 
   @test
   subroutine linear_special_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: linear_special_edge
 
@@ -529,7 +529,7 @@ contains
 
   @test
   subroutine fourth_order_special_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: fourth_order_special_edge
 
@@ -606,7 +606,7 @@ contains
 
   @test
   subroutine fourth_nirvana_special_edge_test()
-    use pFUnit_Mod
+    use funit
     use, intrinsic :: iso_fortran_env,  only: real64
     use subgrid_horizontal_support_mod, only: fourth_nirvana_special_edge
 

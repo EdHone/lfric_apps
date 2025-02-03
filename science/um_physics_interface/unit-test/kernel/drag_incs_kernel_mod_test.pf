@@ -7,7 +7,7 @@
 !>
 module drag_incs_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,                 only : r_def, i_def
 
   implicit none

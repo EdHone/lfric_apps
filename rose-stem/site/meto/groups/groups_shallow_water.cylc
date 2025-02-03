@@ -35,7 +35,6 @@
         "shallow_water_spice_extra",
     ],
     "shallow_water_spice_unit_tests": [
-        "shallow_water_unit_tests_spice_intel_64bit",
         "shallow_water_unit_tests_spice_gnu_64bit",
     ],
     "shallow_water_spice_build": [
@@ -115,7 +114,6 @@
         "shallow_water_xc40_extra",
     ],
     "shallow_water_xc40_unit_tests": [
-        "shallow_water_unit_tests_xc40_intel_64bit",
     ],
     "shallow_water_xc40_build": [
         "build_shallow_water_xc40_intel_fast-debug-64bit",

@@ -26,7 +26,7 @@ module compute_total_pv_kernel_mod_test
                                                   get_gaussian_q3x3x3_quadrature_weights_z
   use get_unit_test_3x3x3_chi_mod,         only : get_wchi_3x3x3_field
   use coord_transform_mod,                 only : xyz2llr, llr2xyz
-  use pFUnit_Mod
+  use funit
 
   implicit none
 

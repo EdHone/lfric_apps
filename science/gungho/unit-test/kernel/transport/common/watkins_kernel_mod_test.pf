@@ -6,7 +6,7 @@
 
 module watkins_kernel_mod_test
 
-  use pFUnit_Mod
+  use funit
   use constants_mod,         only : i_def, r_tran
   use reference_element_mod, only : E, W, S, N, B
 
