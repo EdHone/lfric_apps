@@ -77,9 +77,17 @@ contains
                             mask ),         &
 
                  ! Calculate the difference from the driving model.
-                 X_minus_Y( boundary_u_diff,    &
-                            boundary_u_driving, &
-                            boundary_u_lam ) )
+                 ! This is u' = u_lam - u_driving
+                 !            = - (u_driving -u_lam)
+                 !            = - xb
+                 ! i.e. a minus sign is added here,
+                 ! so that rhs_lbc = A(-xb), where
+                 ! A(x + xb) = R
+                 !      A(x) = R - A(xb)
+                 !      A(x) = R + A(-xb)
+                 X_minus_Y( boundary_u_diff,       &
+                            boundary_u_lam,        &
+                            boundary_u_driving ) )
 
     nullify( mask, mesh, boundary_u_driving, boundary_u_diff )
 
