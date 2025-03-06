@@ -146,6 +146,7 @@ write_minmax_tseries=.false.,
 /
 &linear
 pert_option='random',
+l_stabilise_bl=.false.,
 /
 &logging
 run_log_level='info',

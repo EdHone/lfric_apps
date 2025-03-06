@@ -34,6 +34,7 @@ module setup_test_alg_mod
 
   private :: setup_test_field_n
   public  :: setup_test_constants
+  public  :: reset_mass_matrices
   public  :: setup_test_tl_transport_controller
 
   contains
@@ -101,13 +102,17 @@ module setup_test_alg_mod
   !> @details Needed because the standard values are too low when used in
   !!          the adjoint, which causes false positives and necessitates enormous
   !!          scaling factors when testing
-  !> @param[in]  mesh         The model mesh
-  subroutine setup_test_constants( mesh )
+  !> @param[in]    mesh               The model mesh
+  !> @param[inout] m3_inv_copy        Operator to store original inverse mass matrix
+  !> @param[inout] mt_lumped_inv_copy Field to store original inverse lumped mass matrix
+  subroutine setup_test_constants( mesh, m3_inv_copy, mt_lumped_inv_copy )
 
     implicit none
 
     ! Arguments
-    type(mesh_type), pointer, intent(in) :: mesh
+    type(mesh_type), pointer, intent(in)    :: mesh
+    type(operator_type),      intent(inout) :: m3_inv_copy
+    type(field_type),         intent(inout) :: mt_lumped_inv_copy
 
     ! Internal variables
     type(operator_type),         pointer :: m3_inv
@@ -118,11 +123,43 @@ module setup_test_alg_mod
     mt_lumped_inv => get_inverse_lumped_mass_matrix( Wtheta, mesh%get_id() )
     detj_w3 => get_detj_at_w3_r_tran( mesh%get_id() )
 
-    call invoke( setop_random_kernel_type( m3_inv ), &
+    ! Save original values of inverse mass matrices for use in later tests
+    m3_inv_copy = m3_inv % deep_copy()
+    call mt_lumped_inv % copy_field_properties( mt_lumped_inv_copy )
+    call invoke( setval_x( mt_lumped_inv_copy, mt_lumped_inv ), &
+
+    ! Set values to random
+                 setop_random_kernel_type( m3_inv ), &
                  setval_random( mt_lumped_inv ),     &
                  setval_random( detj_w3 ) )
 
   end subroutine setup_test_constants
+
+  !=============================================================================
+  !> @brief   Resets mass matrices to original values (assuming those passed in)
+  !> @param[in]    mesh               The model mesh
+  !> @param[inout] m3_inv_copy        Operator storing original inverse mass matrix
+  !> @param[inout] mt_lumped_inv_copy Field storing original inverse lumped mass matrix
+  subroutine reset_mass_matrices( mesh, m3_inv_copy, mt_lumped_inv_copy )
+
+    implicit none
+
+    ! Arguments
+    type(mesh_type), pointer, intent(in)    :: mesh
+    type(operator_type),      intent(inout) :: m3_inv_copy
+    type(field_type),         intent(inout) :: mt_lumped_inv_copy
+
+    ! Internal variables
+    type(operator_type), pointer :: m3_inv
+    type(field_type),    pointer :: mt_lumped_inv
+
+    m3_inv => get_inverse_mass_matrix( W3, mesh%get_id() )
+    mt_lumped_inv => get_inverse_lumped_mass_matrix( Wtheta, mesh%get_id() )
+
+    m3_inv = m3_inv_copy % deep_copy()
+    call invoke( setval_x( mt_lumped_inv, mt_lumped_inv_copy ) )
+
+  end subroutine reset_mass_matrices
 
   !=============================================================================
   !> @brief Sets up the transport_controller and tl_transport_controller object with randomised inputs

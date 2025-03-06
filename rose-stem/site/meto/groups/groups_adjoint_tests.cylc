@@ -8,18 +8,18 @@
 {# Spice Groups #}
 {% do site_groups.update({
     "adjoint_tests_spice_developer": [
-        "adjoint_tests_default-C12_spice_intel_fast-debug-64bit",
-        "adjoint_tests_default-C12_spice_intel_full-debug-64bit",
-        "adjoint_tests_default-C12_spice_gnu_fast-debug-64bit",
-        "adjoint_tests_default-C12_spice_gnu_full-debug-64bit",
+        "adjoint_tests_default-C12_spice_intel_fast-debug-64bit-rsolver64",
+        "adjoint_tests_default-C12_spice_intel_full-debug-64bit-rsolver64",
+        "adjoint_tests_default-C12_spice_gnu_fast-debug-64bit-rsolver64",
+        "adjoint_tests_default-C12_spice_gnu_full-debug-64bit-rsolver64",
         "adjoint_tests_spice_canned",
     ],
     "adjoint_tests_spice": [
         "adjoint_tests_spice_developer",
     ],
     "adjoint_tests_spice_canned": [
-        "adjoint_tests_canned_spice_intel_fast-debug-64bit",
-        "adjoint_tests_canned_spice_gnu_fast-debug-64bit",
+        "adjoint_tests_canned_spice_intel_fast-debug-64bit-rsolver64",
+        "adjoint_tests_canned_spice_gnu_fast-debug-64bit-rsolver64",
     ],
     "adjoint_tests_spice_build": [
         "build_adjoint_tests_spice_intel_fast-debug-64bit",
@@ -32,15 +32,15 @@
 {# Azspice Groups #}
 {% do site_groups.update({
     "adjoint_tests_azspice_developer": [
-        "adjoint_tests_default-C12_azspice_gnu_fast-debug-64bit",
-        "adjoint_tests_default-C12_azspice_gnu_full-debug-64bit",
+        "adjoint_tests_default-C12_azspice_gnu_fast-debug-64bit-rsolver64",
+        "adjoint_tests_default-C12_azspice_gnu_full-debug-64bit-rsolver64",
         "adjoint_tests_azspice_canned",
     ],
     "adjoint_tests_azspice": [
         "adjoint_tests_azspice_developer",
     ],
     "adjoint_tests_azspice_canned": [
-        "adjoint_tests_canned_azspice_gnu_fast-debug-64bit",
+        "adjoint_tests_canned_azspice_gnu_fast-debug-64bit-rsolver64",
     ],
     "adjoint_tests_azspice_build": [
         "build_adjoint_tests_azspice_gnu_fast-debug-64bit",
@@ -51,15 +51,15 @@
 {# XC40 Groups #}
 {% do site_groups.update({
     "adjoint_tests_xc40_developer": [
-        "adjoint_tests_default-C12_xc40_intel_fast-debug-64bit",
-        "adjoint_tests_default-C12_xc40_intel_full-debug-64bit",
+        "adjoint_tests_default-C12_xc40_intel_fast-debug-64bit-rsolver64",
+        "adjoint_tests_default-C12_xc40_intel_full-debug-64bit-rsolver64",
         "adjoint_tests_xc40_canned",
     ],
     "adjoint_tests_xc40": [
         "adjoint_tests_xc40_developer",
     ],
     "adjoint_tests_xc40_canned": [
-        "adjoint_tests_canned_xc40_intel_fast-debug-64bit",
+        "adjoint_tests_canned_xc40_intel_fast-debug-64bit-rsolver64",
     ],
     "adjoint_tests_xc40_build": [
         "build_adjoint_tests_xc40_intel_fast-debug-64bit",
@@ -70,15 +70,15 @@
 {# EX1A Groups #}
 {% do site_groups.update({
     "adjoint_tests_ex1a_developer": [
-        "adjoint_tests_default-C12_ex1a_gnu_fast-debug-64bit",
-        "adjoint_tests_default-C12_ex1a_gnu_full-debug-64bit",
+        "adjoint_tests_default-C12_ex1a_gnu_fast-debug-64bit-rsolver64",
+        "adjoint_tests_default-C12_ex1a_gnu_full-debug-64bit-rsolver64",
         "adjoint_tests_ex1a_canned",
     ],
     "adjoint_tests_ex1a": [
         "adjoint_tests_ex1a_developer",
     ],
     "adjoint_tests_ex1a_canned": [
-        "adjoint_tests_canned_ex1a_gnu_fast-debug-64bit",
+        "adjoint_tests_canned_ex1a_gnu_fast-debug-64bit-rsolver64",
     ],
     "adjoint_tests_ex1a_build": [
         "build_adjoint_tests_ex1a_gnu_fast-debug-64bit",

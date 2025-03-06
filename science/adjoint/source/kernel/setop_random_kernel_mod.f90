@@ -14,7 +14,7 @@ module setop_random_kernel_mod
                                                     gh_operator, gh_real,     &
                                                     gh_write
   use kernel_mod,                            only : kernel_type
-  use constants_mod,                         only : i_def, r_def, r_solver
+  use constants_mod,                         only : i_def, r_single, r_double
 
   implicit none
 
@@ -32,20 +32,20 @@ module setop_random_kernel_mod
 
   interface setop_random_kernel_code
     module procedure &
-      setop_random_kernel_code_r_def, &
-      setop_random_kernel_code_r_solver
+      setop_random_kernel_code_r_single, &
+      setop_random_kernel_code_r_double
   end interface
 
 contains
-  !> @brief     Generates randomly assigned r_def operator for use in psyad adjoint tests.
-  !> @details   Calls random_number on the r_def 2D operator data at each cell.
+  !> @brief     Generates randomly assigned r_single operator for use in psyad adjoint tests.
+  !> @details   Calls random_number on the r_single 2D operator data at each cell.
   !> @param[in] cell             Index of cell to be randomised.
   !> @param[in] nlayers          No. of layers.
   !> @param[in] ncell_3d         Total no. of cells.
   !> @param[inout] operator_data Collection array of the 2D operator data at each cell.
   !> @param[in] ndf_aspc1        No. degrees of freedom for 2D operator data, 1st index.
   !> @param[in] ndf_aspc2        No. degrees of freedom for 2D operator data, 2nd index.
-  subroutine setop_random_kernel_code_r_def(cell, nlayers, ncell_3d, &
+  subroutine setop_random_kernel_code_r_single(cell, nlayers, ncell_3d, &
                                             operator_data, ndf_aspc1, ndf_aspc2)
 
     implicit none
@@ -54,7 +54,7 @@ contains
     integer(kind=i_def), intent(in) :: cell
     integer(kind=i_def), intent(in) :: ncell_3d
     integer(kind=i_def), intent(in) :: ndf_aspc1, ndf_aspc2
-    real(kind=r_def), intent(inout), dimension(ncell_3d, ndf_aspc1, ndf_aspc2) :: operator_data
+    real(kind=r_single), intent(inout), dimension(ncell_3d, ndf_aspc1, ndf_aspc2) :: operator_data
     integer(kind=i_def) :: k, ik
 
     do k = 0, nlayers-1
@@ -62,18 +62,18 @@ contains
       call random_number(operator_data(ik,:,:))
     end do
 
-  end subroutine setop_random_kernel_code_r_def
+  end subroutine setop_random_kernel_code_r_single
 
-  !> @brief     Generates randomly assigned r_solver operator for use in psyad adjoint tests.
-  !> @details   Calls random_number on the r_solver 2D operator data at each cell.
+  !> @brief     Generates randomly assigned r_double operator for use in psyad adjoint tests.
+  !> @details   Calls random_number on the r_double 2D operator data at each cell.
   !> @param[in] cell             Index of cell to be randomised.
   !> @param[in] nlayers          No. of layers.
   !> @param[in] ncell_3d         Total no. of cells.
   !> @param[inout] operator_data Collection array of the 2D operator data at each cell.
   !> @param[in] ndf_aspc1        No. degrees of freedom for 2D operator data, 1st index.
   !> @param[in] ndf_aspc2        No. degrees of freedom for 2D operator data, 2nd index.
-  subroutine setop_random_kernel_code_r_solver(cell, nlayers, ncell_3d, &
-                                               operator_data, ndf_aspc1, ndf_aspc2)
+  subroutine setop_random_kernel_code_r_double(cell, nlayers, ncell_3d, &
+                                            operator_data, ndf_aspc1, ndf_aspc2)
 
     implicit none
 
@@ -81,7 +81,7 @@ contains
     integer(kind=i_def), intent(in) :: cell
     integer(kind=i_def), intent(in) :: ncell_3d
     integer(kind=i_def), intent(in) :: ndf_aspc1, ndf_aspc2
-    real(kind=r_solver), intent(inout), dimension(ncell_3d, ndf_aspc1, ndf_aspc2) :: operator_data
+    real(kind=r_double), intent(inout), dimension(ncell_3d, ndf_aspc1, ndf_aspc2) :: operator_data
     integer(kind=i_def) :: k, ik
 
     do k = 0, nlayers-1
@@ -89,6 +89,6 @@ contains
       call random_number(operator_data(ik,:,:))
     end do
 
-  end subroutine setop_random_kernel_code_r_solver
+  end subroutine setop_random_kernel_code_r_double
 
 end module setop_random_kernel_mod

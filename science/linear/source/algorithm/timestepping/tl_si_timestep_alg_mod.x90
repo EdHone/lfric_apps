@@ -13,8 +13,7 @@ module tl_si_timestep_alg_mod
                                          log_scratch_space, &
                                          LOG_LEVEL_INFO,    &
                                          LOG_LEVEL_ERROR
-  use model_clock_mod,             only: model_clock_type
-  use namelist_collection_mod,     only: namelist_collection_type
+  use driver_modeldb_mod,          only: modeldb_type
   use namelist_mod,                only: namelist_type
   use reference_element_mod,       only: T
 
@@ -29,6 +28,9 @@ module tl_si_timestep_alg_mod
 
   use io_config_mod,               only: subroutine_timers,                    &
                                          write_conservation_diag
+  use linear_config_mod,           only: l_stabilise_bl,           &
+                                         n_bl_levels_to_stabilise, &
+                                         max_bl_stabilisation
   use mixed_solver_config_mod,     only: guess_np1,                            &
                                          reference_reset_time
   use timestepping_config_mod,     only: alpha,                                &
@@ -55,6 +57,7 @@ module tl_si_timestep_alg_mod
   use sci_enforce_lower_bound_kernel_mod, only: enforce_lower_bound_kernel_type
   use sci_set_any_dof_kernel_mod,         only: set_any_dof_kernel_type
   use dg_inc_matrix_vector_kernel_mod,    only: dg_inc_matrix_vector_kernel_type
+  use stabilise_bl_u_kernel_mod,          only: stabilise_bl_u_kernel_type
 
   ! Derived Types
   use field_mod,                   only: field_type
@@ -117,6 +120,7 @@ module tl_si_timestep_alg_mod
 
   ! Perturbation
   type( field_type ), allocatable :: state(:)
+  type( field_type ), allocatable :: state_initial(:)
   type( field_type ), allocatable :: state_n(:)
   type( field_type ), allocatable :: state_after_slow(:)
   type( field_type ), allocatable :: advected_state(:)
@@ -168,7 +172,7 @@ contains
   !> @param[in]     ls_moist_dyn Lin. state for moist dynamical factors
   subroutine tl_semi_implicit_alg_init( mesh, u, rho, theta, exner, mr,   &
                                         ls_u, ls_rho, ls_theta, ls_exner, &
-                                        ls_mr, ls_moist_dyn )
+                                        ls_mr, ls_moist_dyn, partial_init )
 
     implicit none
 
@@ -181,47 +185,60 @@ contains
     type( field_type ), intent( inout ) :: ls_u, ls_rho, ls_theta, ls_exner
     type( field_type ), intent( inout ) :: ls_mr(nummr)
     type( field_type ), intent( inout ) :: ls_moist_dyn(num_moist_factors)
+
+    ! When atlt_si_timestep_alg_mod in adjoint_tests is run, this routine is called
+    ! but it has been already. Hence we have a switch to turn off aspects of the
+    ! initialisation that would result in attempts to allocate where memory is already
+    ! allocated, but leave on aspects that are still required
+    logical(kind=l_def), optional, intent ( in ) :: partial_init
+    logical(kind=l_def) :: full_init
+
     integer(kind=i_def) :: outer, inner
 
     use_moisture = ( moisture_formulation /= moisture_formulation_dry )
+    full_init = .true.
+    if (present(partial_init)) full_init = (.not. partial_init)
 
     !--------------------------------------------------------------------
     ! Allocate internal state field arrays
     !--------------------------------------------------------------------
 
-    allocate(state(bundle_size))
-    allocate(state_n(bundle_size))
-    allocate(state_after_slow(bundle_size))
-    allocate(advected_state(bundle_size))
-    allocate(rhs_n(bundle_size))
-    allocate(rhs_np1(bundle_size))
-    allocate(rhs_adv(bundle_size))
-    allocate(mr_n(nummr))
-    allocate(mr_after_slow(nummr))
-    allocate(mr_inc(nummr))
+    if (full_init) then
+      allocate(state(bundle_size))
+      allocate(state_initial(bundle_size))
+      allocate(state_n(bundle_size))
+      allocate(state_after_slow(bundle_size))
+      allocate(advected_state(bundle_size))
+      allocate(rhs_n(bundle_size))
+      allocate(rhs_np1(bundle_size))
+      allocate(rhs_adv(bundle_size))
+      allocate(mr_n(nummr))
+      allocate(mr_after_slow(nummr))
+      allocate(mr_inc(nummr))
 
-    allocate(ls_state(bundle_size))
-    allocate(ls_state_n(bundle_size))
-    allocate(ls_state_after_slow(bundle_size))
-    allocate(ls_advected_state(bundle_size))
-    allocate(ls_rhs_n(bundle_size))
-    allocate(ls_mr_n(nummr))
-    allocate(ls_mr_after_slow(nummr))
+      allocate(ls_state(bundle_size))
+      allocate(ls_state_n(bundle_size))
+      allocate(ls_state_after_slow(bundle_size))
+      allocate(ls_advected_state(bundle_size))
+      allocate(ls_rhs_n(bundle_size))
+      allocate(ls_mr_n(nummr))
+      allocate(ls_mr_after_slow(nummr))
 
-    allocate(ls_state_itns(bundle_size, &
-             outer_iterations, inner_iterations ))
-    allocate(ls_rhs_np1(bundle_size, &
-             outer_iterations, inner_iterations ))
-    allocate(ls_rhs_adv(bundle_size, &
-             outer_iterations, inner_iterations ))
-    allocate(ls_rhs_phys(bundle_size, &
-              outer_iterations, inner_iterations ))
-    allocate(ls_mr_inc(nummr, &
-             outer_iterations, inner_iterations ))
-    allocate(ls_mr_itns(nummr, &
-             outer_iterations, inner_iterations ))
-    allocate(ls_moist_dyn_itns(num_moist_factors, &
-             outer_iterations, inner_iterations ))
+      allocate(ls_state_itns(bundle_size, &
+               outer_iterations, inner_iterations ))
+      allocate(ls_rhs_np1(bundle_size, &
+               outer_iterations, inner_iterations ))
+      allocate(ls_rhs_adv(bundle_size, &
+               outer_iterations, inner_iterations ))
+      allocate(ls_rhs_phys(bundle_size, &
+                outer_iterations, inner_iterations ))
+      allocate(ls_mr_inc(nummr, &
+               outer_iterations, inner_iterations ))
+      allocate(ls_mr_itns(nummr, &
+               outer_iterations, inner_iterations ))
+      allocate(ls_moist_dyn_itns(num_moist_factors, &
+               outer_iterations, inner_iterations ))
+    end if
 
     !--------------------------------------------------------------------
     ! Initialise internal state field objects
@@ -237,6 +254,7 @@ contains
                  setval_X(state(igh_d), rho), &
                  setval_X(state(igh_p), exner) )
 
+    call clone_bundle(state, state_initial,    bundle_size)
     call clone_bundle(state, state_n,          bundle_size)
     call clone_bundle(state, state_after_slow, bundle_size)
     call clone_bundle(state, advected_state,   bundle_size)
@@ -295,12 +313,11 @@ contains
     !--------------------------------------------------------------------
     ! Operators for si solves
     !--------------------------------------------------------------------
-    call create_si_operators( mesh )
-
-    call gungho_transport_control_alg_init( mesh )
-
-    ! Construct semi-implicit solver
-    call semi_implicit_solver_alg_init( state )
+    if (full_init) then
+      call create_si_operators( mesh )
+      call gungho_transport_control_alg_init( mesh )
+      call semi_implicit_solver_alg_init( state )
+    end if
 
     call log_event( "semi_implicit_timestep: initialised timestepping algorithm", LOG_LEVEL_INFO )
 
@@ -308,6 +325,7 @@ contains
 
   !> @brief   The tangent linear for the timestepping of the 3D nonlinear
   !>          equations using an iterative process with inner and outer loops.
+  !> @param[in,out] modeldb                Structure containing the model state
   !> @param[in,out] u                      3D wind field
   !> @param[in,out] rho                    Density
   !> @param[in,out] theta                  Potential temperature
@@ -321,18 +339,15 @@ contains
   !> @param[in]     ls_mr                  Mixing ratios
   !> @param[in]     ls_moist_dyn           Factors for moist dynamics
   !> @param[in]     derived_fields         Group of derived fields
-  !> @param[in]     model_clock            Time within the model.
   !> @param[in]     mesh                   The current mesh
   !> @param[in]     twod_mesh              The current 2d mesh
-  !> @param[in]     configuration          The model namelist configuration
-  subroutine tl_semi_implicit_alg_step( u, rho, theta, exner, mr, moist_dyn, &
-                                        ls_u, ls_rho, ls_theta, ls_exner,    &
-                                        ls_mr, ls_moist_dyn,                 &
-                                        derived_fields,                      &
-                                        model_clock, mesh, twod_mesh,        &
-                                        configuration )
+  subroutine tl_semi_implicit_alg_step( modeldb, u, rho, theta, exner, mr, moist_dyn,          &
+                                        ls_u, ls_rho, ls_theta, ls_exner, ls_mr, ls_moist_dyn, &
+                                        derived_fields, mesh, twod_mesh )
 
     implicit none
+
+    type(modeldb_type), target, intent(inout) :: modeldb
 
     ! Prognostic fields
     type( field_type ), intent( inout ) :: u, rho, theta, exner
@@ -345,12 +360,8 @@ contains
     ! field groups
     type( field_collection_type ), intent( inout ) :: derived_fields
 
-    class( model_clock_type ), intent( in ) :: model_clock
-
     type( mesh_type ), intent( in ), pointer :: mesh
     type( mesh_type ), intent( in ), pointer :: twod_mesh
-
-    type( namelist_collection_type ), intent( in ) :: configuration
 
     real( kind=r_def ) :: cast_dt
 
@@ -375,7 +386,7 @@ contains
 
     if ( subroutine_timers ) call timer('semi_implicit_timestep_alg')
 
-    cast_dt = real(model_clock%get_seconds_per_step(), r_def)
+    cast_dt = real(modeldb%clock%get_seconds_per_step(), r_def)
 
     call log_event( "Tangent linear: semi implicit timestep", LOG_LEVEL_INFO )
 
@@ -387,7 +398,7 @@ contains
     !--------------------------------------------------------------------
     ! If off-centring is being spun up then modify the alpha value
     !--------------------------------------------------------------------
-    if (spinup_alpha .and. model_clock%is_spinning_up()) then
+    if (spinup_alpha .and. modeldb%clock%is_spinning_up()) then
       varalpha = 1.0_r_def
     else
       varalpha = alpha
@@ -449,11 +460,11 @@ contains
     ! The reference_reset_time is specified in the configuration namelist.
     ! Note that this reset can only occur at most once per timestep.
     reference_reset_freq = int(reference_reset_time / cast_dt, i_def)
-    if ( mod(model_clock%get_step() - 1_i_def, reference_reset_freq) == 0_i_def ) &
+    if ( mod(modeldb%clock%get_step() - 1_i_def, reference_reset_freq) == 0_i_def ) &
       call compute_si_operators(ls_state(igh_t),          &
                                 ls_state(igh_d),          &
                                 ls_state(igh_p),          &
-                                model_clock,              &
+                                modeldb%clock,            &
                                 ls_moist_dyn_itns(:,1,1))
 
 
@@ -463,7 +474,7 @@ contains
     call rhs_alg( ls_rhs_n, varbeta*cast_dt, ls_state_after_slow, &
                   ls_state_n, ls_moist_dyn_itns(:,1,1),           &
                   compute_eos=.false., compute_rhs_t_d=.true.,    &
-                  dlayer_rhs=.false., model_clock=model_clock )
+                  dlayer_rhs=.false., model_clock=modeldb%clock )
 
     call copy_bundle(ls_state_after_slow, ls_advected_state,  bundle_size)
     if ( .not. si_momentum_equation ) then
@@ -483,7 +494,7 @@ contains
                                         ls_state_n(igh_u),              &
                                         ls_mr_itns(:, outer, 1),        &
                                         ls_mr_after_slow(:),            &
-                                        model_clock, outer,             &
+                                        modeldb%clock, outer,           &
                                         cheap_update = .false. )
 
       ! Convert theta increment to weak form
@@ -544,7 +555,7 @@ contains
                           compute_eos=.true.,                 &
                           compute_rhs_t_d=.true.,             &
                           dlayer_rhs=dlayer_on,               &
-                          model_clock=model_clock )
+                          model_clock=modeldb%clock )
 
             !--------------------------------------------------------------------
             ! Compute the LAM LBCs and RHS
@@ -664,6 +675,7 @@ contains
       call copy_bundle(mr, mr_after_slow, nummr)
       call tl_moist_dyn_factors_alg(moist_dyn, mr_n)
     end if
+    if (l_stabilise_bl) call copy_bundle(state, state_initial, bundle_size)
     call copy_bundle(state, state_n, bundle_size)
     call copy_bundle(state, state_after_slow, bundle_size)
 
@@ -672,7 +684,7 @@ contains
     !--------------------------------------------------------------------
     call tl_rhs_alg( rhs_n, varbeta*cast_dt, state_after_slow, state_n, &
                      moist_dyn, ls_state_n, ls_moist_dyn_itns(:, 1,1),  &
-                     .false., .false., model_clock=model_clock )
+                     .false., .false., model_clock=modeldb%clock )
 
     call copy_bundle(state_after_slow, advected_state,  bundle_size)
     if ( .not. si_momentum_equation ) then
@@ -701,7 +713,7 @@ contains
                                     ls_state_itns(igh_u, outer, 1), &
                                     ls_state_n(igh_u),              &
                                     ls_mr_after_slow,               &
-                                    model_clock,                    &
+                                    modeldb%clock,                  &
                                     outer )
 
       ! Convert theta increment to weak form
@@ -736,7 +748,7 @@ contains
                           ls_moist_dyn_itns(:, outer, inner), &
                           .true.,                             &
                           dlayer_on,                          &
-                          model_clock)
+                          modeldb%clock)
 
           !--------------------------------------------------------------------
           ! Compute the LAM LBCs and RHS
@@ -768,7 +780,7 @@ contains
           ! Solve semi-implicit system: A*inc = rhs, and increment state by inc
           !--------------------------------------------------------------------
 
-          mixed_solver_nml => configuration%get_namelist('mixed_solver')
+          mixed_solver_nml => modeldb%configuration%get_namelist('mixed_solver')
           call mixed_solver_nml%get_value( 'mixed_solver_a_tol', &
                                             mixed_solver_a_tol )
 
@@ -814,6 +826,22 @@ contains
     !--------------------------------------------------------------------
 
     !--------------------------------------------------------------------
+    ! Apply boundary layer (BL) stabilisation if required
+    !--------------------------------------------------------------------
+    if (l_stabilise_bl) then
+      ! Set u inside boundary layer to:
+      !   alpha * state_initial(igh_u) + (1 - alpha) * state(igh_u)
+      ! where alpha is a maximum of 1 at the model base and decreases
+      ! linearly to 0 at top of boundary layer
+      call invoke( setval_X( u, state(igh_u) ),                          &
+                   stabilise_bl_u_kernel_type( u, state_initial(igh_u),  &
+                                               state(igh_u),             &
+                                               n_bl_levels_to_stabilise, &
+                                               max_bl_stabilisation ),   &
+                   setval_X( state(igh_u), u ) )
+      end if
+
+    !--------------------------------------------------------------------
     ! Apply mixing
     !--------------------------------------------------------------------
     call mixing_alg(mr, state(igh_t),                             &
@@ -856,6 +884,7 @@ contains
     call final_si_operators()
 
     if (allocated(state))            deallocate(state)
+    if (allocated(state_initial))    deallocate(state_initial)
     if (allocated(state_n))          deallocate(state_n)
     if (allocated(state_after_slow)) deallocate(state_after_slow)
     if (allocated(advected_state))   deallocate(advected_state)

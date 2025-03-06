@@ -10,11 +10,13 @@
 module adjoint_test_driver_mod
 
   use base_mesh_config_mod,        only : prime_mesh_name
+  use extrusion_mod,               only : TWOD
   use field_mod,                   only : field_type
+  use driver_modeldb_mod,          only : modeldb_type
   use log_mod,                     only : log_event, LOG_LEVEL_INFO
   use mesh_mod,                    only : mesh_type
   use mesh_collection_mod,         only : mesh_collection
-  use model_clock_mod,             only : model_clock_type
+  use operator_mod,                only : operator_type
   use sci_geometric_constants_mod, only : get_coordinates, &
                                           get_panel_id
 
@@ -29,7 +31,7 @@ contains
   !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   !> @brief   Runs adjoint tests.
   !> @details Runs algorithm layer adjoint tests.
-  subroutine run( model_clock )
+  subroutine run( modeldb )
 
     ! PSyAD generated tests
     use gen_adj_kernel_tests_mod,                   only : run_gen_adj_kernel_tests
@@ -85,23 +87,44 @@ contains
     use atlt_transport_controller_alg_mod,          only : atlt_transport_controller_initialiser_alg
     use atlt_transport_control_alg_mod,             only : atlt_transport_control_alg
 
+    ! ./core_dynamics
+    use atlt_pressure_gradient_bd_alg_mod,          only : atlt_pressure_gradient_bd_alg
+    use atlt_rhs_alg_mod,                           only : atlt_rhs_alg
+    use adjt_compute_vorticity_alg_mod,             only : adjt_compute_vorticity_alg
+    use atlt_derive_exner_from_eos_alg_mod,         only : atlt_derive_exner_from_eos_alg
+    use atlt_moist_dyn_factors_alg_mod,             only : atlt_moist_dyn_factors_alg
+
+    ! ./solver
+    use adjt_mixed_operator_alg_mod,                only : adjt_mixed_operator_alg
+    use adjt_mixed_schur_preconditioner_alg_mod,    only : adjt_mixed_schur_preconditioner_alg
+    use adjt_mixed_solver_alg_mod,                  only : adjt_mixed_solver_alg
+    use adjt_semi_implicit_solver_step_alg_mod,     only : adjt_semi_implicit_solver_step_alg
+
+    ! ./timestepping
+    use atlt_si_timestep_alg_mod,                   only : atlt_si_timestep_alg
+
     ! Misc
-    use setup_test_alg_mod,                         only : setup_test_constants
+    use setup_test_alg_mod,                         only : setup_test_constants, &
+                                                           reset_mass_matrices
 
     implicit none
 
     ! Arguments
-    type(model_clock_type), intent(in) :: model_clock
+    type(modeldb_type), target, intent(inout) :: modeldb
 
     ! Internal variables
-    type(field_type),          pointer :: chi(:) => null()
-    type(field_type),          pointer :: panel_id => null()
-    type(mesh_type),           pointer :: mesh => null()
+    type(field_type),          pointer :: chi(:)
+    type(field_type),          pointer :: panel_id
+    type(mesh_type),           pointer :: mesh
+    type(mesh_type),           pointer :: twod_mesh
+    type(operator_type)                :: m3_inv_copy
+    type(field_type)                   :: mt_lumped_inv_copy
 
     mesh => mesh_collection%get_mesh( prime_mesh_name )
     chi => get_coordinates( mesh%get_id() )
     panel_id => get_panel_id( mesh%get_id() )
-    call setup_test_constants( mesh )
+    twod_mesh => mesh_collection%get_mesh( mesh, TWOD )
+    call setup_test_constants( mesh, m3_inv_copy, mt_lumped_inv_copy )
 
     call log_event( "TESTING generated adjoint kernels", LOG_LEVEL_INFO )
     call run_gen_adj_kernel_tests( mesh, chi, panel_id )
@@ -116,6 +139,9 @@ contains
     call adjt_w3h_advective_update_alg( mesh )
     call atlt_w3h_advective_update_alg( mesh )
 
+    ! ./core_dynamics
+    call atlt_pressure_gradient_bd_alg( mesh )
+
     ! ./inter_function_space
     call adjt_sci_convert_hdiv_field_alg( mesh, chi, panel_id )
 
@@ -129,34 +155,52 @@ contains
     call adjt_interp_w2_to_w3wth_alg( mesh )
 
     ! ./transport/common
-    call adjt_initialise_step_alg( mesh, model_clock )
-    call adjt_flux_precomputations_initialiser_alg( mesh, model_clock )
-    call adjt_wind_precomputations_initialiser_alg( mesh, model_clock )
-    call adjt_build_up_flux_alg( mesh, model_clock )
-    call atlt_end_adv_step_alg( mesh, model_clock )
-    call atlt_end_con_step_alg( mesh, model_clock )
+    call adjt_initialise_step_alg( mesh, modeldb%clock )
+    call adjt_flux_precomputations_initialiser_alg( mesh, modeldb%clock )
+    call adjt_wind_precomputations_initialiser_alg( mesh, modeldb%clock )
+    call adjt_build_up_flux_alg( mesh, modeldb%clock )
+    call atlt_end_adv_step_alg( mesh, modeldb%clock )
+    call atlt_end_con_step_alg( mesh, modeldb%clock )
 
     ! ./transport/mol
-    call adjt_hori_w3_reconstruct_alg( mesh, model_clock )
-    call atlt_vert_w3_reconstruct_alg( mesh, model_clock )
-    call atlt_reconstruct_w3_field_alg( mesh, model_clock )
-    call atlt_hori_wt_update_alg( mesh, model_clock )
-    call atlt_vert_wt_update_alg( mesh, model_clock )
-    call adjt_hori_wt_update_alg( mesh, model_clock )
-    call atlt_wt_advective_update_alg( mesh, model_clock )
-    call atlt_advective_and_flux_alg( mesh, model_clock )
-    call atlt_mol_conservative_alg( mesh, model_clock )
-    call atlt_mol_advective_alg( mesh, model_clock )
+    call adjt_hori_w3_reconstruct_alg( mesh, modeldb%clock )
+    call atlt_vert_w3_reconstruct_alg( mesh, modeldb%clock )
+    call atlt_reconstruct_w3_field_alg( mesh, modeldb%clock )
+    call atlt_hori_wt_update_alg( mesh, modeldb%clock )
+    call atlt_vert_wt_update_alg( mesh, modeldb%clock )
+    call adjt_hori_wt_update_alg( mesh, modeldb%clock )
+    call atlt_wt_advective_update_alg( mesh, modeldb%clock )
+    call atlt_advective_and_flux_alg( mesh, modeldb%clock )
+    call atlt_mol_conservative_alg( mesh, modeldb%clock )
+    call atlt_mol_advective_alg( mesh, modeldb%clock )
 
     ! ./transport/control
-    call atlt_transport_field_alg( mesh, model_clock )
-    call atlt_wind_transport_alg( mesh, model_clock )
-    call atlt_moist_mr_transport_alg( mesh, model_clock )
-    call atlt_theta_transport_alg( mesh, model_clock )
-    call adjt_ls_wind_pert_rho_initialiser_alg( mesh, model_clock )
-    call adjt_pert_wind_ls_rho_initialiser_alg( mesh, model_clock )
-    call atlt_transport_controller_initialiser_alg( mesh, model_clock )
-    call atlt_transport_control_alg( mesh, model_clock )
+    call atlt_transport_field_alg( mesh, modeldb%clock )
+    call atlt_wind_transport_alg( mesh, modeldb%clock )
+    call atlt_moist_mr_transport_alg( mesh, modeldb%clock )
+    call atlt_theta_transport_alg( mesh, modeldb%clock )
+    call adjt_ls_wind_pert_rho_initialiser_alg( mesh, modeldb%clock )
+    call adjt_pert_wind_ls_rho_initialiser_alg( mesh, modeldb%clock )
+    call atlt_transport_controller_initialiser_alg( mesh, modeldb%clock )
+    call atlt_transport_control_alg( mesh, modeldb%clock )
+
+    ! ./core_dynamics
+    call atlt_rhs_alg( mesh, modeldb%clock )
+    call adjt_compute_vorticity_alg( mesh )
+    call atlt_derive_exner_from_eos_alg( mesh )
+    call atlt_moist_dyn_factors_alg( mesh )
+
+    ! Restore inverse mass matrices to original values for use in solver/timestepping tests
+    call reset_mass_matrices( mesh, m3_inv_copy, mt_lumped_inv_copy )
+
+    ! ./solver
+    call adjt_mixed_operator_alg( mesh, modeldb%clock )
+    call adjt_mixed_schur_preconditioner_alg( modeldb,  mesh, modeldb%clock )
+    call adjt_mixed_solver_alg( modeldb, mesh, modeldb%clock )
+    call adjt_semi_implicit_solver_step_alg( modeldb, mesh, modeldb%clock )
+
+    ! ./timestepping
+    call atlt_si_timestep_alg( modeldb, mesh, twod_mesh )
 
     call log_event( "TESTING COMPLETE", LOG_LEVEL_INFO )
 
