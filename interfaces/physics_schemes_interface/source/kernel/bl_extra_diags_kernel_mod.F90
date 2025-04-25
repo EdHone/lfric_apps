@@ -16,6 +16,7 @@ module bl_extra_diags_kernel_mod
   use empty_data_mod,     only : empty_real_data
   use fs_continuity_mod,  only : Wtheta, W3
   use kernel_mod,         only : kernel_type
+  use microphysics_config_mod, only : microphysics_casim
 
   implicit none
 
@@ -366,9 +367,13 @@ contains
         ! prob of ls precip - just use existing rain area fraction
         plsp(1,1)      = lsca_2d(map_2d(1))
 
-        !number prognostics used in the visibility calculation
-        rainnumber(1,1,1) = nr_mphys(map_wth(1) + 1)
-        snownumber(1,1,1) = ns_mphys(map_wth(1) + 1)
+        ! number prognostics used in the visibility calculation
+        ! We only copy these if casim is enabled. Otherwise they will
+        ! not be used.
+        if (microphysics_casim) then
+           rainnumber(1,1,1) = nr_mphys(map_wth(1) + 1)
+           snownumber(1,1,1) = ns_mphys(map_wth(1) + 1)
+        end if
 
         call beta_precip( ls_rain, ls_snow,                                    &
                           conv_rain, conv_snow, qcf1, qrain1,                  &
