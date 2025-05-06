@@ -1,0 +1,18 @@
+{# ########################################################################### #}
+{# (c) Crown copyright 2024 Met Office. All rights reserved. #}
+{# The file LICENCE, distributed with this code, contains details of the terms #}
+{# under which the code may be used. #}
+{# ########################################################################### #}
+{% do LOG.debug("Entered site/azngarch/groups.cylc") %}
+
+
+{%- do site_groups.update({
+   "azngarch_atm": [
+       "lfric_atm_nwp_sandbox"
+   ],
+   "lfric_atm_nwp_sandbox" : [],
+   }) %}
+
+{% include "site/azngarch/groups/groups_lfric_atm.cylc" %}
+
+{% do LOG.debug("Finished in site/azngarch/groups.cylc") %}

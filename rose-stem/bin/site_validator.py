@@ -24,6 +24,7 @@ WORKING_CONFIGS = {
     "niwa" : ["all"],
     "ncas" : ["archer2_atm"],
     "uoe" : ["all"],
+    "azngarch": ["azngarch_atm"], 
 }
 
 

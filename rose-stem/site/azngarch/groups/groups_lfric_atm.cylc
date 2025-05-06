@@ -1,0 +1,22 @@
+{% do LOG.debug("Entered site/azngarch/groups/groups_lfric_atm.cylc") %}
+
+{% do site_groups.update({
+    "lfric_atm_nwp_sandbox_developer": [
+        "lfric_atm_nwp_gal9_nomg-C12_sandbox_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_nomg-C12_sandbox_gnu_full-debug-64bit",
+        "lfric_atm_nwp_gal9_nomg-C12_sandbox_gnu_production-64bit-rbl32-rtran32",
+    ],
+    "lfric_atm_nwp_sandbox_extra": [
+        "lfric_atm_nwp_gal9-C48_MG_sandbox_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_coarse_aero-C48_MG_sandbox_gnu_fast-debug-64bit",
+        "lfric_atm_nwp_gal9_debug-C48_MG_sandbox_gnu_full-debug-64bit",
+    ],
+    "lfric_atm_nwp_sandbox": [
+        "lfric_atm_nwp_sandbox_developer",
+        "lfric_atm_nwp_sandbox_extra",
+    ],
+    }) %}
+
+{% do LOG.debug("Finished in site/azngarch/groups/groups_lfric_atm.cylc") %}
+
+

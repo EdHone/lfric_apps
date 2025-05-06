@@ -1,0 +1,13 @@
+{% do LOG.debug("Started in site/azngarch/lfric_atm/tasks_lfric_atm_sandbox.cylc") %}
+
+{% if task_ns.conf_name == "nwp_gal9_nomg-C12" %}
+
+{% elif task_ns.conf_name == "nwp_gal9-C48_MG" %}
+
+{% elif task_ns.conf_name == "nwp_gal9_coarse_aero-C48_MG" %}
+
+{% elif task_ns.conf_name == "nwp_gal9_debug-C48_MG" %}
+
+{% endif %}
+
+{% do LOG.debug("Finished in site/azngarch/lfric_atm/tasks_lfric_atm_sandbox.cylc") %}
