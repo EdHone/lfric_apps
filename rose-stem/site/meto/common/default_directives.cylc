@@ -16,6 +16,9 @@
         "lfric_atm": {
             "build_wallclock": 45,
         },
+        "ngarch": {
+            "build_wallclock": 45,
+        },
         "mesh": {
             "mesh_wallclock": 20,
             "mesh_memory": [1, "GB"],
@@ -36,6 +39,9 @@
 
         "lfric_atm": {
             "build_wallclock": 60,
+        },
+        "ngarch": {
+            "build_wallclock": 45,
         },
         "mesh": {
             "mesh_wallclock": 20,

@@ -5,16 +5,12 @@
 {# ########################################################################### #}
 {% do LOG.debug("Entered site/meto/gungho_model/tasks_gungho_model_azspice.cylc") %}
 
-{# Set default values for Gungho Model tasks #}
-{% if task_dict %}
-    {% if "full-debug" in task %}
-        {% if "wallclock" not in task_dict %}
-            {% do task_dict.update({"wallclock": 15}) %}
-        {% else %}
-            {% set val = 1.5 * task_dict["wallclock"] %}
-            {% do task_dict.update({"wallclock": val}) %}
-        {% endif %}
-    {% endif %}
+{% if task_ns.conf_name == "robert-moist-lam-BiP100x8-10x10" %}
+
+    {% do task_dict.update({
+        "wallclock": 40,
+    }) %}
+
 {% endif %}
 
 {% do LOG.debug("Finised in site/meto/gungho_model/tasks_gungho_model_azspice.cylc") %}
