@@ -72,6 +72,7 @@ moisture_formulation='traditional',
 moisture_in_solver=.true.,
 p2theta_vert=.true.,
 rotating=.true.,
+theta_moist_source=.false.
 shallow=.true.,
 si_momentum_equation=.false.,
 use_multires_coupling=.false.,

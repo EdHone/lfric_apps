@@ -41,7 +41,8 @@ coord_system='native',
   dry_static_adjust     = .false.
   exner_from_eos        = .false.
   init_exner_bt         = .false.
-  si_momentum_equation  = .flase.
+  theta_moist_source    = .false.
+  si_momentum_equation  = .false.
   vector_invariant      = .true.
 /
 

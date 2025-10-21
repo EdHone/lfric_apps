@@ -344,3 +344,34 @@ class vn22_t202(MacroUpgrade):
         )
 
         return config, self.reports
+
+
+class vn22_t827(MacroUpgrade):
+    """Upgrade macro for ticket #827 by Thomas Bendall."""
+
+    BEFORE_TAG = "vn2.2_t202"
+    AFTER_TAG = "vn2.2_t827"
+
+    def upgrade(self, config, meta_config=None):
+        # Commands From: rose-meta/lfric-gungho
+        """
+        Adds the "theta_moist_source" variable to the formulation namelist,
+        which controls the option to add the missing term to the potential
+        temperature equation, relating to the different heat capacities of moist
+        phases. This is set to be trig-ignored when moisture settings are not
+        'traditional'. In both cases the default value is .false.
+        """
+        nml = "namelist:formulation"
+        moisture = self.get_setting_value(config, [nml, "moisture_formulation"])
+        default_setting = ".false."
+        if moisture == "'traditional'":
+            self.add_setting(
+                config, [nml, "theta_moist_source"], default_setting
+            )
+        else:
+            # Trig-ignored as moisture not being used
+            self.add_setting(
+                config, [nml, "!!theta_moist_source"], default_setting
+            )
+
+        return config, self.reports

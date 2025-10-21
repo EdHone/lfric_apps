@@ -68,6 +68,7 @@ p2theta_vert=.true.,
 rotating=.true.,
 shallow=.false.,
 si_momentum_equation=.false.,
+theta_moist_source=.false.
 use_multires_coupling=.false.,
 use_physics=.false.,
 use_wavedynamics=.true.,
