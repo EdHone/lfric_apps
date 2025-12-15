@@ -10,6 +10,7 @@ module space_from_metadata_mod
   use log_mod,                         only: log_event,         &
                                              log_scratch_space, &
                                              log_level_trace,   &
+                                             log_level_debug,   &
                                              log_level_error
   use constants_mod,                   only: i_def, l_def, str_def
   use mesh_mod,                        only: mesh_type
@@ -49,6 +50,8 @@ module space_from_metadata_mod
     = 'var_full_face_grid'
   character(str_def), parameter :: var_face                                    &
     = 'var_face'
+  character(str_def), parameter :: var_face_aod_wavel                          &
+    = 'var_face_aod_wavel'
   character(str_def), parameter :: half_level_face_grid                        &
     = 'half_level_face_grid'
   character(str_def), parameter :: half_level_edge_grid                        &
@@ -113,24 +116,52 @@ contains
     character(*), intent(in) :: domain_ref
     integer(i_def) :: fsenum
 
+      write(log_scratch_space, *)                                             &
+        'get_field_fsenum for field: ' //                                     &
+        trim(xios_id) //                                                      &
+        ', grid_ref: ' // trim(grid_ref) //                                   &
+        ', domain_ref: ' // trim(domain_ref)
+      call log_event(log_scratch_space, log_level_debug)
     ! from RB's python metadata generator
-    if (grid_ref == full_level_face_grid .or. &
-        grid_ref == var_full_face_grid) then
+    if (grid_ref == full_level_face_grid                                      &
+      .or. grid_ref ==  ' --> ' // full_level_face_grid                       &
+      .or. grid_ref == var_full_face_grid                                     &
+      .or. grid_ref == ' --> ' // var_full_face_grid) then
       fsenum = Wtheta
+      write(log_scratch_space, *) 'fsenum = Wtheta'
+      call log_event(log_scratch_space, log_level_debug)
     else if (grid_ref == half_level_face_grid                                 &
+      .or. grid_ref == ' --> ' // half_level_face_grid                        &
       .or. grid_ref == var_face                                               &
+      .or. grid_ref == ' --> ' // var_face                                    &
+      .or. grid_ref == var_face_aod_wavel                                     &
+      .or. grid_ref == ' --> ' // var_face_aod_wavel                          &
       .or. domain_ref == 'face') then
       fsenum = W3
-    else if (grid_ref == half_level_edge_grid) then
+      write(log_scratch_space, *) 'fsenum = W3'
+      call log_event(log_scratch_space, log_level_debug)
+    else if (grid_ref == half_level_edge_grid &
+            .or. grid_ref == ' --> ' // half_level_edge_grid ) then
       fsenum = W2H
-    else if (grid_ref == node_grid) then
+      write(log_scratch_space, *) 'fsenum = W2H'
+      call log_event(log_scratch_space, log_level_debug)
+    else if (grid_ref == node_grid &
+      .or. grid_ref == ' --> ' // node_grid) then
       fsenum = W0
+      write(log_scratch_space, *) 'fsenum = W0'
+      call log_event(log_scratch_space, log_level_debug)
     else if (domain_ref == "checkpoint_Wtheta") then
       fsenum = Wtheta
+      write(log_scratch_space, *) 'fsenum = Wtheta'
+      call log_event(log_scratch_space, log_level_debug)
     else if (domain_ref == "checkpoint_W3") then
       fsenum = W3
+      write(log_scratch_space, *) 'fsenum = W3'
+      call log_event(log_scratch_space, log_level_debug)
     else if (domain_ref == "checkpoint_W2") then
       fsenum = W2
+      write(log_scratch_space, *) 'fsenum = W2'
+      call log_event(log_scratch_space, log_level_debug)
     else
       fsenum = 0 ! silence compiler warning
       write(log_scratch_space, *)                                             &
@@ -152,14 +183,15 @@ contains
     character(*), intent(in) :: axis_ref
     character(str_def) :: flavour
 
-    if (grid_ref /= "") then
-      if (domain_ref /= "") then
-        write(log_scratch_space, *)                                           &
-        'field ' // trim(xios_id) //                                          &
-        'with grid_ref and domain_ref : ' //                                  &
-        grid_ref // ' ' // domain_ref
-        call log_event(log_scratch_space, log_level_error)
-      end if
+    if (domain_ref == "") then
+    ! if (grid_ref /= "") then
+      ! if (domain_ref /= "") then
+      !   write(log_scratch_space, *)                                           &
+      !   'field ' // trim(xios_id) //                                          &
+      !   'with grid_ref and domain_ref : ' //                                  &
+      !   grid_ref // ' ' // domain_ref
+      !   call log_event(log_scratch_space, log_level_error)
+      ! end if
       if (axis_ref /= "") then
         flavour = vanilla_multi
       else
