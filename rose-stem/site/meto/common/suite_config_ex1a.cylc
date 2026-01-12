@@ -5,7 +5,8 @@
 {# ########################################################################### #}
 {% do LOG.debug("Entered site/meto/common/suite_config_ex1a.cylc") %}
 
-{% set ex1a_base = 'module use /common/internal/spack/releases/2025.10.1/ngms' %}
+{% set ex1a_base = 'module use /common/internal/spack/releases/2025.10.1/ngms ;' ~
+                   'module use /data/users/edward.hone/software/cce-15.0.0/modules '%}
 
 {% set ex1a_compiler_gnu =  'module switch cpe/22.11 cpe/23.05 ; ' ~
                             'module load PrgEnv-gnu ; '~
@@ -13,9 +14,20 @@
                             'module load lfric-gnu/12.2.0/3.0+ || true' %}
 
 {% set ex1a_compiler_cce =  'module switch PrgEnv-cray PrgEnv-cray/8.4.0 ; ' ~
-                            'module load cpe/23.05 ; '~
+                            'module load cpe/23.09 ; '~
                             'module switch cce cce/15.0.0 ; '~
-                            'module load lfric-cray/15.0.0/3.0+ || true ' %}
+                            'module load lfric-cray/15.0.0/3.0+ || true ; ' ~
+                            'module switch py-psyclone/3.1.0 || true ; ' ~
+                            'export LD_LIBRARY_PATH=/opt/cray/pe/pmi/6.1.11/lib:$LD_LIBRARY_PATH ' %}
+
+{% set ex1a_compiler_cce =  'module switch PrgEnv-cray PrgEnv-cray/8.4.0 ; ' ~
+                            'module load cpe/23.09 ; '~
+                            'module switch cce cce/15.0.0 ; '~
+                            'module load lfric-cray/15.0.0/3.0+ || true ; '~
+                            'module switch py-psyclone/3.1.0 || true ; '~
+                            'module switch xios/2701-cpe || true ; '~
+                            'export LD_LIBRARY_PATH=/opt/cray/pe/pmi/6.1.11/lib:$LD_LIBRARY_PATH ; '~
+                            'module list' %}
 
 {% set ex1a_coupled_cce = 'module unload xios/2701-h57fm7d || true ; ' ~
                           'module load cray-hdf5-parallel ; ' ~
