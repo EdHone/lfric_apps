@@ -119,6 +119,8 @@ contains
     ! from RB's python metadata generator
     if (grid_ref == full_level_face_grid                                      &
       .or. grid_ref ==  ' --> ' // full_level_face_grid                       &
+      .or. grid_ref == var_face_aod_wavel                                     &
+      .or. grid_ref == ' --> ' // var_face_aod_wavel                          &
       .or. grid_ref == var_full_face_grid                                     &
       .or. grid_ref == ' --> ' // var_full_face_grid) then
       fsenum = Wtheta
@@ -126,8 +128,6 @@ contains
       .or. grid_ref == ' --> ' // half_level_face_grid                        &
       .or. grid_ref == var_face                                               &
       .or. grid_ref == ' --> ' // var_face                                    &
-      .or. grid_ref == var_face_aod_wavel                                     &
-      .or. grid_ref == ' --> ' // var_face_aod_wavel                          &
       .or. domain_ref == 'face') then
       fsenum = W3
     else if (grid_ref == half_level_edge_grid &
