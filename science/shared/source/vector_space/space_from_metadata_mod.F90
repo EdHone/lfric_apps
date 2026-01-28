@@ -63,6 +63,22 @@ module space_from_metadata_mod
 
 contains
 
+  ! remove the fixed string " --> " from the start of a string if it exists
+  ! for XIOS2 XIOS3 compatibility
+  function trim_string_start_arrow(string) result(newstring)
+    character(*), intent(inout) :: string
+    character(:), allocatable :: newstring
+    character(5) :: arrow_prefix = ' --> '
+
+    if ( string(1:5) == arrow_prefix ) then
+    newstring = string(6:)
+    else
+    newstring = string
+
+    end if
+
+  end function trim_string_start_arrow
+
   ! if string is of shape "<prefix>_<suffix>",
   ! split it into prefix and suffix, updating the string
   function try_split(string, suffix, prefix) result(ok)
@@ -117,24 +133,16 @@ contains
     integer(i_def) :: fsenum
 
     ! from RB's python metadata generator
-    if (grid_ref == full_level_face_grid                                      &
-      .or. grid_ref ==  ' --> ' // full_level_face_grid                       &
-      .or. grid_ref == var_face_aod_wavel                                     &
-      .or. grid_ref == ' --> ' // var_face_aod_wavel                          &
-      .or. grid_ref == var_full_face_grid                                     &
-      .or. grid_ref == ' --> ' // var_full_face_grid) then
+    if (grid_ref == full_level_face_grid .or. &
+        grid_ref == var_full_face_grid) then
       fsenum = Wtheta
     else if (grid_ref == half_level_face_grid                                 &
-      .or. grid_ref == ' --> ' // half_level_face_grid                        &
       .or. grid_ref == var_face                                               &
-      .or. grid_ref == ' --> ' // var_face                                    &
       .or. domain_ref == 'face') then
       fsenum = W3
-    else if (grid_ref == half_level_edge_grid &
-            .or. grid_ref == ' --> ' // half_level_edge_grid ) then
+    else if (grid_ref == half_level_edge_grid) then
       fsenum = W2H
-    else if (grid_ref == node_grid &
-      .or. grid_ref == ' --> ' // node_grid) then
+    else if (grid_ref == node_grid) then
       fsenum = W0
     else if (domain_ref == "checkpoint_Wtheta") then
       fsenum = Wtheta
@@ -164,14 +172,6 @@ contains
     character(str_def) :: flavour
 
     if (domain_ref == "") then
-    ! if (grid_ref /= "") then
-      ! if (domain_ref /= "") then
-      !   write(log_scratch_space, *)                                           &
-      !   'field ' // trim(xios_id) //                                          &
-      !   'with grid_ref and domain_ref : ' //                                  &
-      !   grid_ref // ' ' // domain_ref
-      !   call log_event(log_scratch_space, log_level_error)
-      ! end if
       if (axis_ref /= "") then
         flavour = vanilla_multi
       else
@@ -286,6 +286,11 @@ contains
 
     ! metadata lookup
     grid_ref = get_field_grid_ref(xios_id)
+    call log_event("get_field_grid_ref for xios_id: " // xios_id // " , grid_ref: " &
+                    // grid_ref , log_level_debug)
+    grid_ref = trim_string_start_arrow(grid_ref)
+    call log_event("trim_string_start_arrow for xios_id: " // xios_id // " , grid_ref: " &
+                    // grid_ref , log_level_debug)
     call split_composite_grid_ref(grid_ref, axis_ref)
     domain_ref = get_field_domain_ref(xios_id)
     if (axis_ref == '') then
@@ -297,6 +302,8 @@ contains
     order_h = get_field_order(xios_id, force_order_h)
     order_v = get_field_order(xios_id, force_order_v)
 
+    call log_event("get_field_fsenum xios_id: " // xios_id // " , grid_ref: " &
+                    // grid_ref // " , domain_ref: " // domain_ref, log_level_debug)
     ! derive function space and flavour from metadata
     fsenum = get_field_fsenum(xios_id, grid_ref, domain_ref)
     flavour = get_field_flavour(xios_id, grid_ref, domain_ref, axis_ref)
