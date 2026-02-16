@@ -372,10 +372,10 @@ module coupler_mod
         ! Create a coupling external field
         call coupler_exchange_2d%initialise(field_ptr, local_index)
         call coupler_exchange_2d%set_time(modeldb%clock)
-        if( coupler_exchange_2d%is_coupling_time() ) then
+        if( coupler_exchange_2d%is_coupling_timestep(modeldb%clock%get_step(), &
+                                                     modeldb%clock) ) then
           ! Process the accumulations to make the fields that will be coupled
-          call process_send_fields_2d(field_ptr, &
-                                      modeldb)
+          call process_send_fields_2d(field_ptr, modeldb)
           ! Call through to coupler_send_2d in coupler_exchange_2d_mod
           call coupler_exchange_2d%copy_from_lfric(ierror)
         else
