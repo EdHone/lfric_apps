@@ -77,10 +77,10 @@
         {% do site_vars.update({"host_ex": "excd"}) %}
     {% endif %}
 {% endif %}
-{% do LOG.info("Host EX: " + site_vars.host_ex) %}
 
 {# Set node type target #}
 {% if USE_GENOA is defined and USE_GENOA %}
+    {% do site_vars.update({"host_ex": "exab"}) %}
     {% do site_vars.update({"node_type": "genoa"}) %}
     {% do site_vars.update({"node_cores": 192 }) %}
     {% do site_vars.update({"node_mem": 720}) %}
@@ -91,6 +91,7 @@
     {% do site_vars.update({"node_mem": 238}) %}
     {% do site_vars.update({"crayhost": ""}) %}
 {% endif %}
+{% do LOG.info("Host EX: " + site_vars.host_ex) %}
 
 {% do site_vars.update({"lfricinputs_kgo_base": "$UMDIR/standard_jobs/lfricinputs/kgo"}) %}
 
