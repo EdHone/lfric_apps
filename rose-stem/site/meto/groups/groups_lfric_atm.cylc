@@ -211,6 +211,7 @@
         "lfric_atm_nwp_gal9-C896_MG_720t_perfRun4_ex1a_cce_production-32bit",
     ],
     "lfric_atm_C896_CP": [
+        "lfric_atm_nwp_gal9-C896_MG_ex1a_cce_production-32bit",
         "lfric_atm_nwp_gal9-C896_MG-CP_ex1a_cce_production-32bit",
     ],
     "lfric_atm_ex1a_threaded": [

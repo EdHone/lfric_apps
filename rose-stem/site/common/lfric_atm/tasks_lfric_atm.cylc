@@ -275,12 +275,10 @@
 {% elif task_ns.conf_name == "nwp_gal9-C896_MG-CP" %}
 
     {% do task_dict.update({
-        "opt_confs": ["um_dump"],
+        "opt_confs": ["um_dump", "oper_cp_24h"],
         "resolution": "C896_MG",
         "DT": 240,
         "tsteps": 120,
-        "crun": 2,
-        "crun_compare": true,
         "mpi_parts": 4704,
         "xios_nodes": 4,
         "mpi_parts_xios" : 32,
