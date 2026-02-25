@@ -265,6 +265,8 @@
         "resolution": "C896_MG",
         "DT": 240,
         "tsteps": 120,
+        "crun": 2,
+        "crun_compare": true,
         "mpi_parts": 4704,
         "xios_nodes": 4,
         "mpi_parts_xios" : 32,
@@ -279,13 +281,13 @@
         "resolution": "C896_MG",
         "DT": 240,
         "tsteps": 120,
+        "crun": 1,
         "mpi_parts": 4704,
         "xios_nodes": 4,
         "mpi_parts_xios" : 32,
         "log_level": "info",
         "plot_str": "plot_map.py $NODAL_DATA_DIR/lfric_diagnostics.nc  $PLOT_DIR",
     }) %}
-
 
 {% elif task_ns.conf_name == "nwp_gal9_coarse_aero-C48_MG" %}
 
