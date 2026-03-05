@@ -329,7 +329,6 @@
 
        <!-- LS files -->
       <file id="ls" name="ls" mode="read" output_freq="1ts" convention="UGRID" cyclic="true" enabled=".FALSE.">
-       <field_group read_access=".TRUE.">
         <field id="ls_time" name="time" unit="seconds" operation="once" axis_ref="ls_axis" />
         <field id="ls_theta_data" name="theta" long_name="air_potential_temperature" standard_name="air_potential_temperature" unit="K" grid_ref="full_level_face_time_grid" operation="once" />
         <field id="ls_m_v_data" name="m_v" long_name="m_v" standard_name="m_v" unit="kg/kg" grid_ref="full_level_face_time_grid" operation="once" />
