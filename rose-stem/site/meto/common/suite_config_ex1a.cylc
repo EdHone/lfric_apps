@@ -8,7 +8,9 @@
 {% if site_vars.ex_trustzone == "collab" %}
 {% set ex1a_base = 'module use /projects/metoff/spackadmin.mon/releases/2025.12.18/ngms' %}
 {% else %}
-{% set ex1a_base = 'module use /common/internal/spack/releases/2025.10.1/ngms' %}
+{% set ex1a_base = 'module use /common/internal/spack/releases/2025.10.1/ngms ; '~
+                   'module use /data/users/mark.hedley/modules/linux-sles15-x86_64/cce/15.0.0/ ; '~
+                   'module use /data/users/mark.hedley/modules/linux-sles15-x86_64/cray-mpich/8.1.27-aaisa7i/cce/15.0.0' %}
 {% endif %}
 
 {% set ex1a_compiler_gnu =  'module switch cpe/22.11 cpe/23.05 ; ' ~
@@ -18,10 +20,14 @@
                             'module load lfric-gnu/12.2.0/3.1 || true' %}
 
 {% set ex1a_compiler_cce =  'module switch PrgEnv-cray PrgEnv-cray/8.4.0 ; ' ~
-                            'module load cpe/23.05 ; '~
+                            'module load cpe/23.09 ; '~
                             'module switch cce cce/15.0.0 ; '~
-                            'module load cray-mpich/8.1.27 ; '~
-                            'module load lfric-cray/15.0.0/3.1 || true ' %}
+                            'module load lfric-cray/15.0.0/3.0+ || true ; '~
+                            'module load xios/2701-crayIO  || true ; '~
+                            'module load zlib-ng/2.2.1-qc6q62y glibc/2.31-2gykboy || true ; '~
+                            'module load pkg-config/0.29.2-hxxl2mu || true ; '~
+                            'export LD_LIBRARY_PATH=/opt/cray/pe/pmi/6.1.11/lib:$LD_LIBRARY_PATH ; '~
+                            'module list' %}
 
 {% set ex1a_coupled_cce = 'module unload xios/2701 || true ; ' ~
                           'module load cray-hdf5-parallel ; ' ~
@@ -59,7 +65,6 @@
         [[[environment]]]
             TRANSMUTE_INCLUDE_METHOD = specify_include
         [[[environment]]]
-            USE_LEGACY_TIMER=false
             USE_TIMING_WRAPPER=true
             USE_VERNIER=true
         [[[directives]]]
