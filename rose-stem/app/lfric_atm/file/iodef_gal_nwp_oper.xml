@@ -9,6 +9,9 @@
     <!-- Include variable definitions -->
     <variable_definition src="$METADATA/variable_def_main.xml"/>
 
+    <!-- Include scalar definitions -->
+    <scalar_definition src="$METADATA/scalar_def_main.xml"/>
+
     <!-- Include axis definitions -->
     <axis_definition src="$METADATA/axis_def_main.xml"/>
     <axis_definition src="./axis_def_plev.xml"/>
@@ -102,6 +105,8 @@
       </variable_group>
 
       <variable_group id = "parameters" >
+        <variable id="transport_protocol" type="string" >p2p</variable>
+       <variable id = "services_use_window_manager" type="bool">false</variable>
         <variable id = "using_server" type = "bool" >true</variable>
         <variable id = "info_level" type = "int" >50</variable>
         <variable id = "print_file" type="bool">true</variable>

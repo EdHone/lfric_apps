@@ -77,7 +77,9 @@
 
       <!-- File definition for checkpoint write timeseries output -->
       <file id="lfric_checkpoint_write" name="lfric_checkpoint_write" mode="write" output_freq="1ts" convention="UGRID" enabled=".TRUE." timeseries="both">
+       <field_group read_access=".TRUE.">
         <field_group group_ref="um2lfric_lbc_fields" />
+       </field_group>
       </file>
 
     </file_definition>
@@ -92,6 +94,8 @@
       </variable_group>
 
       <variable_group id = "parameters" >
+        <variable id="transport_protocol" type="string" >p2p</variable>
+       <variable id = "services_use_window_manager" type="bool">false</variable>
         <variable id = "using_server" type = "bool" >true</variable>
         <variable id = "info_level" type = "int" >50</variable>
         <variable id = "print_file" type="bool">true</variable>

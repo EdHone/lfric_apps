@@ -10,6 +10,7 @@ module space_from_metadata_mod
   use log_mod,                         only: log_event,         &
                                              log_scratch_space, &
                                              log_level_trace,   &
+                                             log_level_debug,   &
                                              log_level_error
   use constants_mod,                   only: i_def, l_def, str_def
   use mesh_mod,                        only: mesh_type
@@ -49,6 +50,8 @@ module space_from_metadata_mod
     = 'var_full_face_grid'
   character(str_def), parameter :: var_face                                    &
     = 'var_face'
+  character(str_def), parameter :: var_face_aod_wavel                          &
+    = 'var_face_aod_wavel'
   character(str_def), parameter :: half_level_face_grid                        &
     = 'half_level_face_grid'
   character(str_def), parameter :: half_level_edge_grid                        &
@@ -59,6 +62,22 @@ module space_from_metadata_mod
   public :: space_from_metadata
 
 contains
+
+  ! remove the fixed string " --> " from the start of a string if it exists
+  ! for XIOS2 XIOS3 compatibility
+  function trim_string_start_arrow(string) result(newstring)
+    character(*), intent(inout) :: string
+    character(:), allocatable :: newstring
+    character(5) :: arrow_prefix = ' --> '
+
+    if ( string(1:5) == arrow_prefix ) then
+    newstring = string(6:)
+    else
+    newstring = string
+
+    end if
+
+  end function trim_string_start_arrow
 
   ! if string is of shape "<prefix>_<suffix>",
   ! split it into prefix and suffix, updating the string
@@ -152,14 +171,7 @@ contains
     character(*), intent(in) :: axis_ref
     character(str_def) :: flavour
 
-    if (grid_ref /= "") then
-      if (domain_ref /= "") then
-        write(log_scratch_space, *)                                           &
-        'field ' // trim(xios_id) //                                          &
-        'with grid_ref and domain_ref : ' //                                  &
-        grid_ref // ' ' // domain_ref
-        call log_event(log_scratch_space, log_level_error)
-      end if
+    if (domain_ref == "") then
       if (axis_ref /= "") then
         flavour = vanilla_multi
       else
@@ -274,6 +286,11 @@ contains
 
     ! metadata lookup
     grid_ref = get_field_grid_ref(xios_id)
+    call log_event("get_field_grid_ref for xios_id: " // xios_id // " , grid_ref: " &
+                    // grid_ref , log_level_debug)
+    grid_ref = trim_string_start_arrow(grid_ref)
+    call log_event("trim_string_start_arrow for xios_id: " // xios_id // " , grid_ref: " &
+                    // grid_ref , log_level_debug)
     call split_composite_grid_ref(grid_ref, axis_ref)
     domain_ref = get_field_domain_ref(xios_id)
     if (axis_ref == '') then
@@ -285,6 +302,8 @@ contains
     order_h = get_field_order(xios_id, force_order_h)
     order_v = get_field_order(xios_id, force_order_v)
 
+    call log_event("get_field_fsenum xios_id: " // xios_id // " , grid_ref: " &
+                    // grid_ref // " , domain_ref: " // domain_ref, log_level_debug)
     ! derive function space and flavour from metadata
     fsenum = get_field_fsenum(xios_id, grid_ref, domain_ref)
     flavour = get_field_flavour(xios_id, grid_ref, domain_ref, axis_ref)

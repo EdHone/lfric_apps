@@ -17,6 +17,7 @@
 
       <!-- File definition for LFRic checkpoint read -->
       <file id="lfric_checkpoint_read" name="lfric_checkpoint_read" mode="read" output_freq="1ts" convention="UGRID" cyclic="true" enabled=".TRUE.">
+       <field_group read_access=".TRUE.">
 
         <!-- Atmosphere fields -->
         <field id="restart_theta" name="theta" long_name="air_potential_temperature" standard_name="air_potential_temperature" unit="K" domain_ref="checkpoint_Wtheta" operation="once" />
@@ -24,7 +25,7 @@
 
         <!-- Turbulence fields -->
         <field id="restart_zh" name="zh" long_name="boundary_layer_depth" unit="m" domain_ref="face" operation="once" />
-
+       </field_group>
       </file>
     </file_definition>
   </context>
@@ -65,6 +66,8 @@
       </variable_group>
 
       <variable_group id = "parameters" >
+        <variable id="transport_protocol" type="string" >p2p</variable>
+       <variable id = "services_use_window_manager" type="bool">false</variable>
         <variable id = "using_server" type = "bool" >false</variable>
         <variable id = "using_oasis" type = "bool">false</variable>
         <variable id = "info_level" type = "int" >50</variable>
