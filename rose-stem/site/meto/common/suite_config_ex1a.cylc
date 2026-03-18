@@ -23,7 +23,6 @@
                             'module load cpe/23.09 ; '~
                             'module switch cce cce/15.0.0 ; '~
                             'module load lfric-cray/15.0.0/3.0+ || true ; '~
-                            'module load xios/3.0.1.0  || true ; '~
                             'module load zlib-ng/2.2.1-qc6q62y glibc/2.31-2gykboy || true ; '~
                             'module load pkg-config/0.29.2-hxxl2mu || true ; '~
                             'export LD_LIBRARY_PATH=/opt/cray/pe/pmi/6.1.11/lib:$LD_LIBRARY_PATH ; '~
