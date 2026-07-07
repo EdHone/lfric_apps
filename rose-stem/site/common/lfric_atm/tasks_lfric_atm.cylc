@@ -494,6 +494,8 @@
         "opt_confs": ["um_dump"],
         "resolution": "C896_MG",
         "DT": 240,
+        "crun": 2,
+        "crun_compare": true,
         "tsteps": 120,
         "wallclock": 15,
         "mpi_parts": 4704,

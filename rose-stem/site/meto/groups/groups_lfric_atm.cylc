@@ -208,6 +208,9 @@
         "ex1a_omp_C192_cce",
         "ex1a_omp_gnu",
     ],
+    "lfric_atm_layered_checkpointing": [
+        "lfric_atm_nwp_gal9-C896_MG_ex1a_cce_production-32bit",
+    ],
     "lfric_atm_ex1a_performance_check": [
         "lfric_atm_ex1a_weekly",
         "lfric_atm_nwp_gal9-C896_MG_720t_perfRun0_ex1a_cce_production-32bit",
