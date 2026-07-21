@@ -31,7 +31,7 @@ lfric_apps:
 
 lfric_core:
     source: git@github.com:EdHone/lfric_core.git
-    ref: 0626-layered-CP
+    ref: vn3.2-layered-CP
 
 moci:
     source: git@github.com:MetOffice/moci.git
