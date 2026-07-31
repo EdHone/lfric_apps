@@ -30,12 +30,12 @@ lfric_apps:
     ref:
 
 lfric_core:
-   source: git@github.com:mo-marqh/lfric_core.git
-   ref: threeDotTwoXIOS3Adopt
+   source: git@github.com:harry-shepherd/lfric_core.git
+   ref: threeDotTwoXIOS3Adopt_hws
 
 moci:
-    source: git@github.com:MetOffice/moci.git
-    ref: 2026.07.1
+    source: https://github.com/harry-shepherd/hshep-lfric_core.git
+    ref: fd518c1e667819011041831d16ca236e29cd7716
 
 SimSys_Scripts:
     source: git@github.com:MetOffice/SimSys_Scripts.git
