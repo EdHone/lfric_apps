@@ -100,8 +100,8 @@ contains
     implicit none
 
 #ifdef USE_XIOS
-    ! Finalise XIOS
-    call lfric_xios_finalise()
+    ! Finalise XIOS context
+    call lfric_xios_context_finalise()
 #endif
 
   end subroutine final_external_comm
