@@ -15,7 +15,7 @@ program gravity_wave
   use constants_mod,           only: l_def, str_max_filename
   use driver_modeldb_mod,      only: modeldb_type
   use driver_collections_mod,  only: init_collections, final_collections
-  use driver_comm_mod,         only: init_comm, final_comm
+  use driver_comm_mod,         only: init_comm
   use driver_config_mod,       only: init_config, final_config
   use driver_log_mod,          only: init_logger, final_logger
   use driver_time_mod,         only: init_time, final_time
@@ -83,6 +83,5 @@ program gravity_wave
   call final_timing( program_name )
   call final_logger( program_name )
   call final_config()
-  call final_comm( modeldb )
 
 end program gravity_wave

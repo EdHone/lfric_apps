@@ -16,7 +16,7 @@ program shallow_water
 
   use cli_mod,                   only: parse_command_line
   use driver_collections_mod,    only: init_collections, final_collections
-  use driver_comm_mod,           only: init_comm, final_comm
+  use driver_comm_mod,           only: init_comm
   use driver_config_mod,         only: init_config, final_config
   use driver_counter_mod,        only: init_counters, final_counters
   use driver_log_mod,            only: init_logger, final_logger
@@ -97,6 +97,5 @@ program shallow_water
   call final_timing( program_name )
   call final_logger( program_name )
   call final_config()
-  call final_comm( modeldb )
 
 end program shallow_water
