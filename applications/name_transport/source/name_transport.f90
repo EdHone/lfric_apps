@@ -12,7 +12,7 @@ program name_transport
   use cli_mod,                   only: parse_command_line
   use constants_mod,             only: i_def, r_def, l_def, str_max_filename
   use driver_collections_mod,    only: init_collections, final_collections
-  use driver_comm_mod,           only: init_comm, final_comm
+  use driver_comm_mod,           only: init_comm
   use driver_config_mod,         only: init_config, final_config
   use driver_log_mod,            only: init_logger, final_logger
   use driver_modeldb_mod,        only: modeldb_type
@@ -89,6 +89,5 @@ program name_transport
   call final_timing( program_name )
   call final_logger( program_name )
   call final_config()
-  call final_comm( modeldb )
 
 end program name_transport

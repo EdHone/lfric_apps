@@ -34,6 +34,7 @@
     
     <axis_definition>
       <axis id="ls_axis" name="ls_axis" n_glo="7"/>
+      <axis id="1" name="one" n_glo="1"/>
     </axis_definition>
 
     <grid_definition>
