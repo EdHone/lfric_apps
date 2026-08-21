@@ -31,7 +31,7 @@ lfric_apps:
 
 lfric_core:
    source: git@github.com:harry-shepherd/lfric_core.git
-   ref: threeDotTwoXIOS3Adopt_hws
+   ref: b4581153681eec889974a5a559a34e48fea3690b
 
 moci:
     source: https://github.com/harry-shepherd/moci.git
