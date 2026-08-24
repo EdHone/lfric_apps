@@ -20,7 +20,7 @@ program lfric_coupled
   use constants_mod,          only : l_def, str_max_filename
   use coupler_mod,            only : set_cpl_name
   use driver_collections_mod, only : init_collections, final_collections
-  use driver_comm_mod,        only : init_comm
+  use driver_comm_mod,        only : init_comm, final_comm
   use driver_config_mod,      only : init_config, final_config
   use driver_log_mod,         only : init_logger, final_logger
   use driver_time_mod,        only : init_time, final_time
@@ -97,5 +97,6 @@ program lfric_coupled
   call final_timing( application_name )
   call final_logger( application_name )
   call final_config()
+  call final_comm( modeldb )
 
 end program lfric_coupled
