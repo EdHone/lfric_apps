@@ -1,0 +1,290 @@
+20260821173342.841+0000:P04:INFO : Runtime message logging severity set to log level: INFO
+20260821173342.841+0000:P04:INFO : total ranks = 12, local_rank = 4
+20260821173342.841+0000:P04:INFO : Initialising mesh
+20260821173342.841+0000:P04:INFO : Reading global mesh: "dynamics"
+20260821173342.850+0000:P04:INFO : Using auto decomposition
+20260821173342.850+0000:P04:INFO : Number of cells in partition 12 X 6
+20260821173342.858+0000:P04:INFO :    ... "dynamics"(id:1) based on mesh "dynamics"
+20260821173342.858+0000:P04:INFO :    ... "dynamics_2d"(id:2) based on mesh "dynamics"
+20260821173342.858+0000:P04:INFO : Creating function spaces and chi
+20260821173342.858+0000:P04:INFO : FEM specifics: creating function spaces...
+20260821173342.916+0000:P04:INFO : FEM specifics created
+20260821173342.940+0000:P04:WARN : Frequency for file [lfric_checkpoint_write] defined in both LFRic and XIOS, defaulting to XIOS iodef.xml value
+20260821173343.036+0000:P04:INFO : Creating lfric finite difference fields ...
+20260821173343.036+0000:P04:INFO : Add ew_wind to field collection
+20260821173343.036+0000:P04:INFO : Added
+20260821173343.036+0000:P04:INFO : Add ns_wind to field collection
+20260821173343.036+0000:P04:INFO : Added
+20260821173343.036+0000:P04:INFO : Add upward_wind to field collection
+20260821173343.036+0000:P04:INFO : Added
+20260821173343.036+0000:P04:INFO : Add theta to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add rho to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add m_v to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add m_cl to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add m_cf to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add m_r to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add area_fraction to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add bulk_fraction to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add liquid_fraction to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add frozen_fraction to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add zh to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add z0msea to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add dd_mf_cb to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_mass to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_n_snow_layers to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_depth to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_rgrain to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add snow_soot to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_under_canopy to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snowpack_density to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_layer_liq_mass to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_layer_ice_mass to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_layer_rgrain to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_layer_thickness to field collection
+20260821173343.037+0000:P04:INFO : Added
+20260821173343.037+0000:P04:INFO : Add tile_snow_layer_temp to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add soil_moisture to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add soil_temperature to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add soil_sat_frac to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add water_table to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add wetness_under_soil to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add surface_conductance to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add tile_canopy_water to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add tile_temperature to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add tstar_sea_ice to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : Add sea_ice_temperature to field collection
+20260821173343.039+0000:P04:INFO : Added
+20260821173343.039+0000:P04:INFO : ... Done creating finite difference fields
+20260821173343.039+0000:P04:INFO : Create ancil fields: Setting up ancil field collection
+20260821173343.039+0000:P04:INFO : Create land area fraction ancil
+20260821173343.039+0000:P04:INFO : Creating new field for land_area_fraction
+20260821173343.039+0000:P04:INFO : Loading weights file: weights_file_p_to_face_centre_bilinear.nc
+20260821173343.045+0000:P04:INFO : Allocated remap_matrix(num_wgts = 1 , num_links = 3456 )
+20260821173343.046+0000:P04:INFO : Loading weights file: weights_file_p_to_face_centre_neareststod.nc
+20260821173343.049+0000:P04:INFO : Allocated remap_matrix(num_wgts = 1 , num_links = 864 )
+20260821173343.049+0000:P04:INFO : Loading weights file: weights_file_u_to_face_centre_bilinear.nc
+20260821173343.052+0000:P04:INFO : Allocated remap_matrix(num_wgts = 1 , num_links = 3456 )
+20260821173343.052+0000:P04:INFO : Loading weights file: weights_file_v_to_face_centre_bilinear.nc
+20260821173343.055+0000:P04:INFO : Allocated remap_matrix(num_wgts = 1 , num_links = 3456 )
+20260821173343.056+0000:P04:INFO : Loading weights file: weights_file_p_to_face_centre_neareststod.nc
+20260821173343.058+0000:P04:INFO : Allocated remap_matrix(num_wgts = 1 , num_links = 864 )
+20260821173343.058+0000:P04:INFO : Maximum base dof index = 139
+20260821173343.076+0000:P04:INFO : Number of adjusted points = 15
+20260821173343.076+0000:P04:INFO :  *!   0.19634954084936201      -0.32079593966756947                         3                27648   1.6165154396702127E-002   3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!   0.19634954084936201      -0.44971693522195566                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!   0.19634954084936201      -0.44971693522195566                        12                27648   4.4301431830525866E-002   7.8660926382909571E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.58904862254808621      -0.16376736789558680                         2                27648   1.6144349811340303E-002   3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!   0.19634954084936201      -0.19230024966714790                         1                27648   4.0103995383859829E-002   3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!   0.19634954084936201      -0.19230024966714790                         0                27648   4.0103995383859829E-002   4.2109195153052822E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.58904862254808621      -0.27484942190994271                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.58904862254808621      -0.27484942190994271                         7                27648   7.8792791955484928E-002   7.8660926382909571E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.58904862254808621      -0.27484942190994271                         0                27648   7.8792791955484928E-002   8.2732431553259184E-002
+20260821173343.076+0000:P04:INFO :  *!   0.58904862254808599      -0.50663119562931080                         3                27648   1.5515003928484556E-002   3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.71994831644766100       -4.9223612664117566E-002                    5                27648   1.7183998821649775E-002   3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.58904862254808621       -5.4398448961857672E-002                    0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!  -0.58904862254808621       -5.4398448961857672E-002                    5                27648   4.6717214295756100E-002   7.8660926382909571E-002
+20260821173343.076+0000:P04:INFO :  *!   0.71994831644766100       -4.9223612664117566E-002                    6                27648   1.7183998821649775E-002   3.9330463191454786E-002
+20260821173343.076+0000:P04:INFO :  *!   0.71994831644766100      -0.14840098551998107                         4                27648   1.7481383450735220E-002   3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.71994831644766100      -0.24978353187218150                         3                27648   1.5891057236868501E-002   3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.71994831644766100      -0.35488586242666026                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.71994831644766100      -0.35488586242666026                        20                27648   4.6265041680473677E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO :  *!  -0.71994831644766089      -0.46527147841860272                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!  -0.71994831644766089      -0.46527147841860272                         4                27648   6.3424313659631956E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO :  *!   0.71994831644766100      -0.46527147841860272                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.71994831644766100      -0.46527147841860272                         6                27648   4.7610623662232107E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO :  *!   0.45814892864851153      -0.66569530229871510                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.45814892864851153      -0.66569530229871510                         3                27648   6.7048120932920174E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO : Number of adjusted points = 9
+20260821173343.077+0000:P04:INFO :  *!   0.32724923474893675      -0.43620284747060134                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.32724923474893675      -0.43620284747060134                        12                27648   5.5025033748752505E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO :  *!   0.58904862254808610      -0.27484942190994277                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.58904862254808610      -0.27484942190994277                         6                27648   6.2659361247919307E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO :  *!   0.58904862254808610      -0.38877293697296234                         4                27648   1.6693237546657864E-002   3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.32724923474893675      -0.56331209008260097                         5                27648   1.5526310483353600E-002   3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.45814892864851142      -0.53921565969234619                         2                27648   4.1322885664200441E-002   3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!   0.45814892864851142      -0.53921565969234619                         3                27648   4.1322885664200441E-002   4.3389029947410465E-002
+20260821173343.077+0000:P04:INFO :  *!   0.19634954084936201       -6.4070013802502351E-002                    6                27648   1.8909769237777787E-002   3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!  -0.71994831644766100      -0.14840098551998107                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.077+0000:P04:INFO :  *!  -0.71994831644766100      -0.14840098551998107                         2                27648   7.6141638281621710E-002   7.8660926382909571E-002
+20260821173343.077+0000:P04:INFO :  *!  -0.71994831644766100      -0.24978353187218147                         0                27648   6.2831853071795862        3.9330463191454786E-002
+20260821173343.078+0000:P04:INFO :  *!  -0.71994831644766100      -0.24978353187218147                         7                27648   4.7569877214923818E-002   7.8660926382909571E-002
+20260821173343.078+0000:P04:INFO :  *!  -0.71994831644766089      -0.35488586242666026                         5                27648   1.6150769936278474E-002   3.9330463191454786E-002
+20260821173343.078+0000:P04:S1:INFO :  Regrid fields for forecast time:    451416.00000000000      ... where current xios date is: 2009-03-01 01:00:00
+20260821173343.078+0000:P04:S1:INFO : Will process 38 fields
+20260821173343.078+0000:P04:S1:INFO : Processing/regrid STASH code: 2
+20260821173343.078+0000:P04:S1:INFO : LFRic field name: ew_wind
+20260821173343.092+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.092+0000:P04:S1:INFO : Processing/regrid STASH code: 3
+20260821173343.092+0000:P04:S1:INFO : LFRic field name: ns_wind
+20260821173343.104+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.104+0000:P04:S1:INFO : Processing/regrid STASH code: 150
+20260821173343.104+0000:P04:S1:INFO : LFRic field name: upward_wind
+20260821173343.121+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.122+0000:P04:S1:INFO : Processing/regrid STASH code: 4
+20260821173343.122+0000:P04:S1:INFO : LFRic field name: theta
+20260821173343.138+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.139+0000:P04:S1:INFO : Processing/regrid STASH code: 389
+20260821173343.139+0000:P04:S1:INFO : LFRic field name: rho
+20260821173343.238+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.238+0000:P04:S1:INFO : Processing/regrid STASH code: 391
+20260821173343.238+0000:P04:S1:INFO : LFRic field name: m_v
+20260821173343.251+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.251+0000:P04:S1:INFO : Processing/regrid STASH code: 392
+20260821173343.251+0000:P04:S1:INFO : LFRic field name: m_cl
+20260821173343.262+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.262+0000:P04:S1:INFO : Processing/regrid STASH code: 393
+20260821173343.262+0000:P04:S1:INFO : LFRic field name: m_cf
+20260821173343.269+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.269+0000:P04:S1:INFO : Processing/regrid STASH code: 394
+20260821173343.269+0000:P04:S1:INFO : LFRic field name: m_r
+20260821173343.277+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.277+0000:P04:S1:INFO : Processing/regrid STASH code: 265
+20260821173343.277+0000:P04:S1:INFO : LFRic field name: area_fraction
+20260821173343.288+0000:P04:S1:INFO : Adding bottom level for stashcode: 265
+20260821173343.288+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.288+0000:P04:S1:INFO : Processing/regrid STASH code: 266
+20260821173343.288+0000:P04:S1:INFO : LFRic field name: bulk_fraction
+20260821173343.299+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.299+0000:P04:S1:INFO : Processing/regrid STASH code: 267
+20260821173343.299+0000:P04:S1:INFO : LFRic field name: liquid_fraction
+20260821173343.309+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.309+0000:P04:S1:INFO : Processing/regrid STASH code: 268
+20260821173343.309+0000:P04:S1:INFO : LFRic field name: frozen_fraction
+20260821173343.317+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.317+0000:P04:S1:INFO : Processing/regrid STASH code: 25
+20260821173343.317+0000:P04:S1:INFO : LFRic field name: zh
+20260821173343.318+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.318+0000:P04:S1:INFO : Processing/regrid STASH code: 26
+20260821173343.318+0000:P04:S1:INFO : LFRic field name: z0msea
+20260821173343.320+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.320+0000:P04:S1:INFO : Processing/regrid STASH code: 493
+20260821173343.320+0000:P04:S1:INFO : LFRic field name: dd_mf_cb
+20260821173343.320+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.320+0000:P04:S1:INFO : Processing/regrid STASH code: 240
+20260821173343.320+0000:P04:S1:INFO : LFRic field name: tile_snow_mass
+20260821173343.322+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  240
+20260821173343.322+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.322+0000:P04:S1:INFO : Processing/regrid STASH code: 380
+20260821173343.322+0000:P04:S1:INFO : LFRic field name: tile_n_snow_layers
+20260821173343.323+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  380
+20260821173343.323+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.323+0000:P04:S1:INFO : Processing/regrid STASH code: 376
+20260821173343.323+0000:P04:S1:INFO : LFRic field name: tile_snow_depth
+20260821173343.324+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  376
+20260821173343.324+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.324+0000:P04:S1:INFO : Processing/regrid STASH code: 231
+20260821173343.324+0000:P04:S1:INFO : LFRic field name: tile_snow_rgrain
+20260821173343.326+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  231
+20260821173343.326+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.326+0000:P04:S1:INFO : Processing/regrid STASH code: 221
+20260821173343.326+0000:P04:S1:INFO : LFRic field name: snow_soot
+20260821173343.326+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  221
+20260821173343.326+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.326+0000:P04:S1:INFO : Processing/regrid STASH code: 242
+20260821173343.326+0000:P04:S1:INFO : LFRic field name: tile_snow_under_canopy
+20260821173343.328+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  242
+20260821173343.328+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.328+0000:P04:S1:INFO : Processing/regrid STASH code: 377
+20260821173343.328+0000:P04:S1:INFO : LFRic field name: tile_snowpack_density
+20260821173343.329+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  377
+20260821173343.329+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.329+0000:P04:S1:INFO : Processing/regrid STASH code: 383
+20260821173343.329+0000:P04:S1:INFO : LFRic field name: tile_snow_layer_liq_mass
+20260821173343.331+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  383
+20260821173343.331+0000:P04:S1:INFO : Reordering snow layers for stashcode: 383
+20260821173343.331+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.331+0000:P04:S1:INFO : Processing/regrid STASH code: 382
+20260821173343.331+0000:P04:S1:INFO : LFRic field name: tile_snow_layer_ice_mass
+20260821173343.334+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  382
+20260821173343.334+0000:P04:S1:INFO : Reordering snow layers for stashcode: 382
+20260821173343.334+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.334+0000:P04:S1:INFO : Processing/regrid STASH code: 386
+20260821173343.334+0000:P04:S1:INFO : LFRic field name: tile_snow_layer_rgrain
+20260821173343.337+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  386
+20260821173343.337+0000:P04:S1:INFO : Reordering snow layers for stashcode: 386
+20260821173343.337+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.337+0000:P04:S1:INFO : Processing/regrid STASH code: 381
+20260821173343.337+0000:P04:S1:INFO : LFRic field name: tile_snow_layer_thickness
+20260821173343.340+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  381
+20260821173343.340+0000:P04:S1:INFO : Reordering snow layers for stashcode: 381
+20260821173343.340+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.340+0000:P04:S1:INFO : Processing/regrid STASH code: 384
+20260821173343.340+0000:P04:S1:INFO : LFRic field name: tile_snow_layer_temp
+20260821173343.343+0000:P04:S1:INFO : Will use nearest neigbour interpolation for stashcode:  384
+20260821173343.343+0000:P04:S1:INFO : Reordering snow layers for stashcode: 384
+20260821173343.343+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.343+0000:P04:S1:INFO : Processing/regrid STASH code: 9
+20260821173343.343+0000:P04:S1:INFO : LFRic field name: soil_moisture
+20260821173343.344+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.344+0000:P04:S1:INFO : Processing/regrid STASH code: 20
+20260821173343.344+0000:P04:S1:INFO : LFRic field name: soil_temperature
+20260821173343.345+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.345+0000:P04:S1:INFO : Processing/regrid STASH code: 279
+20260821173343.345+0000:P04:S1:INFO : LFRic field name: soil_sat_frac
+20260821173343.346+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.346+0000:P04:S1:INFO : Processing/regrid STASH code: 278
+20260821173343.346+0000:P04:S1:INFO : LFRic field name: water_table
+20260821173343.346+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.346+0000:P04:S1:INFO : Processing/regrid STASH code: 281
+20260821173343.346+0000:P04:S1:INFO : LFRic field name: wetness_under_soil
+20260821173343.347+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.347+0000:P04:S1:INFO : Processing/regrid STASH code: 213
+20260821173343.347+0000:P04:S1:INFO : LFRic field name: surface_conductance
+20260821173343.348+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.348+0000:P04:S1:INFO : Processing/regrid STASH code: 229
+20260821173343.348+0000:P04:S1:INFO : LFRic field name: tile_canopy_water
+20260821173343.349+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.349+0000:P04:S1:INFO : Processing/regrid STASH code: 233
+20260821173343.349+0000:P04:S1:INFO : LFRic field name: tile_temperature
+20260821173343.350+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.350+0000:P04:S1:INFO : Processing/regrid STASH code: 508
+20260821173343.350+0000:P04:S1:INFO : LFRic field name: tstar_sea_ice
+20260821173343.351+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.351+0000:P04:S1:INFO : Processing/regrid STASH code: 49
+20260821173343.351+0000:P04:S1:INFO : LFRic field name: sea_ice_temperature
+20260821173343.352+0000:P04:S1:INFO : Fill LFRic field object with regridded data
+20260821173343.352+0000:P04:S1:INFO : Writing snow_soot
+20260821173343.576+0000:P04:S1:INFO : Writing m_cf
+20260821173343.577+0000:P04:S1:INFO : Writing sea_ice_temperature
+20260821173343.579+0000:P04:S1:INFO : Writing tile_snow_depth
+20260821173343.580+0000:P04:S1:INFO : Writing frozen_fraction
+20260821173343.581+0000:P04:S1:INFO : Writing m_cl
+20260821173343.582+0000:P04:S1:INFO : Writing tile_snow_mass
+20260821173343.582+0000:P04:S1:INFO : Writing tile_canopy_water
+20260821173343.583+0000:P04:S1:INFO : Writing m_r
+20260821173343.584+0000:P04:S1:INFO : Writing tile_snow_rgrain
+20260821173343.584+0000:P04:S1:INFO : Writing m_v
+20260821173343.585+0000:P04:S1:INFO : Writing soil_moisture

@@ -18,7 +18,7 @@ program lfric2lfric
   use constants_mod,          only: precision_real
   use driver_collections_mod, only: init_collections, final_collections
   use driver_config_mod,      only: init_config, final_config
-  use driver_comm_mod,        only: init_comm
+  use driver_comm_mod,        only: init_comm, final_comm
   use driver_log_mod,         only: init_logger, final_logger
   use driver_modeldb_mod,     only: modeldb_type
   use driver_time_mod,        only: init_time, final_time
@@ -50,7 +50,9 @@ program lfric2lfric
 
   call parse_command_line( filename )
 
+  print*, "pre modeldb config"
   call modeldb%config%initialise( program_name )
+  print*, "post modeldb config"
 
   write(log_scratch_space,'(A)')                          &
       'Application built with '// trim(precision_real) // &
@@ -68,7 +70,10 @@ program lfric2lfric
   ! MPI communication and this can only be done once
   call modeldb%values%add_key_value('coupling_dst', coupler)
 #endif
+
+  print*, "pre init comm"
   call init_comm( program_name, modeldb )
+  print*, "post init comm"
 
   call init_config( filename, lfric2lfric_required_namelists, &
                     config=modeldb%config )
@@ -97,5 +102,6 @@ program lfric2lfric
   call final_collections()
   call final_logger( program_name )
   call final_config()
+  call final_comm( modeldb )
 
 end program lfric2lfric

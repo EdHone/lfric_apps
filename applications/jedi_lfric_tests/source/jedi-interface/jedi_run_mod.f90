@@ -172,8 +172,7 @@ subroutine finalise(self)
   use driver_config_mod,             only: final_config
   use driver_log_mod,                only: final_logger
   use timing_mod,                    only: final_timing
-  use jedi_lfric_comm_mod,           only: final_external_comm, &
-                                           final_internal_comm
+  use jedi_lfric_comm_mod,           only: final_internal_comm
   use lfric_mpi_mod,                 only: destroy_comm
 
   implicit none
@@ -194,9 +193,6 @@ subroutine finalise(self)
 
   ! Finalise internal communicator groups
   call final_internal_comm()
-
-  ! Finalise external communicator groups
-  call final_external_comm()
 
   ! Finalise the communicator
   call destroy_comm()

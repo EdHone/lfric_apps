@@ -1,0 +1,1 @@
+/home/users/edward.hone/cylc-run/lfric_apps-xios3adopt-logfinalcomm/run14/share/output/lfricinputs/lfricinputs_um2lfric-basicgal-N96L70_C12L70_azspice_gnu_fast-debug-64bit/results/lfric_initial.nc

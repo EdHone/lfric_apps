@@ -16,13 +16,15 @@
 
 program lfric_atm
 
+  use, intrinsic :: iso_fortran_env, only : output_unit
+
   use cli_mod,                only: parse_command_line
   use constants_mod,          only: l_def, str_max_filename
 #ifdef MCT
   use coupler_mod,            only: set_cpl_name
 #endif
   use driver_collections_mod, only: init_collections, final_collections
-  use driver_comm_mod,        only: init_comm
+  use driver_comm_mod,        only: init_comm, final_comm
   use driver_config_mod,      only: init_config, final_config
   use driver_counter_mod,     only: init_counters, final_counters
   use driver_log_mod,         only: init_logger, final_logger
@@ -114,7 +116,16 @@ program lfric_atm
   call final_time( modeldb )
   call final_collections()
   call final_timing( application_name )
+  write(output_unit, '(A)') "finalise logging"
+  flush(output_unit)
   call final_logger( application_name )
+  write(output_unit, '(A)') "finalise config"
+  flush(output_unit)
   call final_config()
+  write(output_unit, '(A)') "finalise comm"
+  flush(output_unit)
+  call final_comm( modeldb )
+  write(output_unit, '(A)') "done"
+  flush(output_unit)
 
 end program lfric_atm
