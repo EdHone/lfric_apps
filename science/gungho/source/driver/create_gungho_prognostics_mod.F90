@@ -66,7 +66,7 @@ contains
     class(processor_type) :: proc
     class(clock_type), pointer :: clock
     integer(i_def) :: imr, reference_reset_freq, ord_h, ord_v
-    logical(l_def) :: legacy
+    logical(l_def) :: ugrid_ckp
     logical(l_def) :: checkpoint_flag
     logical(l_def) :: is_empty
     real(r_def)    :: dt
@@ -77,23 +77,21 @@ contains
     ord_h = element_order_h
     ord_v = element_order_v
 
-    ! enable/disable legacy checkpointing
-    legacy = .true.
+    ! enable/disable UGRID checkpointing
+    ugrid_ckp = .false.
 
     call proc%apply(make_spec('theta', main%none, Wtheta, order_h=ord_h, &
-                              order_v=ord_v, ckp=.true., legacy=legacy))
+                              order_v=ord_v, ckp=.true., ugrid_ckp=ugrid_ckp))
     call proc%apply(make_spec('u', main%none, W2, order_h=ord_h, order_v=ord_v,&
-                              ckp=.true., legacy=legacy))
-    if (.not. legacy) then
-      call proc%apply(make_spec('h_u', main%none, W2H, order_h=ord_h, &
-                                order_v=ord_v, ckp=.true.))
-      call proc%apply(make_spec('v_u', main%none, W2V, order_h=ord_h, &
-                                order_v=ord_v, ckp=.true.))
-    end if
+                              ckp=.true., ugrid_ckp=ugrid_ckp))
+    call proc%apply(make_spec('h_u', main%none, W2H, order_h=ord_h, &
+                              order_v=ord_v, ckp=.true., ugrid_ckp=ugrid_ckp))
+    call proc%apply(make_spec('v_u', main%none, W2V, order_h=ord_h, &
+                              order_v=ord_v, ckp=.true., ugrid_ckp=ugrid_ckp))
     call proc%apply(make_spec('rho', main%none, W3, order_h=ord_h, &
-                              order_v=ord_v, ckp=.true., legacy=legacy))
+                              order_v=ord_v, ckp=.true., ugrid_ckp=ugrid_ckp))
     call proc%apply(make_spec('exner', main%none, W3, order_h=ord_h, &
-                              order_v=ord_v, ckp=.true., legacy=legacy))
+                              order_v=ord_v, ckp=.true., ugrid_ckp=ugrid_ckp))
 
     ! Create reference fields for solver. They are only created and checkpointed if either the first or
     ! final steps are not semi-implicit operator recalculation timesteps
@@ -137,7 +135,7 @@ contains
     do imr = 1,nummr
       call proc%apply(make_spec(trim(mr_names(imr)), main%none, &
         Wtheta, moist_arr=moist_arr_dict%mr, moist_idx=imr, order_h=ord_h,     &
-        order_v=ord_v, ckp=.true., legacy=legacy))
+        order_v=ord_v, ckp=.true., ugrid_ckp=ugrid_ckp))
     end do
 
     ! Auxiliary fields holding moisture-dependent factors for dynamics, including checkpointed versions for
@@ -154,7 +152,7 @@ contains
     if (transport_ageofair) then
       call proc%apply(make_spec('ageofair', main%none, &
         W3, adv_coll=adv%last_con, order_h=ord_h, order_v=ord_v, ckp=.true., &
-        legacy=legacy))
+        ugrid_ckp=ugrid_ckp))
     end if
   end subroutine process_gungho_prognostics
 

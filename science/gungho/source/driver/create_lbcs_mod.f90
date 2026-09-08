@@ -57,33 +57,29 @@ module create_lbcs_mod
 
       integer(i_def) :: imr
       character(str_def) :: name
-      logical(l_def) :: legacy
+      logical(l_def) :: ugrid_ckp
 
-      legacy = .true.
+      ugrid_ckp = .false.
 
       select case( lbc_option )
 
         case ( lbc_option_analytic )
 
-          call proc%apply(make_spec('lbc_theta', main%lbc, Wtheta, ckp=.true., legacy=legacy))
-          call proc%apply(make_spec('lbc_u', main%lbc, W2, ckp=.true., legacy=legacy))
-          call proc%apply(make_spec('lbc_h_u', main%lbc, W2H, ckp=.true., legacy=legacy))
-          call proc%apply(make_spec('lbc_v_u', main%lbc, W2V, ckp=.true., legacy=legacy))
-          call proc%apply(make_spec('lbc_rho', main%lbc, W3, ckp=.true., legacy=legacy))
-          call proc%apply(make_spec('lbc_exner', main%lbc, W3, ckp=.true., legacy=legacy))
-          call proc%apply(make_spec('boundary_u_diff', main%lbc, W2, ckp=.true., legacy=legacy))
-          if (.not. legacy) then
-            call proc%apply(make_spec('boundary_h_u_diff', main%lbc, W2H, ckp=.true., legacy=.false.))
-            call proc%apply(make_spec('boundary_v_u_diff', main%lbc, W2V, ckp=.true., legacy=.false.))
-          end if
-          call proc%apply(make_spec('boundary_u_driving', main%lbc, W2, ckp=.true., legacy=legacy))
-          if (.not. legacy) then
-            call proc%apply(make_spec('boundary_h_u_driving', main%lbc, W2H, ckp=.true., legacy=.false.))
-            call proc%apply(make_spec('boundary_v_u_driving', main%lbc, W2V, ckp=.true., legacy=.false.))
-          end if
+          call proc%apply(make_spec('lbc_theta', main%lbc, Wtheta, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('lbc_u', main%lbc, W2, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('lbc_h_u', main%lbc, W2H, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('lbc_v_u', main%lbc, W2V, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('lbc_rho', main%lbc, W3, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('lbc_exner', main%lbc, W3, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('boundary_u_diff', main%lbc, W2, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('boundary_h_u_diff', main%lbc, W2H, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('boundary_v_u_diff', main%lbc, W2V, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('boundary_u_driving', main%lbc, W2, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('boundary_h_u_driving', main%lbc, W2H, ckp=.true., ugrid_ckp=ugrid_ckp))
+          call proc%apply(make_spec('boundary_v_u_driving', main%lbc, W2V, ckp=.true., ugrid_ckp=ugrid_ckp))
           do imr = 1, nummr
             name = trim('lbc_') // adjustl(mr_names(imr))
-            call proc%apply(make_spec(name, main%lbc, Wtheta, ckp=.true., legacy=legacy))
+            call proc%apply(make_spec(name, main%lbc, Wtheta, ckp=.true., ugrid_ckp=ugrid_ckp))
           enddo
 
         case ( lbc_option_gungho_file )

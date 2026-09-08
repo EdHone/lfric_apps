@@ -195,7 +195,7 @@ contains
     type( integer_field_type ), pointer :: face_selector_ns
 
     if (.not. prognostics%field_exists(h_name)) then
-      ! legacy checkpointing
+      ! No need to split
       return
     end if
 
@@ -249,7 +249,7 @@ contains
     type( integer_field_type ), pointer :: face_selector_ns
 
     if (.not. prognostics%field_exists(h_name)) then
-      ! legacy checkpointing
+      ! No need to split
       return
     end if
 

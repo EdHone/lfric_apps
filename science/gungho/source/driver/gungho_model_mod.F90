@@ -44,8 +44,7 @@ module gungho_model_mod
   use field_spec_mod,             only : field_spec_type, processor_type
   use field_parent_mod,           only : write_interface
   use field_collection_mod,       only : field_collection_type
-  use field_spec_mod,             only : field_spec_type, processor_type, &
-                                         space_has_xios_io
+  use field_spec_mod,             only : field_spec_type, processor_type
   use lfric_xios_diag_mod,        only : set_variable
   use sci_geometric_constants_mod,       &
                                   only : get_chi_inventory, get_panel_id_inventory
@@ -230,14 +229,14 @@ contains
 
     character(20), parameter :: operation = 'once'
 
-    if (spec%ckp .and. space_has_xios_io(spec%space, spec%legacy)) then
+    if (spec%ckp) then
       if (checkpoint_write) then
         call add_field(self%ckp_out, spec%name, mode=CHECKPOINTING, &
-          operation=operation, id_as_name=.true., legacy=spec%legacy)
+          operation=operation, id_as_name=.true., ugrid_ckp=spec%ugrid_ckp)
       end if
       if (checkpoint_read .or. init_option == init_option_checkpoint_dump) &
         call add_field(self%ckp_inp, spec%name, mode=RESTARTING, &
-          operation=operation, id_as_name=.true., legacy=spec%legacy)
+          operation=operation, id_as_name=.true., ugrid_ckp=spec%ugrid_ckp)
     end if
 
   end subroutine persistor_apply

@@ -146,7 +146,7 @@ module field_spec_mod
     logical(l_def)     :: coarse    = .false.             ! Is it coarse?
     character(str_def) :: coarse_mesh_name = ''           ! Name of the coarse mesh, or blank string
     logical(l_def)     :: is_int    = .false.             ! Is it an integer field?
-    logical(l_def)     :: legacy    = .false.             ! Is it a field with legacy checkpointing?
+    logical(l_def)     :: ugrid_ckp = .false.             ! Does this field write a UGRID checkpoint
   end type field_spec_type
 
   private
@@ -154,8 +154,7 @@ module field_spec_mod
             main_coll_dict_type, main_coll_dict, &
             adv_coll_dict_type, adv_coll_dict, &
             moist_arr_dict, time_axis_dict, &
-            processor_type, make_spec, if_advected, missing_fs, &
-            space_has_xios_io
+            processor_type, make_spec, if_advected, missing_fs
 
   !> @brief Base class for processor objects, operating on field specifiers
   type, abstract :: processor_type
@@ -248,11 +247,11 @@ contains
   !> @param[in, optional] coarse   Is it on a coarse mesh?
   !> @param[in, optional] coarse_mesh_name Name of mesh, if coarse
   !> @param[in, optional] is_int   Is it an integer field?
-  !> @param[in, optional] legacy   Is it a field with legacy checkpointing?
+  !> @param[in, optional] ugrid_ckp Does this field write a UGRID checkpoint?
   !> @return                       Specifier returned
   function make_spec(name, main_coll, space, order_h, order_v, adv_coll, &
     moist_arr, moist_idx, time_axis, &
-    mult, ckp, twod, empty, coarse, coarse_mesh_name, is_int, legacy) result(field_spec)
+    mult, ckp, twod, empty, coarse, coarse_mesh_name, is_int, ugrid_ckp) result(field_spec)
     implicit none
     character(*), intent(in) :: name
     integer(i_def), intent(in) :: main_coll
@@ -270,7 +269,7 @@ contains
     logical(l_def), optional, intent(in) :: coarse
     character(*),   optional, intent(in) :: coarse_mesh_name
     logical(l_def), optional, intent(in) :: is_int
-    logical(l_def), optional, intent(in) :: legacy
+    logical(l_def), optional, intent(in) :: ugrid_ckp
     type(field_spec_type) :: field_spec
 
     field_spec%name = name
@@ -289,7 +288,7 @@ contains
     if (present(coarse)) field_spec%coarse=coarse
     if (present(coarse_mesh_name)) field_spec%coarse_mesh_name=coarse_mesh_name
     if (present(is_int)) field_spec%is_int=is_int
-    if (present(legacy)) field_spec%legacy=legacy
+    if (present(ugrid_ckp)) field_spec%ugrid_ckp=ugrid_ckp
 
     if (.not. main_coll_dict%check(main_coll)) &
       call enum_error('main_coll', field_spec%main_coll)
@@ -310,38 +309,5 @@ contains
     adv_coll = coll
     if (.not. advected) adv_coll = adv_coll_dict%none
   end function if_advected
-
-  !> @brief Return true if and only if a space is supported by XIOS
-  !> @details In legacy mode, all the spaces are supported. In modern mode,
-  !> W2 fields (like u) cannot be written directly. These will be checkpointed
-  !> via the decomposition implemented by the routines split_complex_prognostics /
-  !> combine_complex_prognostics in gungho_init_fields_mod.X90.
-  !> @param[in] fs         Function space enumerator
-  !> @param[in] legacy     Are we using legacy checkpoint domains (checkpoint_W2, etc.)?
-  !> @return               True if and only if space is supported
-  function space_has_xios_io(fs, legacy) result(flag)
-    use fs_continuity_mod,              only : W1, W2
-    implicit none
-
-    integer(i_def), intent(in) :: fs ! function space enumerator
-    logical(l_def), optional, intent(in) :: legacy ! using legacy io?
-
-    logical(l_def) :: use_legacy
-    logical(l_def) :: flag
-
-    use_legacy = .false.
-    if (present(legacy)) use_legacy = legacy
-
-    select case (fs)
-    case (W1)
-      flag = .false. ! there is no legacy domain for W1
-    case (W2)
-      ! supported in legacy mode, otherwise not
-      flag = use_legacy
-    case default
-      flag = .true.
-  end select
-
-  end function space_has_xios_io
 
 end module field_spec_mod
