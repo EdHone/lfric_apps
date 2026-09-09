@@ -154,7 +154,7 @@ module field_spec_mod
             main_coll_dict_type, main_coll_dict, &
             adv_coll_dict_type, adv_coll_dict, &
             moist_arr_dict, time_axis_dict, &
-            processor_type, make_spec, if_advected, missing_fs
+            processor_type, make_spec, if_advected, missing_fs, space_has_xios_io
 
   !> @brief Base class for processor objects, operating on field specifiers
   type, abstract :: processor_type
@@ -309,5 +309,29 @@ contains
     adv_coll = coll
     if (.not. advected) adv_coll = adv_coll_dict%none
   end function if_advected
+
+  !> @brief Return true if and only if a space is supported by XIOS
+  !> @details Some function spaces, like W1 and w2, cannot be written directly.
+  !!          These are be written by splitting field components
+  !> @param[in] fs         Function space enumerator
+  !> @return               True if and only if space is supported
+  function space_has_xios_io(fs) result(flag)
+    use fs_continuity_mod,              only : W1, W2
+    implicit none
+
+    integer(i_def), intent(in) :: fs ! function space enumerator
+
+    logical(l_def) :: flag
+
+    select case (fs)
+    case (W1)
+      flag = .false.
+    case (W2)
+      flag = .false.
+    case default
+      flag = .true.
+  end select
+
+  end function space_has_xios_io
 
 end module field_spec_mod

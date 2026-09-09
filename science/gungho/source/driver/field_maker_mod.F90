@@ -35,7 +35,8 @@ module field_maker_mod
                                              time_axis_dict,                   &
                                              field_spec_type,                  &
                                              processor_type,                   &
-                                             missing_fs
+                                             missing_fs,                       &
+                                             space_has_xios_io
   use lfric_xios_diag_mod,            only : field_is_valid
   use lfric_xios_time_axis_mod,       only : time_axis_type
   use lfric_xios_write_mod,           only : create_checkpoint_list
@@ -77,6 +78,23 @@ module field_maker_mod
   end type field_maker_type
 
 contains
+
+  !> Return true if and only if the given space supports XIOS IO
+  function has_xios_io(space) result(flag)
+    implicit none
+
+    type(function_space_type), pointer, intent(in) :: space
+
+    logical(l_def) :: flag
+
+    if (associated(space)) then
+      flag = space_has_xios_io(space%which())
+    else
+      ! dynamic discovery requires XIOS
+      flag = .true.
+    end if
+
+  end function has_xios_io
 
   !> @brief Initialise field maker object
   !> @param[inout] self             Field maker object
@@ -177,7 +195,7 @@ contains
     end if
 
     ! Check whether checkpoint fields have been added to the XIOS context.
-    if (use_xios_io .and. spec%ckp) then
+    if (use_xios_io .and. spec%ckp .and. space_has_xios_io(spec%space)) then
       if (checkpoint_write) then
         split_stem_name = split_string( &
           trim(checkpoint_stem_name), '/' )
@@ -398,10 +416,11 @@ contains
     if (use_xios_io) then
         write_behaviour => write_field_generic
         read_behaviour  => read_field_generic
-        if (write_diag .or. (checkpoint_write .and. checkpointed)) &
+        if ((write_diag .or. (checkpoint_write .and. checkpointed)) .and. &
+            (has_xios_io(vector_space))) &
           call new_field_ptr%set_write_behaviour(write_behaviour)
-        if ((checkpoint_read .or. init_option == init_option_checkpoint_dump) &
-            .and. checkpointed) &
+        if (((checkpoint_read .or. init_option == init_option_checkpoint_dump) &
+            .and. checkpointed) .and. (has_xios_io(vector_space))) &
           call new_field_ptr%set_read_behaviour(read_behaviour)
     else
         checkpoint_write_behaviour => checkpoint_write_netcdf

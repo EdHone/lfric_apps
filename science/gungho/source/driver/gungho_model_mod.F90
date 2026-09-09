@@ -41,10 +41,10 @@ module gungho_model_mod
                                          init_multigrid_fs_chain
   use field_array_mod,            only : field_array_type
   use field_mod,                  only : field_type
-  use field_spec_mod,             only : field_spec_type, processor_type
+  use field_spec_mod,             only : field_spec_type, processor_type, &
+                                         space_has_xios_io
   use field_parent_mod,           only : write_interface
   use field_collection_mod,       only : field_collection_type
-  use field_spec_mod,             only : field_spec_type, processor_type
   use lfric_xios_diag_mod,        only : set_variable
   use sci_geometric_constants_mod,       &
                                   only : get_chi_inventory, get_panel_id_inventory
@@ -229,7 +229,7 @@ contains
 
     character(20), parameter :: operation = 'once'
 
-    if (spec%ckp) then
+    if (spec%ckp .and. space_has_xios_io(spec%space)) then
       if (checkpoint_write) then
         call add_field(self%ckp_out, spec%name, mode=CHECKPOINTING, &
           operation=operation, id_as_name=.true., ugrid_ckp=spec%ugrid_ckp)
