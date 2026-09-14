@@ -98,5 +98,6 @@ program jedi_lfric_tests
   call final_timing( application_name )
   call final_logger( application_name )
   call final_config()
+  call final_comm( modeldb )
 
 end program jedi_lfric_tests
