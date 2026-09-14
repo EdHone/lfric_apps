@@ -8,16 +8,33 @@
     <domain domain_ref="face"/>
     <axis axis_ref="vert_axis_half_levels"/>
   </grid>
+  <grid id="half_level_face_grid_cf">
+    <domain domain_ref="face_cf"/>
+    <axis axis_ref="vert_axis_half_levels"/>
+  </grid>
   <grid id="full_level_face_grid">
     <domain domain_ref="face"/>
+    <axis axis_ref="vert_axis_full_levels"/>
+  </grid>
+  <grid id="full_level_face_grid_cf">
+    <domain domain_ref="face_cf"/>
     <axis axis_ref="vert_axis_full_levels"/>
   </grid>
   <grid id="half_level_edge_grid">
     <domain domain_ref="edge"/>
     <axis axis_ref="vert_axis_half_levels"/>
   </grid>
+  <grid id="half_level_edge_grid_cf">
+    <domain domain_ref="edge_cf"/>
+    <axis axis_ref="vert_axis_half_levels"/>
+  </grid>
   <grid id="full_level_face_grid_aero_modes">
     <domain domain_ref="face"/>
+    <axis axis_ref="vert_axis_full_levels"/>
+    <axis axis_ref="aero_modes"/>
+  </grid>
+  <grid id="full_level_face_grid_aero_modes_cf">
+    <domain domain_ref="face_cf"/>
     <axis axis_ref="vert_axis_full_levels"/>
     <axis axis_ref="aero_modes"/>
   </grid>
@@ -77,8 +94,18 @@
     <axis axis_ref="vert_axis_full_levels"/>
     <axis axis_ref="sw_bands"/>
   </grid>
+  <grid id="full_level_face_grid_sw_bands_cf">
+    <domain domain_ref="face_cf"/>
+    <axis axis_ref="vert_axis_full_levels"/>
+    <axis axis_ref="sw_bands"/>
+  </grid>
   <grid id="full_level_face_grid_lw_bands">
     <domain domain_ref="face"/>
+    <axis axis_ref="vert_axis_full_levels"/>
+    <axis axis_ref="lw_bands"/>
+  </grid>
+  <grid id="full_level_face_grid_lw_bands_cf">
+    <domain domain_ref="face_cf"/>
     <axis axis_ref="vert_axis_full_levels"/>
     <axis axis_ref="lw_bands"/>
   </grid>
