@@ -148,6 +148,16 @@
   <grid id="stochastic_physics_grid">
     <axis axis_ref="stph_spectral_dimensions"/>
   </grid>
+  <grid id="scalar_grid_cf">
+    <axis axis_ref="scalar_axis"/>
+  </grid>
+  <grid id="random_seed_grid_cf">
+    <axis axis_ref="random_seed_size"/>
+  </grid>
+  <grid id="stochastic_physics_grid_cf">
+    <axis axis_ref="stph_spectral_dimensions"/>
+  </grid>
+
   <!-- Zoom filters -->
   <grid id="full_level_0_face_zoom">
     <domain domain_ref="face"/>
