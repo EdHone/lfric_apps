@@ -116,6 +116,6 @@ program lfric_atm
   call final_timing( application_name )
   call final_logger( application_name )
   call final_config()
-  call final_comm()
+  call final_comm( modeldb )
 
 end program lfric_atm
