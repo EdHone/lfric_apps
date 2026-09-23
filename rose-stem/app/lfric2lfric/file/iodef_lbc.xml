@@ -84,6 +84,7 @@
         <variable id = "services_use_window_manager" type="bool">false</variable>
         <variable id = "using_server" type = "bool" >false</variable>
         <variable id = "using_oasis" type = "bool">true</variable>
+        <variable id = "clients_code_id" type = "string">lfric</variable>
         <variable id = "info_level" type = "int" >$XIOS_INFO_LEVEL</variable>
         <variable id = "print_file" type="bool">$XIOS_PRINT_FILE</variable>
       </variable_group>
