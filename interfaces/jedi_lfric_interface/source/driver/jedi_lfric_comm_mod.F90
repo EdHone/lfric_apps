@@ -24,8 +24,7 @@ module jedi_lfric_comm_mod
 
 ! USE_XIOS flag used for models using the XIOS I/O server
 #ifdef USE_XIOS
-  use lfric_xios_driver_mod, only: lfric_xios_initialise, lfric_xios_finalise, &
-                                   lfric_xios_context_finalise
+  use lfric_xios_driver_mod, only: lfric_xios_initialise, lfric_xios_finalise
 #endif
 
   implicit none
@@ -101,8 +100,12 @@ contains
     implicit none
 
 #ifdef USE_XIOS
-    ! Finalise XIOS context
-    call lfric_xios_context_finalise()
+    ! XIOS context finalization is already done by lfricjedi_xios_data_bundle%finalise()
+    ! which calls finalise_xios_context() on each context with proper current-setting and sync.
+    ! Skip redundant context finalization here to avoid double-finalize issues.
+    ! Still need to finalize the XIOS library itself so server-side ranks can exit cleanly
+
+    call lfric_xios_finalise()
 #endif
 
   end subroutine final_external_comm
