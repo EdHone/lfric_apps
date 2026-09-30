@@ -136,6 +136,9 @@ contains
 
     type(modeldb_type), intent(inout) :: modeldb
 
+    type( lfric_xios_context_type ), pointer :: io_context
+    character(len=*), parameter :: io_context_name = "gungho_atm"
+
     call log_event( 'Finalising linear model modeldb', LOG_LEVEL_TRACE )
 
     ! Model configuration finalisation
@@ -143,6 +146,11 @@ contains
 
     ! Destroy the fields stored in the modeldb model_data
     call finalise_model_data( modeldb )
+
+    ! Finalise the modeldb IO context here as doing it while other contexts are
+    ! live is a problem. This will be an issue for the outerloop.
+    call modeldb%io_contexts%get_io_context(io_context_name, io_context)
+    call io_context%finalise_xios_context()
 
     ! Finalise infrastructure and constants
     call finalise_infrastructure( modeldb )
