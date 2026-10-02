@@ -35,17 +35,17 @@
         "crun_compare": false,
         "metadata_test": true,
         "mpi_parts": 6,
-	"task_ranks_per_node": 6,
+        "task_ranks_per_node": 6,
         "kgo_checks": ["checksum"],
         "plot_str": "plot_map.py $NODAL_DATA_DIR/lfric_diagnostics.nc  $PLOT_DIR",
-	"xios_nodes": 1,
+        "xios_nodes": 1,
         "mpi_parts_xios" : 4,
         "log_level": "info",
         "xios_info_level": 100,
         "xios_print_file": "true",
-	"xios_level2_server": "true",
-	"xios_level2_ratio": 50,
-	"xios_level2_npools": 1,
+        "xios_level2_server": "true",
+        "xios_level2_ratio": 50,
+        "xios_level2_npools": 1,
     }) %}
 
 {% elif task_ns.conf_name == "nwp_gal10-C48_MG" %}

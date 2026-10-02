@@ -216,6 +216,19 @@
     {% do task_dict.update({"xios_buffer_size_factor": 1.0}) %}
 {% endif %}
 
+{# XIOS level 2 servers #}
+{% if "xios_level2_server" not in task_dict %}
+    {% do task_dict.update({"xios_level2_server": false}) %}
+{% endif %}
+
+{% if "xios_level2_ratio" not in task_dict %}
+    {% do task_dict.update({"xios_level2_ratio": 0}) %}
+{% endif %}
+
+{% if "xios_level2_npools" not in task_dict %}
+    {% do task_dict.update({"xios_level2_npools": 0}) %}
+{% endif %}
+
 
 {% if "coupled" not in task_dict %}
     {% do task_dict.update({"coupled": false}) %}
