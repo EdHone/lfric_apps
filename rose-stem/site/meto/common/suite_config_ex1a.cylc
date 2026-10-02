@@ -25,6 +25,9 @@
                             'module load lfric-cray/15.0.0/3.2 || true ; '~
                             'module load xios/3.0.4.0' %}
 
+{% set ex1a_oasis_cce = 'module load xios/3.0.4.0-oasis || true ; ' ~
+                        'module load oasis || true' %}
+
 {% set ex1a_coupled_cce = 'module unload xios || true ; ' ~
                           'module load cray-hdf5-parallel ; ' ~
                           'module load cray-netcdf-hdf5parallel ; ' ~
@@ -94,6 +97,10 @@
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE
         {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce]) }}
 
+    [[EX1A_BUILD_OASIS_CCE]]
+        inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE
+        {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce, ex1a_oasis_cce]) }}
+
     [[EX1A_BUILD_COUPLED_CCE]]
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE
         {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce, ex1a_coupled_cce]) }}
@@ -109,6 +116,13 @@
     [[EX1A_RUN_CCE]]
         inherit=EX1A_BASE,EX1A_RUN,EX1A_CCE
         {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce, set_ulimit]) }}
+
+    [[EX1A_RUN_OASIS_CCE]]
+        inherit=EX1A_BASE,EX1A_RUN,EX1A_CCE
+        {{ generate_script("pre-script", [ex1a_base,
+                                          ex1a_compiler_cce,
+                                          ex1a_oasis_cce,
+                                          set_ulimit]) }}
 
     [[EX1A_RUN_COUPLED_CCE]]
         inherit=EX1A_BASE,EX1A_RUN,EX1A_CCE
