@@ -23,11 +23,18 @@
                             'module load cray-mpich/8.1.27 ; '~
                             'module load lfric-cray/15.0.0/3.2 || true' %}
 
-{% set ex1a_coupled_cce = 'module unload xios/2.2701 || true ; ' ~
-                          'module load cray-hdf5-parallel ; ' ~
-                          'module load cray-netcdf-hdf5parallel ; ' ~
-                          'module use /data/users/moci/modules_ngms/modules ; '~
-                          'module load GC6-PrgEnv_ngarch/2026-06-ngarch-cpe23.05-mpich8.1.27/ngarch_wp2_oasis_f87dc4d.lua ; '
+{% set ex1a_oasis_cce = 'module load xios/2.2701-oasis || true ; ' ~
+                        'module load oasis || true' %}
+
+{% set ex1a_coupled_cce = 'export xios_path=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj ; ' ~
+                          'export XIOS_PATH=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj ; ' ~
+                          'export XIOS_INC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/TRANSMUTE_INCLUDE_METHOD ; ' ~
+                          'export XIOS_LIB=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/lib ; ' ~
+                          'export XIOS_EXEC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/bin/xios_server.exe ; ' ~
+                          'export prism_path=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52 ; ' ~
+                          'export OASIS_ROOT=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52 ; ' ~
+                          'export OASIS_LIB=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52/lib ; ' ~
+                          'export OASIS_INC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52/inc ; ' ~
                           'module load scitools' %}
 
 {% set ex1a_coupled_run = '. $BIG_DATA_DIR/ancils/lfric_coupled/ocean/ocean_ancil_GO8p0_CORE_forcing_eORCA025 ; ' ~
@@ -93,7 +100,7 @@
 
     [[EX1A_BUILD_COUPLED_CCE]]
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_CCE
-        {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce, ex1a_coupled_cce]) }}
+        {{ generate_script("pre-script", [ex1a_base, ex1a_compiler_cce, ex1a_oasis_cce, ex1a_coupled_cce]) }}
 
     [[EX1A_BUILD_PERFTOOLS-GNU]]
         inherit=EX1A_BASE,EX1A_BUILD,EX1A_GNU
@@ -111,6 +118,7 @@
         inherit=EX1A_BASE,EX1A_RUN,EX1A_CCE
         {{ generate_script("pre-script", [ex1a_base,
                                           ex1a_compiler_cce,
+                                          ex1a_oasis_cce,
                                           ex1a_coupled_cce,
                                           ex1a_coupled_run,
                                           set_ulimit]) }}
