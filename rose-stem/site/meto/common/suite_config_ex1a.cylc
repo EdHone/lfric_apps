@@ -27,14 +27,13 @@
                         'module load oasis || true' %}
 
 {% set ex1a_coupled_cce = 'export xios_path=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj ; ' ~
-                          'export XIOS_PATH=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj ; ' ~
-                          'export XIOS_INC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/TRANSMUTE_INCLUDE_METHOD ; ' ~
-                          'export XIOS_LIB=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/lib ; ' ~
-                          'export XIOS_EXEC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/bin/xios_server.exe ; ' ~
                           'export prism_path=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52 ; ' ~
-                          'export OASIS_ROOT=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52 ; ' ~
-                          'export OASIS_LIB=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52/lib ; ' ~
-                          'export OASIS_INC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52/inc ; ' ~
+                          'export fcflags_nemo_overrides=$FFLAGS ; ' ~
+                          'export fcflags_coupling=$FFLAGS ; ' ~
+                          'export flags_coupling=$FFLAGS ; ' ~
+                          'export ldflags_overrides_suffix=$LDFLAGS ; ' ~
+                          'export JULES_FFLAGS_EXTRA=$FFLAGS ; ' ~
+                          'export JULES_LDFLAGS_EXTRA=$LDFLAGS ; ' ~
                           'module load scitools' %}
 
 {% set ex1a_coupled_run = '. $BIG_DATA_DIR/ancils/lfric_coupled/ocean/ocean_ancil_GO8p0_CORE_forcing_eORCA025 ; ' ~
