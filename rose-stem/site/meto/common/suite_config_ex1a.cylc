@@ -27,6 +27,8 @@
                         'module load oasis || true' %}
 
 {% set ex1a_coupled_cce = 'export xios_path=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj ; ' ~
+                          'export XIOS_PATH=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj ; ' ~
+                          'export XIOS_EXEC=/common/internal/spack/releases/2026.7.1/install/linux-zen3/xios-2.2701-c5cu3glcg3b6mnlpu36wocarvdcwrtmj/bin/xios_server.exe ; ' ~
                           'export prism_path=/common/internal/spack/releases/2026.7.1/install/linux-zen3/oasis-3-mct5.0-u4uae2djro5xuvrtdkhbhmb7fnqcdt52 ; ' ~
                           'export fcflags_nemo_overrides=$FFLAGS ; ' ~
                           'export fcflags_coupling=$FFLAGS ; ' ~
