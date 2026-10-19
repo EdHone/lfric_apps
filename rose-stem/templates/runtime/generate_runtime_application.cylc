@@ -187,6 +187,9 @@
             mpi_parts_xios          = {{task_values["mpi_parts_xios"]}}
             XIOS_INFO_LEVEL         = {{task_values['xios_info_level']}}
             XIOS_PRINT_FILE         = {{task_values['xios_print_file']}}
+            XIOS_USING_SERVER2      = {{task_values['xios_level2_server']}}
+            XIOS_RATIO_SERVER2      = {{task_values['xios_level2_ratio']}}
+            XIOS_NUMBER_POOLS_SERVER2 = {{task_values['xios_level2_npools']}}
             PAT_EXE_EXTEN           = {{PAT_EXE_EXTEN}}
             CORES_PER_NODE_OVERRIDE = {{task_values["task_ranks_per_node"]}}
             RANKS_DEPTH_PAD         = {{task_values["task_ranks_depth_pad"]}}
