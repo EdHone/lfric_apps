@@ -15,12 +15,9 @@
 {% set azspice_oasis_gnu = 'module load xios/3.0.4.0-oasis ; '~
                            'module load oasis'%}
 
-{% set azspice_coupled_gnu = 'export xios_path=/data/apps/spack/releases/2026.7.1/install/linux-zen2/xios-3.0.4.0-fcqe4aoih7e5ohneqcl7nl3n2s4r4a47 ; '~
-                             'export prism_path=/data/apps/spack/releases/2026.7.1/install/linux-zen2/oasis-3-mct5.0-xzdifnugilmb5ir6lehyt5pzinkevw57'%}
-
 {% set azspice_run = 'ulimit -s unlimited' %}
 
-{% set azspice_scitools = 'module load scitools/production-os47-1' %}
+{% set azspice_scitools = 'module load scitools/production-os48-1' %}
 
 {% set azspice_tech = 'module load lfric/vn3.2' %}
 
@@ -69,8 +66,7 @@
         inherit=AZSPICE_BASE,AZSPICE_BUILD,AZSPICE_GNU
         {{ generate_script("pre-script", [azspice_base,
                                           azspice_compiler_gnu,
-                                          azspice_oasis_gnu,
-                                          azspice_coupled_gnu]) }}
+                                          azspice_oasis_gnu]) }}
 
     [[AZSPICE_RUN_GNU]]
         inherit=AZSPICE_BASE,AZSPICE_RUN,AZSPICE_GNU
@@ -114,30 +110,22 @@
 
     [[AZSPICE_WEIGHTS]]
         inherit = AZSPICE_BASE
-        pre-script = """
-                     module purge
-                     module load csc/2025.3.20
-                     module load gcc/12.2.0
-                     module load mpich/4.2.3
-                     module load esmf/8.7.0
-                     module load scitools/production-os46-3
-                     module load um_tools/2025.10.1/openmp
-                     module list 2>&1
-                     """
+        {{ generate_script("pre-script", ["module purge",
+                                          azspice_scitools,
+                                          "module load um_tools/2025.10.1/openmp",
+                                          "module list 2>&1"]) }}
 
     [[AZSPICE_ROSE_ANA]]
         inherit = AZSPICE_BASE
-        pre-script = """
-                     module purge
-                     module load scitools/production-os47-1
-                     module load um_tools/2025.10.1/openmp
-                     module load csc/2025.3.20
-                     module load gcc/12.2.0
-                     module load mpich/4.2.3
-                     module load nccmp/1.9.1.0
-                     export ROSE_PYTHONPATH="$PYTHONPATH"
-                     module list 2>&1
-                     """
+        {{ generate_script("pre-script", ["module purge",
+                                          azspice_scitools,
+                                          "module load um_tools/2025.10.1/openmp",
+                                          "module load csc/2025.3.20",
+                                          "module load gcc/12.2.0",
+                                          "module load mpich/4.2.3",
+                                          "module load nccmp/1.9.1.0",
+                                          "export ROSE_PYTHONPATH=$PYTHONPATH",
+                                          "module list 2>&1"]) }}
 
     [[AZSPICE_EXPORT-SOURCE]]
         inherit=METO_ORIG
