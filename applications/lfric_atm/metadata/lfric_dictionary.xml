@@ -1,3 +1,4 @@
+<!--NOTE: any grid or domain referenced in this file will need a corresponding '_cf' version to enable layered CF checkpointing -->
 <field_definition>
 <field_group id="lfric_dictionary" operation="instant" prec="8">
   <!-- gungho fields -->
