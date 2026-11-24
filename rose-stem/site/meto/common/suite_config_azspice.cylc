@@ -12,7 +12,8 @@
 {% set azspice_compiler_gnu = 'module load lfric/vn3.2' %}
 
 {% set azspice_oasis_gnu = 'module load xios/2.2701-oasis ; '~
-                           'module load oasis' %}
+                           'module use /home/users/edward.hone/spackdir/spack-1.2.2/share/spack/lmod/linux-rhel9-x86_64/mpich/4.3.2-milbtch/gcc/12.2.0 ; '~
+                           'module load oasis/3-mct4.0-GCM-otpate2 || true' %}
 
 {% set azspice_run = 'ulimit -s unlimited' %}
 
